@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【离散数学】高级计数技术 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="这是离散数学的第四篇，讨论高级计数技术。上一篇（【离散数学】计数/排列组合）讨论了计数以及排列组合，二项式定理等。但是仅凭排列组合等手段依然无法解决许多计数问题。这里首先讨论通过递推关系来求解计数问题，并介绍有递推关系引出的两个算法范式：动态规划和分治。这两种算法均是通过将问题分割为一系列的子问题来求解的，区别就是前者分割出来的子问题互相重叠，后者的子问题不重叠。这是两种很重要的算法，加上贪心、">
+<meta name="keywords" content="离散数学,组合数学,计数,分治,生成函数,容斥原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【离散数学】高级计数技术">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/03/06/2018.3.6--advanced-counting-technology/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="这是离散数学的第四篇，讨论高级计数技术。上一篇（【离散数学】计数/排列组合）讨论了计数以及排列组合，二项式定理等。但是仅凭排列组合等手段依然无法解决许多计数问题。这里首先讨论通过递推关系来求解计数问题，并介绍有递推关系引出的两个算法范式：动态规划和分治。这两种算法均是通过将问题分割为一系列的子问题来求解的，区别就是前者分割出来的子问题互相重叠，后者的子问题不重叠。这是两种很重要的算法，加上贪心、">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/towel-of-hanoi.jpg">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/hanoi-towel.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/42/Inclusion-exclusion.svg">
+<meta property="og:image" content="https://wikimedia.org/api/rest_v1/media/math/render/svg/0b8e7c1631ec013eed94feb5aa406a573caa3559">
+<meta property="og:updated_time" content="2018-06-24T10:01:06.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【离散数学】高级计数技术">
+<meta name="twitter:description" content="这是离散数学的第四篇，讨论高级计数技术。上一篇（【离散数学】计数/排列组合）讨论了计数以及排列组合，二项式定理等。但是仅凭排列组合等手段依然无法解决许多计数问题。这里首先讨论通过递推关系来求解计数问题，并介绍有递推关系引出的两个算法范式：动态规划和分治。这两种算法均是通过将问题分割为一系列的子问题来求解的，区别就是前者分割出来的子问题互相重叠，后者的子问题不重叠。这是两种很重要的算法，加上贪心、">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/towel-of-hanoi.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.3.6--advanced-counting-technology" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【离散数学】高级计数技术
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/06/2018.3.6--advanced-counting-technology/" class="article-date">
+	  <time datetime="2018-03-05T16:00:00.000Z" itemprop="datePublished">2018-03-06</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这是离散数学的第四篇，讨论高级计数技术。上一篇（<a href="https://aojueliuyun.github.io/2018/02/10/2018.2.10--counting-arrangement-&amp;-combination/">【离散数学】计数/排列组合</a>）讨论了计数以及排列组合，二项式定理等。但是仅凭排列组合等手段依然无法解决许多计数问题。这里首先讨论通过递推关系来求解计数问题，并介绍有递推关系引出的两个算法范式：动态规划和分治。这两种算法均是通过将问题分割为一系列的子问题来求解的，区别就是前者分割出来的子问题互相重叠，后者的子问题不重叠。这是两种很重要的算法，加上贪心、回溯、分支定界为五种很常用的算法。这里仅仅简单讨论思路，并分析其复杂度。关于具体的算法分析以及算法设计以后应该会讨论。而后介绍了求解一类很常见的特定递推关系——常系数线性齐次与非齐次递推关系的形式解法。并且还介绍了一种求解计数问题的很重要的手段——生成函数，这是幂级数的应用。最后介绍容斥原理，对，就是集合的容斥原理。以上内容以前均有涉及，这里再次探讨。</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="递推关系的应用"><a href="#递推关系的应用" class="headerlink" title="递推关系的应用"></a>递推关系的应用</h1><h2 id="经典问题——汉诺塔"><a href="#经典问题——汉诺塔" class="headerlink" title="经典问题——汉诺塔"></a>经典问题——汉诺塔</h2><p>这是一个及其经典的问题，见<a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi" target="_blank" rel="noopener">汉诺塔（Tower of Hanoi）</a>，三根柱子，n个盘子，从上到下盘子从小到大。将所有n个盘子从一根柱子移动到另一根柱子，移动过程中小的盘子不能放在大的盘子下面。可以求解出所需要的最小步数，还可以编写算法打印出所有步数。<br><img src="http://oxx8it1qo.bkt.clouddn.com/towel-of-hanoi.jpg" alt="此处输入图片的描述"><br>n=3的汉诺塔移动方法：<br><img src="http://oxx8it1qo.bkt.clouddn.com/hanoi-towel.gif" alt="此处输入图片的描述"></p>
+<p>令移动n个盘子到另一个柱子所需最少次数为 $ H_n $ ，考虑最下面一个最大的盘子，由于小的盘子不能放在大的盘子下面，所以必须首先将上面n-1个移动到另一个柱子，再将最下面的最大的一个移动到另一根柱子，再将n-1个移到其上，则完成了n个盘子的移动。则得到递推关系 $H_n = 2H_{n-1}+1$。初始条件很容易知道：$H_0 = 0$ ，$H_1=1$。</p>
+<p>求解递推关系：容易看出 $H_n+1 = 2(H_{n-1}+1)$，可以得到 $H_n= 2^n-1$。可以证明这便是移动n个盘子所需的最少次数。</p>
+<h2 id="卡特兰数"><a href="#卡特兰数" class="headerlink" title="卡特兰数"></a>卡特兰数</h2><p>考虑一个在n+1个数 $x_0\cdot x_1 \cdot x_2 \cdots x_n $ 的乘积中插入括号来规定乘法次序的方式数，令其为 $C_n$。<br>这里注意到一定会有一个乘法是在括号外面的（不需要加括号），假设其在$x_k$和$x_{k+1}$之间，则存在$C_kC_{n-k-1}$种方式，考虑最后一个乘号可能取n个位置，则有<script type="math/tex">C_n = \sum_{k=0}^{n-1}C_kC_{n-k-1}</script></p>
+<p>初始条件则为$C_0 = 1$，$C_1 = 1$。<br>利用生成函数的方法可以证明：$C_n = \dfrac{C(2n,n)}{n+1}$，被称作第n个<strong>卡特兰（Catalan）数</strong>，序列$\{C_n\}$ 被称为卡特兰数的序列。参见 <a href="http://oeis.org/A000108" target="_blank" rel="noopener">OEIS A000108</a>，<a href="https://en.wikipedia.org/wiki/Catalan_number" target="_blank" rel="noopener">Catalan number - Wikipedia</a>。</p>
+<h2 id="动态规划与递推关系"><a href="#动态规划与递推关系" class="headerlink" title="动态规划与递推关系"></a>动态规划与递推关系</h2><p>动态规划（<a href="https://en.wikipedia.org/wiki/Dynamic_programming" target="_blank" rel="noopener">Dynamic programming</a>，DP）是一种算法范式，遵循动态规划范式的算法是将原问题分解为更简单的重叠的子问题，通过子问题的求解来求解原问题。常用于求解最短路线、库存管理、资源分配、设备更新、排序、装载等问题。此类问题若用分治法来解，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。所以DP通过保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，从而降低复杂度。以后单独讨论，这里推荐阅读：<a href="https://www.cnblogs.com/Christal-R/p/Dynamic_programming.html" target="_blank" rel="noopener">动态规划解决01背包问题</a>，<a href="https://www.zhihu.com/question/23995189" target="_blank" rel="noopener">什么是动态规划？动态规划的意义是什么？</a>。</p>
+<hr>
+<h1 id="求解线性递推关系"><a href="#求解线性递推关系" class="headerlink" title="求解线性递推关系"></a>求解线性递推关系</h1><p>这部分给人的感觉相当熟悉，在高等数学中有线性微分方程的求解，线性代数中有线性方程组的求解，与这里的线性递推关系的求解十分类似，可以说是如出一辙。</p>
+<h2 id="求解常系数线性齐次递推关系"><a href="#求解常系数线性齐次递推关系" class="headerlink" title="求解常系数线性齐次递推关系"></a>求解常系数线性齐次递推关系</h2><p>一个常系数的$k$阶线性齐次递推关系指的是形如 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k}$，的递推关系，其中$c_i$为实数，$c_k \neq 0$。</p>
+<p>为了求解$k$阶常系数线性齐次递推关系，这里的基本方法是寻找形如$a_n = r^n$的解，其中r是常数。递推关系要有形如$a_n = r^n$的解，则当且仅当$r$是方程<script type="math/tex">r^k-c_1r^{k-1}-c_2r^{k-2}-\cdots -c_{k-1}r-c_k=0</script>的解。<br>将上述方程称为该递推关系的<strong>特征方程</strong>。方程的解称为<strong>特征根</strong>。（与求解常系数线性微分方程如出一辙）。特征根有可能是复数，但这里仅考虑特征根为实数的情况。</p>
+<p><strong>定理</strong>：假设特征方程<script type="math/tex">r^k-c_1r^{k-1}-\cdots -c_k=0</script>有k个不相等的根$r_1,r_2,…,r_k$。那么递推关系$a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k}$的解为<script type="math/tex">a_n = \alpha_1r_1^n+\alpha_2r_2^n+\cdots+\alpha_kr_k^n</script></p>
+<p>$n\in N,\alpha_1,\alpha_2,…,\alpha_k$是常数。<br><strong>另外</strong>，对其中的每一个特征根$r_i$，如果并非一重而是$m_i$重时，则用 $(\alpha_{i,0}+\alpha_{i,1}n+\cdots+\alpha_{i,m_i-1}n^{m_i-1})r_i^n$ 替代 上述解中的$\alpha_ir_i^n$即可。</p>
+<p>例：斐波那契数列（<a href="http://oeis.org/A000045" target="_blank" rel="noopener">OEIS A000045</a>）<br>递推关系$f_n = f_{n-1}+f_{n-2}$，初始条件$f_0 = 0,f_1=1$。<br>特征方程$r^2-r-1=0$ 根为 $r_1 = (1+\sqrt{5})/2$，$r_2 = (1-\sqrt{5})/2$。<br>则<script type="math/tex">f_n = \alpha_1\left(\dfrac{1+\sqrt5}{2}\right)^n + \alpha_2\left(\dfrac{1-\sqrt5}{2}\right)^n</script>代入$f_0,f_1$解出$\alpha _1 = \dfrac1{\sqrt5}$，$\alpha _2 = -\dfrac1{\sqrt5}$<br>则得到斐波那契数列的显式公式为<script type="math/tex">f_n = \dfrac1{\sqrt5}\left(\dfrac{1+\sqrt5}{2}\right)^n-\dfrac1{\sqrt5}\left(\dfrac{1-\sqrt5}{2}\right)^n</script></p>
+<h2 id="求解常系数线性非齐次递推关系"><a href="#求解常系数线性非齐次递推关系" class="headerlink" title="求解常系数线性非齐次递推关系"></a>求解常系数线性非齐次递推关系</h2><p>常系数线性非齐次递推关系：形如 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k} +F(n)$，与其相伴的齐次递推关系为 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k}$，很显然 <strong>通解 = 特解+齐次解</strong>。</p>
+<p>齐次解即对应的常系数线性齐次递推关系的解，记作$a_n^{(h)}$，特解记作$a_n^{(p)}$。</p>
+<p>不同形式的F(n)具有不同形式的特解</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$F(n)$</th>
+<th style="text-align:center">特解形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$an+b$</td>
+<td style="text-align:center">$cn+d$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\alpha\cdot c^n$</td>
+<td style="text-align:center">$\beta\cdot c^n$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>若 $F(n)$ 形如 $(b_tn^t+b_{t-1}n^{t-1}+\cdots+b_1n+b_0)s^n$.<br>则当 $s$ 不是特征根时，特解形如 $(p_tn^t+p_{t-1}n^{t-1}+\cdots+p_1n+p_0)s^n$.<br>当 $s$ 是$m$重特征根时，特解形如 $n^m(p_tn^t+p_{t-1}n^{t-1}+\cdots+p_1n+p_0)s^n$.</p>
+<hr>
+<h1 id="分治算法与递推关系"><a href="#分治算法与递推关系" class="headerlink" title="分治算法与递推关系"></a>分治算法与递推关系</h1><p>与动态规划相似，分治算法（<a href="https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm" target="_blank" rel="noopener">Divide and conquer algorithm</a>）范式也会将问题划分为一个或者多个小问题，不过这些小问题是<strong>不重叠的</strong>。连续使用这种划分直到可以快速找到这些小问题的解，然后将小问题的解合并为原问题的解。即三个步骤：分割原问题，解决子问题，合并得到最终解。常见简单分治算法：<a href="https://en.wikipedia.org/wiki/Merge_sort" target="_blank" rel="noopener">归并排序</a>、<a href="https://en.wikipedia.org/wiki/Binary_search_algorithm" target="_blank" rel="noopener">二分查找</a>。这里将说明怎样用递关系来分析分治算法的复杂度。</p>
+<h2 id="分治递推关系"><a href="#分治递推关系" class="headerlink" title="分治递推关系"></a>分治递推关系</h2><p>假设一个递归算法将规模为n的问题划分为a个子问题，每个子问题规模为n/b，并且需要g(n)的额外运算来合并这些子问题。用f(n)表示求解问题规模为n的问题所需运算数，则<script type="math/tex">f(n)= af(n/b)+g(n)</script></p>
+<p>令$n = b^k$，多次迭代后可以得到：</p>
+<script type="math/tex; mode=display">f(n)= a^kf(1)+\sum_{j=0}^{k-1}a^jg(n/b^j)</script><p>很容易知道，<br>二分查找的分治递推关系：$f(n)=f(n/2)+2$<br>归并排序的分治递推关系：$M(n)=2M(n/2)+n$</p>
+<h2 id="分治算法的复杂度分析"><a href="#分治算法的复杂度分析" class="headerlink" title="分治算法的复杂度分析"></a>分治算法的复杂度分析</h2><p>定理1：设$f(n)$是满足$f(n)=af(n/b)+c$ 的增函数，$n$被$b$整除，$a\geqslant 1$，<br>$b$是大于1的整数，$c$是正实数。那么</p>
+<script type="math/tex; mode=display">f(n) = \begin{cases} O(n^{log_ba})&a>1\\O(\log n)&a=1\end{cases}$$证明：令$n=b^k$即可证得，当$n\neq b^k$时，依然成立。
+
+很容易得出二分查找复杂度为$O(\log n)$。
+
+**主定理**：若$f(n)=af(n/b)+cn^d$，则$$f(n) = \begin{cases} O(n^d)&a<b^d
+\\O(n^d\log n)& a=b^d
+\\O(n^{log_ba})&a \succ b^d \end{cases}</script><p>同理，令$n=b^k$即可证得。（ps：上面的$\succ$表示大于号，但其实这个符号并不是这个意思。这里有一个bug，hexo自带一个功能的会把一段内连续的&lt;&gt;之间的内容注释掉，于是就只好将就一下。）</p>
+<p>根据主定理，很容易得出归并排序复杂度为$O(n\log n)$。<br>可以看到，定理1只是主定理的特殊情况。<br>这里仅简单分析分治算法，并解决了其复杂度的问题，并未涉及分治算法的设计及具体实现。</p>
+<hr>
+<h1 id="生成函数"><a href="#生成函数" class="headerlink" title="生成函数"></a>生成函数</h1><p>表示序列的一个有效方法是生成函数，把序列的项作为形式幂级数的变量x的幂的系数。可以用生成函数解决许多类型的计数问题。拓展阅读：<a href="https://en.wikipedia.org/wiki/Generating_function" target="_blank" rel="noopener">Generating function - Wikipedia</a>，<a href="http://www.matrix67.com/blog/archives/120" target="_blank" rel="noopener">什么是生成函数? | Matrix67: The Aha Moments</a>。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>实数序列$a_0,a_1,…,a_k,…$的（普通）生成函数是无穷级数<script type="math/tex">G(x)= \sum_{k=0}^{\infty}a_kx^k</script></p>
+<p>例：序列$\{C(n,k)\}$的生成函数即是$G(x)=(1+x)^n$.</p>
+<p>使用生成函数求解计数问题时，通常考虑<strong>形式幂级数</strong>，即不需要考虑其收敛域（对发散或收敛并不感兴趣）</p>
+<h2 id="广义二项式定理"><a href="#广义二项式定理" class="headerlink" title="广义二项式定理"></a>广义二项式定理</h2><p>广义二项式系数：<br>$u$为<strong>实数</strong>，$k$为非负整数，广义二项式系数定义为</p>
+<script type="math/tex; mode=display">\Big(^u_k\Big)=\begin{cases}u(u-1)\cdots(u-k-1)/k! & k>0 \\1&k=0\end{cases}</script><p>当u为负整数时，展开即可有下列式子成立<script type="math/tex">\Big(^{-n}_k\Big) = (-1)^rC(n+r-1,r)</script></p>
+<p>广义二项式定理：<br>$x$是实数，$|x|&lt;1$，$u$ 是实数，那么<script type="math/tex">(1+x)^u=\sum_{k=0}^{\infty}\Big(^u_k\Big)x^k</script></p>
+<p>其实这就是$(1+x)^u$的幂级数展开，使用麦克劳林级数（即在x=0处泰勒展开）即可证明。</p>
+<h2 id="常用生成函数"><a href="#常用生成函数" class="headerlink" title="常用生成函数"></a>常用生成函数</h2><p>这里给出一些最常用生成函数，以及其对应的序列一般项。</p>
+<p>(1). $(1+ax)^n=\sum_{k=0}^nC(n,k)a^kx^k$，$a_k=C(n,k)a^k$，二项式定理得到<br>(2). $\dfrac{1-x^{r+1}}{1-x}=\sum_{k=0}^nx^k$，$a^k=1,k\leqslant n$；否则为0，几何级数求和得到<br>(3). $\dfrac1{1-ax}=\sum_{k=0}^{\infty}a^kx^k$，$a_k=a^k$，对$|x|&lt;1$的几何级数求和取极限得到<br>(4). $\dfrac 1{(1-x)^2}=\sum_{k=0}^{\infty}(k+1)x^k$，$a_k=k+1$，对$\dfrac1{1-x}$求导得到<br>(5). $\dfrac1{(1-x)^n}=\sum_{k=0}^{\infty}C(n+k-1,k)x^k$，$a_k=C(n+k-1,k)=C(n+k-1,n-1)$，由广义二项式定理得到<br>(6). $e^x=\sum_{k=0}^{\infty}\dfrac{x^k}{k!}$，$a_k=1/k!$，泰勒展开即可得到<br>(7). $\ln(1+x)=\sum_{k=0}^{\infty}\dfrac{(-1)^{k+1}}{k}x^k$，$a_k={(-1)^{k+1}}/{k}$，同上泰勒展开得到</p>
+<p>生成函数可以用来求解计数问题，还可以用来求解递推关系和证明组合恒等式。这里不想写了，略过吧！（笑）</p>
+<hr>
+<h1 id="容斥原理及其应用"><a href="#容斥原理及其应用" class="headerlink" title="容斥原理及其应用"></a>容斥原理及其应用</h1><p>两个集合的容斥原理是很熟悉的，$|A\cup B|=|A|+|B|-|A\cap B|$，那么对于多个几个呢？很容易想到，但可能并不容易写出来。<a href="https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle" target="_blank" rel="noopener">Inclusion–exclusion principle</a>。</p>
+<h2 id="容斥原理"><a href="#容斥原理" class="headerlink" title="容斥原理"></a>容斥原理</h2><p>设$A_1,A_2….,A_n$是有穷集，则<script type="math/tex">|A_1\cup A_2 \cup \cdots \cup A_n|=\sum_{1\leqslant i \leqslant n}|A_i|-\sum_{1\leqslant i< j \leqslant n}|A_i\cap A_j|\\
++\sum_{1\leqslant i<k< j \leqslant n}|A_i\cap A_j\cap A_k|+\cdots\\
+ +(-1)^n|A_1\cap A_2\cap\cdots \cap A_n|</script></p>
+<p>可以看到加号和减号是交替出现的，保证了没有遗漏也没有重复。</p>
+<p>三个集合的容斥原理：<br><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Inclusion-exclusion.svg" alt="3"><br><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0b8e7c1631ec013eed94feb5aa406a573caa3559" alt="容斥"></p>
+<p>应用很多，此处愉快地略过。</p>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实我只想快速看完这本书，写完了之后，好好想一想应该怎样去写。还有慢慢肝算法导论，重新回顾数据结构，一堆技术书等着去肝呢！所有省略了很多内容，对自己还未掌握的东西抄上来就没有多大意义了。给了很多链接，但其实大部分链接我都未曾去认真看过（笑）。</p>
+<p>而且我发现博客字数竟然刚好100K了，虽然这个新的统计插件比较水，把字符代码什么的全都统计进去了，但好歹也是100K了呀。也算一个初步的成果了吧。以后再接再厉，多思考，要有深度。我也希望这里面多是自己思考的结果。</p>
+<p>写在这里有没有人看并不是很重要，因为这个博客表达着我的想法，而我的想法是给想看到的人看的。不学编程的人估计也不会看，学编程的入门资源网络上都是一抓一大把的。</p>
+<p>逐步积累，随性记录，知道自己要去的地方、要走的路，一直写着就好。——2018.3.7</p>
+<hr>
+<p><strong>参考资料：《离散数学及其应用》（本科教学版，Kenneth H.Rosen著，原书第七版）</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/10/2018.3.10--matrix-power-mod/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          矩阵快速幂
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/27/2018.2.27--three-body-book-review/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">《三体》浮想</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#递推关系的应用"><span class="nav-number">1.</span> <span class="nav-text">递推关系的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#经典问题——汉诺塔"><span class="nav-number">1.1.</span> <span class="nav-text">经典问题——汉诺塔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卡特兰数"><span class="nav-number">1.2.</span> <span class="nav-text">卡特兰数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划与递推关系"><span class="nav-number">1.3.</span> <span class="nav-text">动态规划与递推关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#求解线性递推关系"><span class="nav-number">2.</span> <span class="nav-text">求解线性递推关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#求解常系数线性齐次递推关系"><span class="nav-number">2.1.</span> <span class="nav-text">求解常系数线性齐次递推关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求解常系数线性非齐次递推关系"><span class="nav-number">2.2.</span> <span class="nav-text">求解常系数线性非齐次递推关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分治算法与递推关系"><span class="nav-number">3.</span> <span class="nav-text">分治算法与递推关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分治递推关系"><span class="nav-number">3.1.</span> <span class="nav-text">分治递推关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分治算法的复杂度分析"><span class="nav-number">3.2.</span> <span class="nav-text">分治算法的复杂度分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成函数"><span class="nav-number">4.</span> <span class="nav-text">生成函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广义二项式定理"><span class="nav-number">4.2.</span> <span class="nav-text">广义二项式定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用生成函数"><span class="nav-number">4.3.</span> <span class="nav-text">常用生成函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容斥原理及其应用"><span class="nav-number">5.</span> <span class="nav-text">容斥原理及其应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容斥原理"><span class="nav-number">5.1.</span> <span class="nav-text">容斥原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">5.2.</span> <span class="nav-text">结语</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>矩阵快速幂 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="快速幂快速幂算法很熟悉很容易理解，原理 $n^m = \begin{cases} (n^2)^{m/2} &amp;amp; m为偶数 \\(n^2)^{m/2}\cdot n &amp;amp; m为奇数\end{cases}$二分可以将时间复杂度由$O(n)$降到$O(\log n)$。通常m的范围非常大，常常到$10^9$，所以一般给出的题中会要求取模。视情况使用32位或者64位整型。">
+<meta name="keywords" content="basic algorithms,矩阵">
+<meta property="og:type" content="article">
+<meta property="og:title" content="矩阵快速幂">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/03/10/2018.3.10--matrix-power-mod/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="快速幂快速幂算法很熟悉很容易理解，原理 $n^m = \begin{cases} (n^2)^{m/2} &amp;amp; m为偶数 \\(n^2)^{m/2}\cdot n &amp;amp; m为奇数\end{cases}$二分可以将时间复杂度由$O(n)$降到$O(\log n)$。通常m的范围非常大，常常到$10^9$，所以一般给出的题中会要求取模。视情况使用32位或者64位整型。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/F-%282n%29.png">
+<meta property="og:updated_time" content="2018-06-24T10:50:40.879Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="矩阵快速幂">
+<meta name="twitter:description" content="快速幂快速幂算法很熟悉很容易理解，原理 $n^m = \begin{cases} (n^2)^{m/2} &amp;amp; m为偶数 \\(n^2)^{m/2}\cdot n &amp;amp; m为奇数\end{cases}$二分可以将时间复杂度由$O(n)$降到$O(\log n)$。通常m的范围非常大，常常到$10^9$，所以一般给出的题中会要求取模。视情况使用32位或者64位整型。">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/F-%282n%29.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.3.10--matrix-power-mod" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      矩阵快速幂
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/10/2018.3.10--matrix-power-mod/" class="article-date">
+	  <time datetime="2018-03-09T16:00:00.000Z" itemprop="datePublished">2018-03-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h1><p>快速幂算法很熟悉很容易理解，原理 $n^m = \begin{cases} (n^2)^{m/2} &amp; m为偶数 \\<br>(n^2)^{m/2}\cdot n &amp; m为奇数\end{cases}$<br>二分可以将时间复杂度由$O(n)$降到$O(\log n)$。<br>通常m的范围非常大，常常到$10^9$，所以一般给出的题中会要求取模。视情况使用32位或者64位整型。</p>
+<a id="more"></a>
+<p>$n^m\%d$ 的实现(见<a href="https://aojueliuyun.github.io/2017/11/07/2017.11.7--some-very-simple-algorithms/">快速幂取模</a>)：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Quick_Power_Mod</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> m,<span class="keyword">int</span> d)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">	n = n%d;</span><br><span class="line">	<span class="keyword">while</span>(m &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(m%<span class="number">2</span> == <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			ans = (ans * n) % d;</span><br><span class="line">		&#125;</span><br><span class="line">		m = m/<span class="number">2</span>;</span><br><span class="line">		n = (n*n)%d;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="矩阵快速幂"><a href="#矩阵快速幂" class="headerlink" title="矩阵快速幂"></a>矩阵快速幂</h1><p>如果将其中的n换为矩阵的话，则为<strong>矩阵快速幂</strong>。<br>例题：<a href="http://acm.xidian.edu.cn/problem.php?id=1027" target="_blank" rel="noopener">XDOJ-1027: Feibonaqi数列</a><br>1.f(0)=0,f(1)=1<br>2.f(n)=2f(n-1)+f(n-2),n&gt;1<br>如果直接递归的话时间会爆，设数组保存的话空间会爆。只能快速幂。<br>求出递推公式也不可行，因为特征根是无理数。<br>所以需要找出矩阵形式的递推关系，从而求出矩阵形式的显示公式：<br>$ \left[ \begin{matrix} f(n) \\f(n-1) \end{matrix} \right] =$ $\left[\begin{matrix}2 &amp; 1 \\1 &amp; 0\end{matrix}\right ]$ $\times \left[ \begin{matrix} f(n-1) \\f(n-2) \end{matrix} \right]$</p>
+<p>递推得到：$ \left[ \begin{matrix} f(n) \\f(n-1) \end{matrix} \right] = $ $\left[\begin{matrix}2 &amp; 1 \\1 &amp; 0\end{matrix}\right ]^{n-1}$ $\times \left[ \begin{matrix} f(1) \\f(0) \end{matrix} \right]$</p>
+<p>则使用快速幂即可解决：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//XDOJ-1027----201.3.9</span></span><br><span class="line"><span class="comment">//矩阵快速幂 </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">long</span> <span class="keyword">long</span> Max=<span class="number">1000000007</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix_mul</span><span class="params">(LL A[<span class="number">2</span>][<span class="number">2</span>],LL B[<span class="number">2</span>][<span class="number">2</span>])</span></span>;	<span class="comment">//矩阵相乘 </span></span><br><span class="line"><span class="function">LL <span class="title">Matrix_pow_mod</span><span class="params">(<span class="keyword">int</span> n)</span></span>;  	 </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; n)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(n == <span class="number">0</span> || n == <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; n &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; Matrix_pow_mod(n<span class="number">-1</span>) &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2*2矩阵想乘 </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix_mul</span><span class="params">(LL A[<span class="number">2</span>][<span class="number">2</span>],LL B[<span class="number">2</span>][<span class="number">2</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LL ans[<span class="number">2</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">0</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,<span class="number">0</span>&#125;&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span> ; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j= <span class="number">0</span>; j &lt; <span class="number">2</span>; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>; k &lt; <span class="number">2</span>; k++)</span><br><span class="line">			&#123;</span><br><span class="line">				ans[i][j] += A[i][k] * B[k][j];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(ans[i][j] &gt; Max)	<span class="comment">//大于时才取模 </span></span><br><span class="line">			&#123;</span><br><span class="line">				ans[i][j] %= Max;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt; <span class="number">2</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j &lt; <span class="number">2</span>; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			B[i][j] = ans[i][j];</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//矩阵快速幂 </span></span><br><span class="line"><span class="function">LL <span class="title">Matrix_pow_mod</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LL A[<span class="number">2</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">0</span>&#125;&#125;;</span><br><span class="line">	LL Ans[<span class="number">2</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,<span class="number">1</span>&#125;&#125;;	<span class="comment">//二阶单位阵</span></span><br><span class="line">	<span class="keyword">while</span>(n &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(n%<span class="number">2</span> == <span class="number">1</span>) <span class="comment">// n &amp; 1</span></span><br><span class="line">		&#123;</span><br><span class="line">			Matrix_mul(A,Ans);</span><br><span class="line">		&#125;</span><br><span class="line">		Matrix_mul(A,A);</span><br><span class="line">		n = n/<span class="number">2</span>; <span class="comment">//n &gt;&gt;= 1;</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Ans[<span class="number">0</span>][<span class="number">0</span>]; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>类似题：<a href="http://poj.org/problem?id=3070" target="_blank" rel="noopener">poj-3070-Fibonacci</a></p>
+<h1 id="构造矩阵递推关系"><a href="#构造矩阵递推关系" class="headerlink" title="构造矩阵递推关系"></a>构造矩阵递推关系</h1><p>上面的递推关系很简单，这类问题的难点就是构造矩阵递推关系。</p>
+<p>如：<a href="http://poj.org/problem?id=3233" target="_blank" rel="noopener">POJ 3233 Matrix Power Series</a></p>
+<p>考虑到$S_k = \sum_{i=1}^kA^i = E\cdot S_{k-1}+A^k$ 或者 $S_k = A\cdot S_{k-1}+A$<br>可以构造出：<br>$ \left[ \begin{matrix} S_k \\A^k \end{matrix} \right] =$ $\left[\begin{matrix}E &amp; A \\0 &amp; A\end{matrix}\right ]$ $\times \left[ \begin{matrix} S_{k-1} \\A^{k-1} \end{matrix} \right]$或者$ \left[ \begin{matrix} S_k \\E \end{matrix} \right] =$ $\left[\begin{matrix}A &amp; A \\0 &amp; E\end{matrix}\right ]$ $\times \left[ \begin{matrix} S_{k-1} \\E \end{matrix} \right]$</p>
+<p>方法不一。其中A是n阶方阵，E是n阶单位阵，0是n阶零矩阵。</p>
+<p>比如由前者就可以得出：$ \left[ \begin{matrix} S_k \\A^k \end{matrix} \right] =$ $\left[\begin{matrix}E &amp; A \\0 &amp; A\end{matrix}\right ]^{n-1}$ $\times \left[ \begin{matrix} A \\A \end{matrix} \right]$或者$\left[\begin{matrix}E &amp; A \\0 &amp; A\end{matrix}\right ]^n$$=\left[\begin{matrix}E &amp; S_k \\0 &amp; A^k\end{matrix}\right ]$</p>
+<p>实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//poj-3233----矩阵快速幂</span></span><br><span class="line"><span class="comment">//2018,3,10</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix_mul</span><span class="params">(<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> B[N][N],<span class="keyword">int</span> n,<span class="keyword">int</span> m)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix_pow_mod</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> m,<span class="keyword">int</span> A[N][N])</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_matrix</span><span class="params">(<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">input_matrix</span><span class="params">(<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n,k,m;</span><br><span class="line">	<span class="keyword">int</span> A[N][N];</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; k &gt;&gt; m)</span><br><span class="line">	&#123;</span><br><span class="line">		input_matrix(A,n);</span><br><span class="line">		Matrix_pow_mod(n,k,m,A);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix_mul</span><span class="params">(<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> B[N][N],<span class="keyword">int</span> n,<span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> res[N][N];</span><br><span class="line">	<span class="built_in">memset</span>(res,<span class="number">0</span>,<span class="keyword">sizeof</span>(res));</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= n; k ++)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span>(A[i][k] || B[k][j])</span><br><span class="line">				&#123;</span><br><span class="line">					res[i][j] += A[i][k] * B[k][j];</span><br><span class="line">					res[i][j] %= m;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;	</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			B[i][j] = res[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix_pow_mod</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> m,<span class="keyword">int</span> A[N][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> B[N][N];</span><br><span class="line">	<span class="keyword">int</span> ans[N][N];</span><br><span class="line">	<span class="keyword">int</span> C[N][N];</span><br><span class="line">	<span class="comment">//矩阵初始化 </span></span><br><span class="line">	<span class="built_in">memset</span>(B,<span class="number">0</span>,<span class="keyword">sizeof</span>(B));</span><br><span class="line">	<span class="built_in">memset</span>(ans,<span class="number">0</span>,<span class="keyword">sizeof</span>(ans));</span><br><span class="line">	<span class="built_in">memset</span>(C,<span class="number">0</span>,<span class="keyword">sizeof</span>(C));</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		B[i][i] = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			B[i][n+j] = A[i][j];</span><br><span class="line">			B[n+i][n+j] = A[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt;= <span class="number">2</span>*n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		ans[i][i] = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//求k次幂 </span></span><br><span class="line">	<span class="keyword">while</span>(k &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(k &amp; <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			Matrix_mul(B,ans,<span class="number">2</span>*n,m);</span><br><span class="line">		&#125;</span><br><span class="line">		k &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		Matrix_mul(B,B,<span class="number">2</span>*n,m);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			C[i][j] = ans[i][n+j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//print the result </span></span><br><span class="line">	print_matrix(C,n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_matrix</span><span class="params">(<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; A[i][j] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; A[i][n] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">input_matrix</span><span class="params">(<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; A[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>优化：很明显可以看到，2n阶方阵中左半部分在乘幂中是没有变化的，所以可以优化掉大概一半的时间（这里没有实现）。一般情况下对于其中0较多的矩阵，可以先判断是否为0再乘。</p>
+<p>注意这里的矩阵乘法采用的是一般的算法，复杂度$O(n^3)$，矩阵乘法有一个$O(n^{log7})$的算法: <a href="https://en.wikipedia.org/wiki/Strassen_algorithm" target="_blank" rel="noopener">Strassen算法</a>。采用分治策略，比较复杂暂时不会不做实现。</p>
+<p>综上：矩阵快速幂思路与快速幂完全一致，重点是<strong>找到递推关系</strong>。</p>
+<p>对于一些简单的递推式：</p>
+<p>1.$f(n) = af(n-1) +bf(n-2)+c$</p>
+<p>$ \left( \begin{matrix} f(n) \\f(n-1) \\c \end{matrix} \right) =$ $\left(\begin{matrix}a &amp; b &amp; 1\\1 &amp; 0 &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right)$ $\times \left( \begin{matrix} f(n-1) \\f(n-2) \\c\end{matrix} \right)$</p>
+<p>2.$f(n) = ac^n + bf(n-1) + d$</p>
+<p>$ \left( \begin{matrix} f(n) \\c^n \\d \end{matrix} \right) =$ $\left(\begin{matrix}b &amp; ac &amp; 1\\0 &amp; c &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right)$ $\times \left( \begin{matrix} f(n-1) \\c^{n-1} \\d\end{matrix} \right)$</p>
+<p>类似简单矩阵题目：<br><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1757" target="_blank" rel="noopener">HOJ 1757</a>（序列递推——矩阵快速幂模板）、<a href="http://acm.hdu.edu.cn/showproblem.php?pid=1575" target="_blank" rel="noopener">HOJ 1575</a>（矩阵快速幂模板）、</p>
+<h1 id="例"><a href="#例" class="headerlink" title="例"></a>例</h1><p>不算那么简单的递推+矩阵快速幂：<a href="http://acm.hdu.edu.cn/showproblem.php?pid=3483" target="_blank" rel="noopener">HOJ 3483 - A Very Simple Problem</a></p>
+<p>题意：求<script type="math/tex">(\sum_{k=1}^Nk^x\cdot x^k)\ mod\ M</script><br>数据范围：$1 ≤ N, M ≤ 2*10^9, and 1 ≤ x ≤ 50$</p>
+<p>建立递推关系：$S_{n+1} = S_{n} + (n+1)^x\cdot x^{n+1}$<br>将$(n+1)^x$ 二项式展开为$\sum_{k=0}^{x}C(x,k)n^k$，则可以构造出如下矩阵递推式，然后使用矩阵快速幂。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|1 xC(x,0) xC(x,1) xC(x,2) ... xC(x,x)|  |Sn       | |S(n+1)           | </span><br><span class="line">|0 xC(0,0) 0       0       ... 0      |  |x^n * n^0| |x^(n+1) * (n+1)^0| </span><br><span class="line">|0 xC(1,0) xC(1,1) 0       ... 0      | *|x^n * n^1|=|x^(n+1) * (n+1)^1| </span><br><span class="line">|0 xC(2,0) xC(2,1) xC(2,2) ... 0      |  |x^n * n^2| |x^(n+1) * (n+1)^2| </span><br><span class="line">|...                                  |  |...      | |...              | </span><br><span class="line">|0 xC(x,0) xC(x,1) xC(x,2) ... xC(x,x)|  |x^n * n^x| |x^(n+1) * (n+1)^x|</span><br><span class="line">//还能这样构造，我是真的佩服，只能说我太菜吧！</span><br><span class="line">//出处：http://blog.csdn.net/winycg/article/details/52982723</span><br></pre></td></tr></table></figure></p>
+<p>实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//hoj--3483--矩阵快速幂 + 二项式定理 </span></span><br><span class="line"><span class="comment">//2018.3.12</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">55</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Matrix</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	LL mat[N][N];	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Matrix <span class="title">Matrix_mul</span><span class="params">(Matrix A,Matrix B, <span class="keyword">int</span> n,<span class="keyword">int</span> m)</span></span>; </span><br><span class="line"><span class="function">Matrix <span class="title">Matrix_pow_mod</span><span class="params">(Matrix A,<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> m)</span></span>;</span><br><span class="line">LL C[N][N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Combination_num</span><span class="params">()</span></span>;<span class="comment">//use Pascal identity to canculate Combination number</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Combination_num();</span><br><span class="line">	<span class="keyword">int</span> n,x,m;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; x &gt;&gt; m &amp;&amp; n != <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Matrix S;</span><br><span class="line">		<span class="built_in">memset</span>(S.mat,<span class="number">0</span>,<span class="keyword">sizeof</span>(S.mat));</span><br><span class="line">		S.mat[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= x+<span class="number">2</span>; i ++)</span><br><span class="line">		&#123;</span><br><span class="line">			S.mat[<span class="number">1</span>][i] = (x * C[x][i<span class="number">-2</span>]) % m;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= x+<span class="number">2</span>; i ++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">2</span>; j &lt;= i; j ++)</span><br><span class="line">			&#123;</span><br><span class="line">				S.mat[i][j] = (x * C[i<span class="number">-2</span>][j<span class="number">-2</span>]) % m;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		LL sum = <span class="number">0</span>;</span><br><span class="line">		Matrix ans = Matrix_pow_mod(S,x+<span class="number">2</span>,n<span class="number">-1</span>,m);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= x+<span class="number">2</span>; i ++)</span><br><span class="line">		&#123;</span><br><span class="line">			sum = (sum + x * ans.mat[<span class="number">1</span>][i]) % m;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; sum &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Matrix <span class="title">Matrix_mul</span><span class="params">(Matrix A,Matrix B, <span class="keyword">int</span> n,<span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Matrix res;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			res.mat[i][j] = <span class="number">0</span>;<span class="comment">//init the matrix </span></span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= n; k ++)</span><br><span class="line">			&#123;</span><br><span class="line">				res.mat[i][j] = (res.mat[i][j] + A.mat[i][k] * B.mat[k][j]) % m;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Matrix <span class="title">Matrix_pow_mod</span><span class="params">(Matrix A,<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Matrix res;</span><br><span class="line">	<span class="comment">//initialization </span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">		&#123;</span><br><span class="line">			res.mat[i][j] = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		res.mat[i][i] = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(k &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(k &amp; <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			res = Matrix_mul(A,res,n,m);</span><br><span class="line">		&#125;</span><br><span class="line">		k &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		A = Matrix_mul(A,A,n,m);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Combination_num</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	C[<span class="number">0</span>][<span class="number">0</span>] = C[<span class="number">1</span>][<span class="number">0</span>] = C[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; N; i ++)</span><br><span class="line">	&#123;</span><br><span class="line">		C[i][<span class="number">0</span>] = C[i][i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j ++)</span><br><span class="line">			C[i][j] = C[i<span class="number">-1</span>][j] + C[i<span class="number">-1</span>][j<span class="number">-1</span>];<span class="comment">//of course it's Pascal identity</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中组合数使用<strong>帕斯卡恒等式</strong>（终于用上了）进行递推，运算次数很少。<br>矩阵用结构体封装，写起来很舒服，<code>Matrix_mul</code>和<code>Matrix_pow_mod</code>两个函数返回结构，效率不高，可以用引用参数代替。</p>
+<p>看起来很难的递推（其实也很坑）：<a href="http://acm.hdu.edu.cn/showproblem.php?pid=2855" target="_blank" rel="noopener">HOJ 2855</a></p>
+<p>$S_n = \sum_{k=0}^nF(n)C(n,k)$，其中$F(n)$是Fibonacci数列。</p>
+<p>求解：<br><img src="http://oxx8it1qo.bkt.clouddn.com/F-%282n%29.png" alt="F(2n)"><br>则运用矩阵快速幂即可以很轻松解决。实现略。</p>
+<p>类似题：<a href="http://acm.hdu.edu.cn/showproblem.php?pid=3658" target="_blank" rel="noopener">HOJ 3658</a>、<a href="http://acm.hdu.edu.cn/showproblem.php?pid=4565" target="_blank" rel="noopener">HOJ 4565</a>。</p>
+<p>参考链接：<br><a href="http://blog.csdn.net/wust_zzwh/article/details/52058209" target="_blank" rel="noopener">http://blog.csdn.net/wust_zzwh/article/details/52058209</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/14/2018.3.14--algorithms-started/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Algorithms started
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/06/2018.3.6--advanced-counting-technology/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【离散数学】高级计数技术</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快速幂"><span class="nav-number">1.</span> <span class="nav-text">快速幂</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#矩阵快速幂"><span class="nav-number">2.</span> <span class="nav-text">矩阵快速幂</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造矩阵递推关系"><span class="nav-number">3.</span> <span class="nav-text">构造矩阵递推关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例"><span class="nav-number">4.</span> <span class="nav-text">例</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

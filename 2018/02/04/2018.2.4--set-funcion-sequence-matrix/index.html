@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【离散数学】基本结构——集合、函数、序列、矩阵 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="离散数学第二篇，首先讨论常用工具——集合，并讨论在集合基础之上的一系列结构：函数、序列、矩阵、关系等。所有内容在以前的知识体系中均有涉猎，此处是从集合的角度去考虑这些内容。我认为其中要数集合的基数这一小节中可数集和不可数集的部分最为抽象。这里仅仅涉及一些常用定义性质和精彩的证明。">
+<meta name="keywords" content="离散数学,集合论,函数,序列,矩阵">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【离散数学】基本结构——集合、函数、序列、矩阵">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/02/04/2018.2.4--set-funcion-sequence-matrix/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="离散数学第二篇，首先讨论常用工具——集合，并讨论在集合基础之上的一系列结构：函数、序列、矩阵、关系等。所有内容在以前的知识体系中均有涉猎，此处是从集合的角度去考虑这些内容。我认为其中要数集合的基数这一小节中可数集和不可数集的部分最为抽象。这里仅仅涉及一些常用定义性质和精彩的证明。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-06-24T10:56:47.925Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【离散数学】基本结构——集合、函数、序列、矩阵">
+<meta name="twitter:description" content="离散数学第二篇，首先讨论常用工具——集合，并讨论在集合基础之上的一系列结构：函数、序列、矩阵、关系等。所有内容在以前的知识体系中均有涉猎，此处是从集合的角度去考虑这些内容。我认为其中要数集合的基数这一小节中可数集和不可数集的部分最为抽象。这里仅仅涉及一些常用定义性质和精彩的证明。">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.2.4--set-funcion-sequence-matrix" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【离散数学】基本结构——集合、函数、序列、矩阵
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/04/2018.2.4--set-funcion-sequence-matrix/" class="article-date">
+	  <time datetime="2018-02-03T16:00:00.000Z" itemprop="datePublished">2018-02-04</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>离散数学第二篇，首先讨论常用工具——集合，并讨论在集合基础之上的一系列结构：函数、序列、矩阵、关系等。所有内容在以前的知识体系中均有涉猎，此处是从集合的角度去考虑这些内容。我认为其中要数集合的基数这一小节中可数集和不可数集的部分最为抽象。这里仅仅涉及一些常用定义性质和精彩的证明。</p>
+</blockquote>
+<a id="more"></a>
+<p>首先，常用符号一览：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">$LaTeX$(仅符号)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$x\in A$</td>
+<td style="text-align:center">x属于集合A</td>
+<td style="text-align:center">\in</td>
+</tr>
+<tr>
+<td style="text-align:center">$x \notin A$</td>
+<td style="text-align:center">x不属于集合A</td>
+<td style="text-align:center">\notin</td>
+</tr>
+<tr>
+<td style="text-align:center">$ \{a_1,a_2,a_3,\dots,a_n\}$</td>
+<td style="text-align:center">集合的元素列表（列举法）</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$ \{x\vert P(x)\}$</td>
+<td style="text-align:center">集合构造器记法（描述法）</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$\varnothing$</td>
+<td style="text-align:center">空集</td>
+<td style="text-align:center">\varnothing</td>
+</tr>
+<tr>
+<td style="text-align:center">$A\cap B$</td>
+<td style="text-align:center">A与B的交集</td>
+<td style="text-align:center">\cap</td>
+</tr>
+<tr>
+<td style="text-align:center">$A\cup B$</td>
+<td style="text-align:center">A与B的交集</td>
+<td style="text-align:center">\cup</td>
+</tr>
+<tr>
+<td style="text-align:center">$\overline C$</td>
+<td style="text-align:center">C的补集</td>
+<td style="text-align:center">\overline</td>
+</tr>
+<tr>
+<td style="text-align:center">$A-B$</td>
+<td style="text-align:center">A与B的差集</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A\oplus B$</td>
+<td style="text-align:center">A与B的对称差</td>
+<td style="text-align:center">\oplus</td>
+</tr>
+<tr>
+<td style="text-align:center">$P(S)$</td>
+<td style="text-align:center">集合S的幂集</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$\vert S\vert$</td>
+<td style="text-align:center">集合S的基数</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$S\subseteq T$</td>
+<td style="text-align:center">S是T的子集</td>
+<td style="text-align:center">\subseteq</td>
+</tr>
+<tr>
+<td style="text-align:center">$S\subset T$</td>
+<td style="text-align:center">S是T的真子集</td>
+<td style="text-align:center">\subset</td>
+</tr>
+<tr>
+<td style="text-align:center">$[a,b],(a,b)$</td>
+<td style="text-align:center">区间</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$(a_1,a_2,a_3,\dots,a_n)$</td>
+<td style="text-align:center">有序n元组</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A\times B$</td>
+<td style="text-align:center">A和B的笛卡尔积</td>
+<td style="text-align:center">\times</td>
+</tr>
+<tr>
+<td style="text-align:center">$\aleph_0$</td>
+<td style="text-align:center">可数无限集的基数（阿里夫零）</td>
+<td style="text-align:center">\aleph</td>
+</tr>
+<tr>
+<td style="text-align:center">$c$</td>
+<td style="text-align:center">实数集的基数</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$f:A\to B$</td>
+<td style="text-align:center">f是从A到B的函数</td>
+<td style="text-align:center">\to</td>
+</tr>
+<tr>
+<td style="text-align:center">$f^{-1}(x)$</td>
+<td style="text-align:center">函数f的逆</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$f\circ g$</td>
+<td style="text-align:center">函数f和g的合成</td>
+<td style="text-align:center">\circ</td>
+</tr>
+<tr>
+<td style="text-align:center">$\lfloor x\rfloor$</td>
+<td style="text-align:center">向下取整函数</td>
+<td style="text-align:center">\lfloor \rfloor</td>
+</tr>
+<tr>
+<td style="text-align:center">$\lceil x \rceil$</td>
+<td style="text-align:center">向上取整函数</td>
+<td style="text-align:center">\lceil \rceil</td>
+</tr>
+<tr>
+<td style="text-align:center">$\sum$</td>
+<td style="text-align:center">累加</td>
+<td style="text-align:center">\sum</td>
+</tr>
+<tr>
+<td style="text-align:center">$\prod$</td>
+<td style="text-align:center">累乘</td>
+<td style="text-align:center">\prod</td>
+</tr>
+<tr>
+<td style="text-align:center">$A+B$</td>
+<td style="text-align:center">矩阵A与B的和</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$AB$</td>
+<td style="text-align:center">矩阵A与B的积</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A^{-1}$</td>
+<td style="text-align:center">可逆矩阵A的逆</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A^T$</td>
+<td style="text-align:center">A的转置矩阵</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$I_n$</td>
+<td style="text-align:center">n阶单位阵</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">$A\land B$</td>
+<td style="text-align:center">0-1矩阵A与B的交</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A\lor B$</td>
+<td style="text-align:center">0-1矩阵A与B的并</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A\odot B$</td>
+<td style="text-align:center">0-1矩阵A与B的布尔积</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">$A^{[n]}$</td>
+<td style="text-align:center">0-1矩阵A的n次布尔幂</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>集合(set)是对象/元素的一个无序的聚集。</p>
+<p>通过列举出集合的所有<strong>元素</strong>的方式来表示集合的方法称为<strong>花名册方法</strong>(或<strong>列举法</strong>)。如$\{a,b,c,d\}$。</p>
+<p>描述集合的另一种方式是<strong>集合构造器方法</strong>(或<strong>描述法</strong>)，形如$A= \{x| P(x)\}$。其中$P(x)$是集合$A$中元素 $x$ 共有的特征。</p>
+<h2 id="常用集合"><a href="#常用集合" class="headerlink" title="常用集合"></a>常用集合</h2><p>$N$：自然数集<br>$Z$：整数集<br>$Z^+$：正整数集<br>$Q$：有理数集<br>$R$：实数集<br>$R^+$：正实数集<br>$C$：复数集</p>
+<h2 id="区间"><a href="#区间" class="headerlink" title="区间"></a>区间</h2><p>实数集的子集。<br>$[a,b] = \{x|a\leqslant x \leqslant b\}$ ——闭区间<br>$(a,b) = \{x|a&lt; x &lt;b\}$ ——开区间<br>$(a,b] = \{x|a&lt;x \leqslant b\}$<br>$[a,b) = \{x|a\leqslant x &lt; b\}$</p>
+<h2 id="空集"><a href="#空集" class="headerlink" title="空集"></a>空集</h2><p>用$\varnothing$符号表示，代表不含任何元素的集合。</p>
+<h2 id="朴素集合论"><a href="#朴素集合论" class="headerlink" title="朴素集合论"></a>朴素集合论</h2><p>这里主要讨论由德国数学家<strong>康托尔</strong>建立的<strong>朴素集合论</strong>。但朴素集合论是有缺陷的。</p>
+<p><strong>罗素悖论</strong>：将集合分为两类，一类以自身为元素，另一类不以自身为元素。令第一类所有集合为元素构成的集合为$P$，第二类所有集合为元素构成的集合为$Q$。那么问题来了，$Q\in P$还是$Q\notin P$ $?$<br>若$Q\in P$，则由第一类集合定义，必有$Q\in Q$，而由第二类集合定义，如果$Q\in Q$，则一定有$Q\notin Q$，故矛盾。<br>若$Q\notin P$，则必定有$Q\in Q$，则满足第一类集合定义，所以$Q\in P$，故矛盾。</p>
+<p>罗素悖论的一种通俗表示：只给不给自己刮脸的人刮脸的理发师究竟给不给自己刮脸呢？</p>
+<p>罗素悖论的提出动摇了数学的基础，这被称为第三次数学危机。后来公理集合论的出现成功化解了危机，通过提出几条公理避免了一系列的悖论。由于这里并不会涉及到如此抽象的讨论，所以使用朴素集合论并不会有影响。</p>
+<h2 id="集合关系"><a href="#集合关系" class="headerlink" title="集合关系"></a>集合关系</h2><p>子集：$A$是$B$的子集，记作$A\subseteq B$ 当且仅当$\forall x(x\in A \to x \in B)$。<br>真子集：$A$是$B$的真子集，记作$A\subset B$ 当且仅当$\forall x(x\in A \to x \in B) \land \exists x(x\in A \land x\notin B)$。</p>
+<p>显然，$\varnothing \subseteq  A$。<br>$\varnothing \subset  A$，其中$A\neq \varnothing$。</p>
+<h2 id="集合的大小"><a href="#集合的大小" class="headerlink" title="集合的大小"></a>集合的大小</h2><p>集合 $S$ 中元素个数称为集合 $S$ 的基数（cardinality）,记作$|S|$。</p>
+<p>注：这里的基数（cardinality）与计数中进制的基数（radix）明显不是一个概念。</p>
+<p>无限集：一个集合的元素个数不是有限的则称为无限集。</p>
+<h2 id="幂集"><a href="#幂集" class="headerlink" title="幂集"></a>幂集</h2><p>幂集（power set）：集合 $S$ 的所有子集作为元素构成的集合，记作 $P(S)$。幂集的基数$|P(S)| = 2^{|S|}$（根据二项式定理得出，二项式定理下一篇介绍）。</p>
+<p>如：$P(\{\varnothing\}) = \{ \varnothing ,\{\varnothing\}\}$。</p>
+<h2 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h2><p>交集：$A\cap B = \{x|x\in A\land x\in B\}$，可扩展到多个集合。<br>并集：$A\cup B = \{x|x\in A\lor x\in B\}$，同样可扩展到多个集合。<br>差集：$A-B = \{x|x\in A \land x\notin B\}$。<br>补集：$\overline A = \{ x|x\in U \land x\notin A\} = U-A$ ，其中$U$是全集，$\overline A$称为$A$相对全集$U$的补集。<br>则A与B差集$A-B = A\cap \overline B$。<br>对称差：$A\oplus B = \{x|(x\in A \cup B)\land (x\notin A\cap B)\}$ $= (A\cup B)-(A\cap B)$ $= (A-B)\cup (B-A)$，$A$与$B$的对称差，即只属于$A$、$B$其中一个集合的元素构成的集合。</p>
+<h2 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h2><p>有序$n$元组：$n$个元素的有序聚集，记作$(a_1,a_2,a_3,\dots,a_n)$。<br>如二维的坐标$(x,y)$就是一个有序二元组。有序二元组亦称<strong>序偶</strong>。</p>
+<p>集合的<strong>笛卡尔积</strong>：用$A\times B$表示，$A\times B  = \{(a,b)|a\in A \land b\in B\}$。</p>
+<p>推广到多个集合：$A_1\times A_2\times \dots \times A_n $ $ =  \{(a_1,a_2,a_3,\dots,a_n)|a_i\in A_i, $$\,i=1,2,\dots,n\}$。</p>
+<p>笛卡尔积的一个子集$R$ 称为从集合$A$到集合$B$的<strong>关系</strong>（relation）。将在后面的文章中单独讨论。</p>
+<h2 id="集合恒等式"><a href="#集合恒等式" class="headerlink" title="集合恒等式"></a>集合恒等式</h2><p>集合的恒等律、支配律、幂等律等简单的略过。下面是三个重要的恒等式。<br>分配律：<br>$A\cup (B\cap C) = (A\cap B) \cup (A\cap C)$<br>$A\cap (B\cup C) = (A\cup B) \cap (A\cup C)$</p>
+<p>德摩根律：<br>$\overline {A\cap B} = \overline A \cup \overline B$<br>$\overline {A\cup B} = \overline A \cap \overline B$<br>同样可拓展到多个集合。</p>
+<p>吸收律：<br>$A\cup (A\cap B) = A$<br>$A\cap (A\cup B) = A$</p>
+<p>可以看出集合恒等式与复合命题的逻辑等价式式是一一对应的，每个集合恒等式均可以由对应的逻辑等价式证明。</p>
+<p>还可以看出集合的交并补运算，与数理逻辑的且或非运算，与布尔代数的与或非运算，与概率论中的和事件积事件互斥事件都有相似之处。其中数理逻辑的运算与布尔代数的逻辑运算是一一对应的，仅仅是表示不同而已（1和真，0和假）。而概率论中事件是可以按照集合的关系来理解的。这里可以看出数学的美妙之处（私以为）。</p>
+<h2 id="容斥原理"><a href="#容斥原理" class="headerlink" title="容斥原理"></a>容斥原理</h2><p> $|A\cup B| = |A|+|B|-|A\cap B|$，无须解释。</p>
+<h2 id="真值集"><a href="#真值集" class="headerlink" title="真值集"></a>真值集</h2><p>给定谓词$P$与论域$D$，在$D$中使$P(x)$为真的$x$的集合定义为$P$的<strong>真值集</strong>。<br>例如：谓词$P(x)$为“$x^2 = 2$”，则$P$的真值集为$\{\sqrt2,-\sqrt2\}$.</p>
+<h2 id="特殊集合"><a href="#特殊集合" class="headerlink" title="特殊集合"></a>特殊集合</h2><p>多重集:<br>一般情况下讨论的集合中所有元素均是互斥（不同）的。在多重集中同一个元素可以出现多次。相应的有交集、并集、差集、和集等运算。</p>
+<p>模糊集合:<br>在人工智能中经常使用模糊集合。全集中的元素在模糊集合中有一个隶属度（0~1之间），表示一个元素属于集合的程度。</p>
+<hr>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>$A$和$B$均为非空集合，为$A$中的每一个元素$a$都在$B$中由函数$f$指派一个<strong>唯一</strong>的元素$b$，使得$f(a)=b$。则称$f$是从A到B的函数（function），记作$f:A\to B$。</p>
+<p>函数也称<strong>映射</strong>（mapping）或者变换（transformation）。</p>
+<p>其中：<br>$f$的定义域（domain）：$A$<br>$f$的陪域（codomain）：$B$<br>$f$的值域（range）：$\{b|b=f(a)\}$，即$A$中元素所有像的集合。<br>如果$f(a)=b$，则称 $b$ 是 $a$ 的<strong>像</strong>（image）， $a$ 为 $b$ 的<strong>原像</strong>（pre-image），我们说 $f$ 把 $A$ 映射到 $B$。</p>
+<p>一般，将变量为实数的函数称为实变函数，自变量为复数则称复变函数。中学中多讨论实变函数，大学阶段有讨论复变函数。定义域为正整数集的子集的特殊函数也称为<strong>数列</strong>（中学阶段）。集合$A$可以是多个集合的笛卡尔积，则函数具有多个自变量。</p>
+<p>函数三要素：定义域$A$，陪域$B$，关系$f$。<br>当两个函数定义域、值域、关系均相同时，我们称两个函数相等。</p>
+<p>陪域为实数集合的函数称实值函数，为整数集合称整数值函数。</p>
+<h2 id="一对一函数"><a href="#一对一函数" class="headerlink" title="一对一函数"></a>一对一函数</h2><p>函数称为<strong>一对一函数</strong>（one-to-one）或者<strong>单射函数</strong>（injection），当且仅当 $\forall a\in A \forall b\in A(f(a)=f(b)\to a=b)$。即是对定义域内所有不同的$a$，在$B$中一定对应不同的像。</p>
+<p>函数增减性：<br>对定义域$A$内所有$x$，$y$<br>单调递增：$\forall x \forall y(x<y\to f(x)\leqslant="" f(y))$="" 严格递增：$\forall="" x="" \forall="" y(x<y\to="" f(x)<="" 单调递减：$\forall="" f(x)\geqslant="" 严格递减：$\forall="" y(x="" <="" y="" \to="" f(x)=""> f(y))$</y\to></p>
+<p>显然，严格单调递增或者递减的函数一定是一对一的。</p>
+<h2 id="映上函数"><a href="#映上函数" class="headerlink" title="映上函数"></a>映上函数</h2><p>函数称为<strong>映上</strong>（onto）或者<strong>满射</strong>（surjiection）函数，当且仅当 $\forall y\in B\ \exists x\in A(f(x)=y)$。即是陪域$B$中所有元素均是定义域$A$中元素的像。</p>
+<h2 id="一一对应函数"><a href="#一一对应函数" class="headerlink" title="一一对应函数"></a>一一对应函数</h2><p>函数称为<strong>一一对应的</strong>（one-to-one correspondence）或<strong>者双射函数</strong>（bijection），如果函数<strong>即是一对一的又是映上的</strong>。即是陪域$B$中所有元素均是$A$中唯一的一个元素的像。</p>
+<h2 id="反函数"><a href="#反函数" class="headerlink" title="反函数"></a>反函数</h2><p>对于一个从$A$到$B$的一一对应$f$，$f$的<strong>反函数</strong>（或者叫$f$的<strong>逆</strong>）是这样一个函数，它给$B$中每个元素$b$在$A$中指派了一个唯一的使得$f(a)=b$的元素$a$。表示为$f^{-1}$，于是$f(a)=b$ 时有 $f^{-1}(b)=a$。</p>
+<p>一一对应关系是<strong>可逆的</strong>。如果一个函数不是一一对应的，则不可逆，即它不存在反函数。</p>
+<h2 id="复合函数"><a href="#复合函数" class="headerlink" title="复合函数"></a>复合函数</h2><p>如果$g$为从$A$到$B$的函数，$f$为从$B$到$C$的函数。则函数$f$和$g$的<strong>合成</strong>（composition）记作$f\circ g$，定义为对于所有$a\in A$， <script type="math/tex">f\circ g(a) = f(g(a))</script></p>
+<p>注意：$f\circ g$ 没有定义除非 $g$ 的值域是 $f$ 的定义域的子集。</p>
+<h2 id="函数的图"><a href="#函数的图" class="headerlink" title="函数的图"></a>函数的图</h2><p>$f$为从$A$到$B$的函数，则函数$f$的图像是序偶集合$\{(a,b)|a\in A \land f(a)=b\}$。<br>将序偶作为坐标描绘在坐标系中即是我们所熟知的函数图像。</p>
+<h2 id="一些重要函数"><a href="#一些重要函数" class="headerlink" title="一些重要函数"></a>一些重要函数</h2><p>传统的耳熟能详的函数就不列出了。这里考虑几个在计算机科学中使用较多的函数。</p>
+<h3 id="取整函数"><a href="#取整函数" class="headerlink" title="取整函数"></a>取整函数</h3><p>向上取整函数：$f(x) = \lceil x\rceil$，是从实数集$R$到整数集$Z$的函数。$f(x)$是大于等于$x$的最小整数。<br>向下取整函数：$f(x) = \lfloor x\rfloor$，是从实数集$R$到整数集$Z$的函数。$f(x)$是小于等于$x$的最大整数。</p>
+<h3 id="阶乘函数"><a href="#阶乘函数" class="headerlink" title="阶乘函数"></a>阶乘函数</h3><p>从自然数集$N$到正整数集$Z^+$的函数$f:N\to Z^+$，$f(n) = \begin{cases} 1, &amp; n=0 \\n!=n\times(n-1)\times\dots \times 2\times 1 ,&amp; n\in Z^+ \end{cases}$</p>
+<p>由高等数学可以得出：$n! \sim \sqrt{2\pi n}(\dfrac{n}{e})^n$，$\sim$读作<strong>渐进于</strong>。$f(n)\sim g(n)$的意义是 <script type="math/tex">\lim_{n\to \infty}\dfrac{f(n)}{g(n)} = 1</script></p>
+<h2 id="部分函数"><a href="#部分函数" class="headerlink" title="部分函数"></a>部分函数</h2><p>部分函数指将集合$A$的一个子集作为$f$的定义域的函数，对于在$A$中但不在定义域中的元素无定义。仍记作$f:A\to B$，具体意义由上下文判断。当定义域为$A$是称$f$为全函数。</p>
+<hr>
+<h1 id="序列与求和"><a href="#序列与求和" class="headerlink" title="序列与求和"></a>序列与求和</h1><h2 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h2><p><strong>序列</strong>（sequence）是整数集的一个子集（通常是集合$\{0,1,2,…\}$或者$\{1,2,3,…\}$）到集合$S$的函数。用记号$a_n$表示$n$的像，$a_n$称为序列的一个项。我们用记号$\{a_n\}$来表示序列。</p>
+<p>高中时我们称其为<strong>数列</strong>。</p>
+<h2 id="一些特殊序列"><a href="#一些特殊序列" class="headerlink" title="一些特殊序列"></a>一些特殊序列</h2><p><strong>几何级数</strong>（多称<strong>等比数列</strong>）：形如<script type="math/tex">a,ar,ar^2,ar^3,...,ar^n,...</script>的序列，其中初始项 $a$ 和公比 $r$ 均为实数。<br>几何级数是指数函数 $f(x)= ar^x$ 的离散形式。</p>
+<p><strong>算术级数</strong>（多称<strong>等差数列</strong>）：形如<script type="math/tex">a,a+d,a+2d,...,a+nd,...</script>的序列，其中初始项 $a$ 和公差 $d$ 均为实数。<br>算术级数是一次函数 $f(x)= dx+a$ 的离散形式。</p>
+<h2 id="递推关系"><a href="#递推关系" class="headerlink" title="递推关系"></a>递推关系</h2><p><strong>递推关系</strong>（recurrence relation）是一个等式，对于所有满足 $n\geqslant n_0$ 的 $n$，用序列的 $a_n$ 前面的一项或多项来表示 $a_n$。一个递推关系递归地定义了一个序列。</p>
+<p>在计算机编程中，经常用到递归算法，这就需要找到其递推关系。</p>
+<p>由<strong>初始条件</strong>和<strong>递推关系</strong>即可唯一确定一个序列。</p>
+<p>由递推关系和初始条件求数列通项公式，这在高中时是一个经典的问题，在此不再赘述。</p>
+<h2 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h2><p>斐波那契数列（Fibonacci squence）是一个非常经典与常用的数列，定义如下：<br>初始条件$f_0 = 0,f_1 = 1$，递推关系：<script type="math/tex">f_n = f_{n-1}+f_{n-2}\quad n=2,3,4,...</script><br>即序列 $0,1,1,2,3,5,8,13,21,…$</p>
+<h2 id="特殊的整数数列"><a href="#特殊的整数数列" class="headerlink" title="特殊的整数数列"></a>特殊的整数数列</h2><p>存在着许许多多/数不清的特殊的整数数列，应用于广泛的领域。有一个从20世纪60年代就创建的数据库保存着很多数列。可参见《<a href="http://oeis.org" target="_blank" rel="noopener">在线整数序列大百科</a>》（OEIS）。</p>
+<h2 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h2><p>很多时候需要考虑序列的求和（summation）问题，因此引入了求和记号$\Sigma$(大写的希腊字母Sigma)，对于序列$\{a_n\}$中的部分项：<script type="math/tex">a_m,a_{m+1},...,a_n</script>之和可表示为：<script type="math/tex">\sum_{i=m}^n a_i\qquad or \qquad \sum_{m\leq i\leq n} a_i</script><br>即代表：<script type="math/tex">\sum_{i=m}^n a_i=a_m+a_{m+1}+\dots+a_n</script></p>
+<p>对于几何数列/等比数列：<script type="math/tex">a,ar,ar^2,ar^3,...,ar^n,...</script><br>$n$从0开始，即$a_0 = a$，则有:<script type="math/tex">\sum_{j=0}^n ar^j = \begin{cases} (n+1)a\,, & r = 1 \\\dfrac{ar^{n+1}-a}{r-1} ,& r\neq 1 \end{cases}</script></p>
+<p>求和方法：将和式乘以 $r$，与和式错位相消即可（高中知识）。</p>
+<h2 id="一些常用求和公式"><a href="#一些常用求和公式" class="headerlink" title="一些常用求和公式"></a>一些常用求和公式</h2><p>算术级数求和：$\sum_{k=1}^n k = \dfrac{n(n+1)}{2}$</p>
+<p>$k^2$和：$\sum_{k=1}^n k^2 = \dfrac{n(n+1)(2n+1)}{6}$</p>
+<p>$k^3$和：$\sum_{k=1}^n k^3 = \dfrac{n^2(n+1)^2}{4}$</p>
+<p>$x^k$和：$\sum_{k=0}^\infty x^k = \dfrac{1}{1-x}$</p>
+<p>证明：$\sum_{k=0}^\infty x^k =\lim_{k\to\infty} \dfrac{x^{k+1}-1}{x-1}= \dfrac{1}{1-x}$</p>
+<p>上式两边同时求微分：<br>$\sum_{k=1}^\infty kx^{k-1} = \dfrac{1}{(1-x)^2}$</p>
+<h2 id="累乘"><a href="#累乘" class="headerlink" title="累乘"></a>累乘</h2><p>记号：$\Pi$（大写的希腊字母pi）</p>
+<p>形式：<script type="math/tex">\prod_{i=m}^{n} a_n = a_m\times a_{m+1}\times\dots \times a_n</script></p>
+<hr>
+<h1 id="集合的基数"><a href="#集合的基数" class="headerlink" title="集合的基数"></a>集合的基数</h1><h2 id="定义-amp-定理"><a href="#定义-amp-定理" class="headerlink" title="定义&amp;定理"></a>定义&amp;定理</h2><p>前面有过定义，集合的基数即集合的大小，即集合中的元素个数。集合$S$的基数记作$|S|$。</p>
+<p>当且仅当存在一个从集合$A$到集合$B$的<strong>一一对应</strong>时，集合$A$和$B$基数相等，记作$|A|=|B|$。</p>
+<p>当且仅当存在一个从集合$A$到集合$B$的<strong>一对一函数</strong>时，集合$A$的基数小于等于$B$的基数，记作$|A|\leqslant|B|$。<br>当 $|A|\leqslant|B| \land |A|\neq |B|$ 时，$|A|&lt;|B|$。</p>
+<h2 id="可数集"><a href="#可数集" class="headerlink" title="可数集"></a>可数集</h2><p>一个集合是<strong>可数集</strong>当且仅当一个集合是<strong>有限集</strong>或者一个集合<strong>与整数集具有相同的基数</strong>。<br>一个集合是不可数的当它不是可数的。</p>
+<p>整数集$Z$的基数记作 $\aleph_0$（其中$\aleph$是希伯来字母表第一个字母，读作阿里夫）。即是所有无限可数集$S$均具有相同的基数，用 $\aleph_0$ 表示，即 $|S| = \aleph_0$。</p>
+<p>我们可以通过某种规律将可数集中的<strong>所有元素列举出来</strong>。不能列举出所有元素的集合即是不可数集。可以通过证明不能将集合中的所有元素列举出来来证明集合是不可数的。<br>例如整数集$Z$，列举出所有元素即是：$…,-n,…-2,-1,0,1,2,…,n,…$</p>
+<p>定理：如果 $A$ 和 $B$ 均是可数集，则$A\cup B$是可数集。</p>
+<h2 id="不可数集"><a href="#不可数集" class="headerlink" title="不可数集"></a>不可数集</h2><p>整数集 $Z$ 是可数集，实数集 $R$ 是不可数集。          </p>
+<p>下面给出实数集$R$是不可数集的证明：<br>考虑实数集的一个子集$(0,1)$，假设可以将其全部列出，为序列$r_1,r_2,r_3,r_4,…$，用十进制表示如下：</p>
+<script type="math/tex; mode=display">r_1=0.d_{11}d_{12}d_{13}d_{14}...\\
+r_2=0.d_{21}d_{22}d_{23}d_{24}...\\
+r_3=0.d_{31}d_{32}d_{33}d_{34}...\\
+r_4=0.d_{41}d_{42}d_{43}d_{44}...\\
+r_5=0.d_{51}d_{52}d_{53}d_{54}...\\
+\vdots</script><p>其中 $d_{ij} \in \{0,1,2,3,4,5,6,7,8,9\}$.<br>现取一个0和1之间的实数 $r = 0.d_1d_2d_3d_4…$<br>其中 $d_i$ 随便取一个与 $d_{ii}$ 不同的数即可，$i = 0,1,2,…$<br>则 $r$ 与序列中的所有 $r_i$ 均不相等（即不在序列中），因为 $r$ 与 $r_i$ 的第 $i$ 位不相同。<br>即 $(0,1)$ 内所有实数不能一一列举出来。即可证明集合 $(0,1)$ 是不可数集，即实数集的子集是不可数集，则实数集 $R$ 是不可数集。</p>
+<p>上述证明方法称为<strong>康托尔对角线法</strong>，在数理逻辑和计算理论中大量使用。</p>
+<h2 id="SCHR-ddot-ODER-BERNSTEIN-定理"><a href="#SCHR-ddot-ODER-BERNSTEIN-定理" class="headerlink" title="$SCHR\ddot ODER-BERNSTEIN$ 定理"></a>$SCHR\ddot ODER-BERNSTEIN$ 定理</h2><p>说实话，这个定理的名称我都读不清楚，大概是施罗德 - 伯恩斯坦定理。但这并不妨碍对定理的理解。</p>
+<p>$SCHR\ddot ODER-BERNSTEIN$ 定理：如果集合$A$和$B$满足$|A|\leqslant|B|$且$|B|\leqslant|A|$，则$|A|=|B|$。即是如果存在从$A$到$B$的一对一函数$f$，和$B$到$A$的一对一函数$g$，则一定存在从$A$到$B$的一一对应函数。</p>
+<p>这个定理使得我们只需要找到一个从$A$到$B$的一对一函数$f$，和$B$到$A$的一对一函数$g$，即可证明$|A|=|B|$。而这是很轻松的。<br>例如：证明$|(0,1)|=|(0,1]|$<br>如果没有这个定理，那然我们找一个从$(0,1)$到$(0,1]$的一一对应函数明显是比较困难的。而现在我们只需要找到一个从$(0,1)$到$(0,1]$的一对一函数，和从$(0,1]$到$(0,1)$的一对一函数即可。</p>
+<p>有从$(0,1)$到$(0,1]$的一对一函数：$f(x)=x$<br>有从$(0,1]$到$(0,1)$的一对一函数：$f(x)=\dfrac{x}{2}$<br>即证得$|(0,1)|=|(0,1]|$。</p>
+<h2 id="不可计算函数"><a href="#不可计算函数" class="headerlink" title="不可计算函数"></a>不可计算函数</h2><p>如果一个函数是可计算的，如果可以通过某种编程语言写出来的计算机程序计算该函数。一个函数不是可计算的，则称为不可计算函数。</p>
+<p>通过证明计算机程序集合是可数无限的，且一个可数无限集到自身的函数集合是不可数的，则可证明存在不可计算函数。</p>
+<h2 id="连续统假设"><a href="#连续统假设" class="headerlink" title="连续统假设"></a>连续统假设</h2><p>可以证明$|P(Z^+)| = |R|=c$，即 $c= 2^{\aleph_0}$，其中$c$是实数集的基数。</p>
+<p>由康托尔的一个定理表明$|Z^+|&lt; |P(Z^+)|$，即是 $\aleph_0 &lt; 2^{\aleph_0}=c$。</p>
+<p>连续统假设：不存在介于$\aleph_0$ 和 $c$之间的基数$X$。证明略，这里太窄写不下（手动滑稽）。</p>
+<hr>
+<h1 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h1><p>矩阵（matrix）可以表示集合中元素的关系。线性代数中学过的，这里从略。</p>
+<p>$m\times n$阶矩阵：$A_{m\times n} =$</p>
+<script type="math/tex; mode=display">
+\left[
+\begin{array}{cccc}
+a_{11} & a_{12} & \dots &a_{1n} \\
+a_{21} & a_{22} & \dots &a_{2n} \\
+\vdots & \vdots & & \vdots \\
+a_{m1} & a_{m2} & \dots &a_{mn} \\
+\end{array}
+\right]</script><p>定义略，方阵略，加法运算略，乘法运算略，转置略，单位阵略，逆矩阵略，乘幂略，对称矩阵略，均略过就好。</p>
+<h2 id="0-1矩阵"><a href="#0-1矩阵" class="headerlink" title="0-1矩阵"></a>0-1矩阵</h2><p>顾名思义，元素非 $0$ 即 $1$ 的矩阵，常用来表示各种离散结构，如不带权的有向图和无向图。<br>既然元素都是$0$和$1$，那当然是进行布尔运算了。</p>
+<p>$0-1$矩阵的交：$A= [a_{ij}]$，$B=[b_{ij}]$都是$m\times n$阶$0-1$矩阵，则$A\land B = [a_{ij}\land b_{ij}]$<br>$0-1$矩阵的并：$A= [a_{ij}]$，$B=[b_{ij}]$都是$m\times n$阶$0-1$矩阵，则$A\lor B = [a_{ij}\lor b_{ij}]$</p>
+<p>$0-1$矩阵的布尔积：$A= [a_{ij}]$是$m\times k$阶$0-1$矩阵，$B=[b_{ij}]$是$k\times n$阶$0-1$矩阵，则A和B的布尔积为$A\odot B = [c_{ij}]$，其中 <script type="math/tex">c_{ij} = (a_{i1}\lor a_{1j}) \land(a_{i2}\lor a_{2j}) \land \dots \land(a_{ik}\lor a_{kj})</script></p>
+<p>布尔幂：对0-1方阵，<script type="math/tex">A^{[r]} = \underbrace{A\odot A \odot A\odot \dots \odot A}_{r个A}</script></p>
+<hr>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>这一篇足足花了10个小时左右，这也算是有史以来最长的一篇。写完之后总是让我有一种抄书的感觉，自己的理解比较少，以后要改变。</p>
+<p>满篇的公式让我思考这到底是写笔记还是写公式？公式的输入真的比较费劲，很多时间都用来处理公式了，就权当熟悉LaTeX了。还是写完一段之后统一处理公式效率比较高。</p>
+<p>假期即将过半，而任务还未过半。嗯，该看看书了。</p>
+<hr>
+<p><strong>参考资料：《离散数学及其应用》（本科教学版，Kenneth H.Rosen著，原书第七版）</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/10/2018.2.10--counting-arrangement-&-combination/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【离散数学】计数/排列组合
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/26/2018.1.26--mathematical-logic/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【离散数学】逻辑与证明</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#集合"><span class="nav-number">1.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用集合"><span class="nav-number">1.2.</span> <span class="nav-text">常用集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区间"><span class="nav-number">1.3.</span> <span class="nav-text">区间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空集"><span class="nav-number">1.4.</span> <span class="nav-text">空集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素集合论"><span class="nav-number">1.5.</span> <span class="nav-text">朴素集合论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合关系"><span class="nav-number">1.6.</span> <span class="nav-text">集合关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合的大小"><span class="nav-number">1.7.</span> <span class="nav-text">集合的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#幂集"><span class="nav-number">1.8.</span> <span class="nav-text">幂集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合运算"><span class="nav-number">1.9.</span> <span class="nav-text">集合运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笛卡尔积"><span class="nav-number">1.10.</span> <span class="nav-text">笛卡尔积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合恒等式"><span class="nav-number">1.11.</span> <span class="nav-text">集合恒等式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容斥原理"><span class="nav-number">1.12.</span> <span class="nav-text">容斥原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#真值集"><span class="nav-number">1.13.</span> <span class="nav-text">真值集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊集合"><span class="nav-number">1.14.</span> <span class="nav-text">特殊集合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">2.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-1"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一对一函数"><span class="nav-number">2.2.</span> <span class="nav-text">一对一函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#映上函数"><span class="nav-number">2.3.</span> <span class="nav-text">映上函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一一对应函数"><span class="nav-number">2.4.</span> <span class="nav-text">一一对应函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反函数"><span class="nav-number">2.5.</span> <span class="nav-text">反函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复合函数"><span class="nav-number">2.6.</span> <span class="nav-text">复合函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数的图"><span class="nav-number">2.7.</span> <span class="nav-text">函数的图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些重要函数"><span class="nav-number">2.8.</span> <span class="nav-text">一些重要函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#取整函数"><span class="nav-number">2.8.1.</span> <span class="nav-text">取整函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阶乘函数"><span class="nav-number">2.8.2.</span> <span class="nav-text">阶乘函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分函数"><span class="nav-number">2.9.</span> <span class="nav-text">部分函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#序列与求和"><span class="nav-number">3.</span> <span class="nav-text">序列与求和</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列"><span class="nav-number">3.1.</span> <span class="nav-text">序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些特殊序列"><span class="nav-number">3.2.</span> <span class="nav-text">一些特殊序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递推关系"><span class="nav-number">3.3.</span> <span class="nav-text">递推关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斐波那契数列"><span class="nav-number">3.4.</span> <span class="nav-text">斐波那契数列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊的整数数列"><span class="nav-number">3.5.</span> <span class="nav-text">特殊的整数数列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求和"><span class="nav-number">3.6.</span> <span class="nav-text">求和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些常用求和公式"><span class="nav-number">3.7.</span> <span class="nav-text">一些常用求和公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#累乘"><span class="nav-number">3.8.</span> <span class="nav-text">累乘</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#集合的基数"><span class="nav-number">4.</span> <span class="nav-text">集合的基数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-amp-定理"><span class="nav-number">4.1.</span> <span class="nav-text">定义&amp;定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可数集"><span class="nav-number">4.2.</span> <span class="nav-text">可数集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可数集"><span class="nav-number">4.3.</span> <span class="nav-text">不可数集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SCHR-ddot-ODER-BERNSTEIN-定理"><span class="nav-number">4.4.</span> <span class="nav-text">$SCHR\ddot ODER-BERNSTEIN$ 定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可计算函数"><span class="nav-number">4.5.</span> <span class="nav-text">不可计算函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连续统假设"><span class="nav-number">4.6.</span> <span class="nav-text">连续统假设</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#矩阵"><span class="nav-number">5.</span> <span class="nav-text">矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1矩阵"><span class="nav-number">5.1.</span> <span class="nav-text">0-1矩阵</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

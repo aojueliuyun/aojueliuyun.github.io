@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>正则表达式入门 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="内容：如题前置技能：None教程：30分钟正则入门">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则表达式入门">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/06/10/2018.6.10--regular-expression/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="内容：如题前置技能：None教程：30分钟正则入门">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-06-11T08:25:58.953Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正则表达式入门">
+<meta name="twitter:description" content="内容：如题前置技能：None教程：30分钟正则入门">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.6.10--regular-expression" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      正则表达式入门
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/10/2018.6.10--regular-expression/" class="article-date">
+	  <time datetime="2018-06-09T16:00:00.000Z" itemprop="datePublished">2018-06-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/计算机科学/">计算机科学</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>内容：如题<br>前置技能：None<br>教程：<a href="https://www.cnblogs.com/deerchao/archive/2006/08/24/zhengzhe30fengzhongjiaocheng.html" target="_blank" rel="noopener">30分钟正则入门</a></p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近喜欢各种入门，这里入门一下正则表达式。字数很少比较水。</p>
+<p>字符串可以说是编程是遇到的最多的一种数据结构，也是最简单的数据结构，对字符串操作的需求可谓无处不在。给人阅读的文本可以看做字符串，内存中存储的特定编码序列可以看做字符串，一个网页的html文本是字符串，浏览器对html文本解析的过程是字符串处理，无论是编译型语言还是解释型语言，编译和解释的过程都可以看做字符串处理。字符串操作重要性不言而喻。而在字符串中一种很常见的操作就是字符串的匹配。编写程序去处理特定的需要匹配的字符串可以做到，但耗时耗力，且代码不具有重用性。所以我们需要正则表达式。</p>
+<p>正则表达式（<a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank" rel="noopener">Regular Expression</a>）是一种匹配规则，用来匹配你想要的各种形式的字符串。规则有了还不行，还需要一个正则引擎来支持它，正则引擎可以看做一种编译器，实现需要用到编译原理的知识，支持语法越多越复杂，这里不讨论（有时间实现，挖坑，以后填）。</p>
+<p>在Shell中我们常用<code>*</code>来表示匹配所有项，比如<code>ls *.v</code>表示列出该目录下所有<code>.v</code>文件。<code>*</code>是正则的语法，能这样用是因为Shell部分支持正则表达式。<code>*</code>也称为通配符。</p>
+<p>正则表达式是什么呢？正则表达式是：</p>
+<ul>
+<li>通用的字符串表达式框架</li>
+<li>简洁表达一组字符串的表达式</li>
+</ul>
+<p>也就是说将一组字符串的特征准确地提取出来，用简洁的语法表示出来。例如: 用<code>\b\w+ly\b</code> 表示以<code>ly</code>结尾的单词。</p>
+<p>正则表达式的作用：</p>
+<ul>
+<li>判断某字符串的特征归属</li>
+<li>查找一个文本字符串的特征</li>
+<li>同时查找或者替换一组字符串</li>
+<li>匹配某个字符串的部分或者全部</li>
+</ul>
+<p>正则表达式是难于读写的，所以需要对其正确性进行测试，可以使用上面那篇教程的作者写的一个<a href="http://deerchao.net/tools/regex_tester/index.htm" target="_blank" rel="noopener">正则表达式测试器</a>，也可以使用这个<a href="http://www.ofmonkey.com/regex/test" target="_blank" rel="noopener">在线正则表达式测试器</a>。</p>
+<h1 id="正则语法"><a href="#正则语法" class="headerlink" title="正则语法"></a>正则语法</h1><h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><p>首先如果想要匹配特定字符串，直接使用该字符串即可。</p>
+<p>另外一些匹配字符或者位置的元字符：</p>
+<ul>
+<li><code>\b</code> 匹配一个位置，单词的开头或者结尾</li>
+<li><code>.</code> 匹配除了换行符以外的任何字符</li>
+<li><code>\d</code> 匹配一个数字，即0到9</li>
+<li><code>\s</code> 匹配空白符，包括空格、制表符、换行等</li>
+<li><code>\w</code> 匹配一个字母数字下划线或者汉字等</li>
+<li><code>^</code> 匹配字符串开始的位置</li>
+<li><code>$</code> 匹配字符串结尾的位置</li>
+</ul>
+<p>其中<code>\b</code> <code>^</code> <code>$</code> 匹配<strong>位置</strong>而不是字符，就是说他们不匹配为一个字符，即不占一个字符的位置。</p>
+<h2 id="重复"><a href="#重复" class="headerlink" title="重复"></a>重复</h2><p>代表重复的限定符不匹配字符，仅代表限定符前的字符可以重复的次数。</p>
+<ul>
+<li><code>*</code> 指定<code>*</code>前面的内容可以使用任意次（0次或者多次）</li>
+<li><code>+</code> 与<code>*</code>类似，不过是1次或者多次</li>
+<li><code>?</code> 重复0或者1次</li>
+<li><code>{n}</code> 重复n次</li>
+<li><code>{n,}</code> 重复n次或者更多次</li>
+<li><code>{n,m}</code> 重复n到m次</li>
+</ul>
+<p>eg: <code>^[1-9]\d{4,9}$</code>匹配一个5到10位的不以0开头的数字串，可以是QQ号</p>
+<p>但是如果要匹配上面这些已经有特殊意义的字符呢？当然是转义了：<code>\*</code> <code>\.</code>  <code>\-</code> <code>\\</code></p>
+<h2 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a>字符类</h2><p>使用<code>[aeiou]</code>表示aeiou中的任何一个字符。<br>而<code>[0-9]</code>就等同于<code>\d</code>。这里可以使用<code>-</code>表示范围。</p>
+<h2 id="分枝条件"><a href="#分枝条件" class="headerlink" title="分枝条件"></a>分枝条件</h2><p>使用<code>|</code>表示或者。<code>\d|[a-zA-Z]</code>匹配字母或者数字。</p>
+<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h2><p>使用<code>()</code>进行分组，每个分组也称为子表达式。可以对每个子表达式使用上面的表示重复的语法。<br>如果要匹配<code>(</code>或者<code>)</code>，则需要转义<code>\(</code> <code>\)</code>。<code>[]</code> <code>{}</code>同理。</p>
+<p>eg：匹配一个IP地址 -&gt; <code>((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)</code> ，其中<code>(2[0-4]\d|25[0-5]|[01]?\d\d?)</code>表示0到255。</p>
+<h2 id="反义"><a href="#反义" class="headerlink" title="反义"></a>反义</h2><p>能匹配符合某种模式的，肯定也需要匹配不满足某种模式的。</p>
+<ul>
+<li><code>\W</code> 匹配任意不是字母数字下划线汉字的字符</li>
+<li><code>\S</code> 匹配不是空白符的字符</li>
+<li><code>\D</code> 匹配非数字字符</li>
+<li><code>\B</code> 匹配非单词开始和结尾的任何位置</li>
+<li><code>[^X]</code> 匹配除X以外的任何字符</li>
+<li><code>[^aeiou]</code> 匹配除aeiou外的所以字符</li>
+</ul>
+<h2 id="后向引用"><a href="#后向引用" class="headerlink" title="后向引用"></a>后向引用</h2><p>使用<code>()</code>指定子表达式时，每个分组会自动拥有一个组号，从1开始依次增加。后向引用可以重复使用前面某个分组匹配的文本。使用<code>\k</code>表示匹配编号为k的分组<strong>捕获</strong>的内容。</p>
+<p>eg：匹配重复单词 <code>\b(\w+)\b\s+\1\b</code> ，注意是匹配重复单词，而不是两个单词，即是第一个分组捕获了一个单词并被<code>\1</code>引用。</p>
+<p>另外可以自己指定组名，使用语法 <code>(?&lt;Word&gt;\w+)</code> 或者 <code>(?&#39;Word&#39;\w+)</code> 则组名指定为 <code>Word</code>，引用该分组捕获的内容则使用<code>\k&lt;Word&gt;</code>。上面的例子：<code>\b(?&lt;Word&gt;\w+)\b\s+\k&lt;Word&gt;\b</code></p>
+<p><code>(?:exp)</code> 匹配exp，但不捕获文本，也不分配组号。</p>
+<h2 id="零宽断言"><a href="#零宽断言" class="headerlink" title="零宽断言"></a>零宽断言</h2><ul>
+<li><code>(?=exp)</code>，零宽度正预测先行断言，断言自身出现的位置的后面能匹配表达式exp，即匹配表达式exp前面的位置。</li>
+<li><code>(?&lt;=exp)</code>，零宽度正回顾后发断言，匹配表达式exp后面的位置</li>
+<li><code>(?!exp)</code>，零宽度负预测先行断言，匹配后面不是exp的位置</li>
+<li><code>(?&lt;!exp)</code>，宽度正回顾后发断言，匹配前面不是exp的位置</li>
+</ul>
+<p>忽略它们的名字，语法均是<code>()</code>中以<code>?</code>开头，然后有<code>&lt;</code>代表后面的位置，没有则代表前面，<code>=</code>代表匹配，<code>!</code>代表不匹配。注意它们都匹配位置而不是字符。</p>
+<p>另外一个与<code>()</code>相关的语法是注释：<code>(?#comment)</code></p>
+<h2 id="贪婪与懒惰"><a href="#贪婪与懒惰" class="headerlink" title="贪婪与懒惰"></a>贪婪与懒惰</h2><p>上面的重复如<code>*</code> <code>{n,m}</code>等蕴含着一个问题。即是使用<code>a.*b</code>来匹配字符串<code>aabab</code>是得到<code>aab</code>还是<code>aabab</code>。答案是<code>aabab</code>，因为默认情况下是<strong>贪婪匹配</strong>，即在匹配的情况下尽可能多重复。</p>
+<p>在重复匹配的语法后面加上一个<code>?</code>可以将其变为<strong>懒惰匹配</strong>，即尽可能少重复。语法：<code>*?</code> <code>+?</code> <code>??</code> <code>{n,}?</code>  <code>{n,m}?</code></p>
+<h2 id="处理选项"><a href="#处理选项" class="headerlink" title="处理选项"></a>处理选项</h2><p>如果语法太死的话似乎会给人不够灵活的感觉。在.Net下，有一些处理选型可以改变处理正则的方式，比如在某些时候需要忽略大小写是很必要的。详见：<a href="https://docs.microsoft.com/zh-cn/dotnet/standard/base-types/regular-expression-options" target="_blank" rel="noopener">正则表达式选项</a>。</p>
+<h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h2><p>匹配上面用到的特殊字符时都需要转义，另外ASCII编码本身定义的转义字符也是支持的。详见：<a href="https://docs.microsoft.com/zh-cn/dotnet/standard/base-types/character-escapes-in-regular-expressions" target="_blank" rel="noopener">正则表达式中的字符转义</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/06/02/2018.6.2--get-started-with-python/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Python入门</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正则语法"><span class="nav-number">2.</span> <span class="nav-text">正则语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#元字符"><span class="nav-number">2.1.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重复"><span class="nav-number">2.2.</span> <span class="nav-text">重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符类"><span class="nav-number">2.3.</span> <span class="nav-text">字符类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分枝条件"><span class="nav-number">2.4.</span> <span class="nav-text">分枝条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组"><span class="nav-number">2.5.</span> <span class="nav-text">分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反义"><span class="nav-number">2.6.</span> <span class="nav-text">反义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后向引用"><span class="nav-number">2.7.</span> <span class="nav-text">后向引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零宽断言"><span class="nav-number">2.8.</span> <span class="nav-text">零宽断言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贪婪与懒惰"><span class="nav-number">2.9.</span> <span class="nav-text">贪婪与懒惰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理选项"><span class="nav-number">2.10.</span> <span class="nav-text">处理选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转义字符"><span class="nav-number">2.11.</span> <span class="nav-text">转义字符</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

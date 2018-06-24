@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>avl树 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="AVL树是一种带有自平衡性质的的二叉查找树，也就是说，在多次插入删除或者极端数据情况下依然可以保证O(logn)的操作复杂度。">
+<meta name="keywords" content="数据结构,树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AVL树">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/03/17/2018.3.17--avl-tree/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="AVL树是一种带有自平衡性质的的二叉查找树，也就是说，在多次插入删除或者极端数据情况下依然可以保证O(logn)的操作复杂度。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/single-rotation-left.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/single-rotate-right.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/double-rotate-left-right.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/double-rotate-right-left.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/f/fd/AVL_Tree_Example.gif">
+<meta property="og:updated_time" content="2018-06-23T15:28:09.984Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AVL树">
+<meta name="twitter:description" content="AVL树是一种带有自平衡性质的的二叉查找树，也就是说，在多次插入删除或者极端数据情况下依然可以保证O(logn)的操作复杂度。">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/single-rotation-left.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.3.17--avl-tree" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      AVL树
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/17/2018.3.17--avl-tree/" class="article-date">
+	  <time datetime="2018-03-16T16:00:00.000Z" itemprop="datePublished">2018-03-17</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>AVL树是一种带有自平衡性质的的二叉查找树，也就是说，在多次插入删除或者极端数据情况下依然可以保证O(logn)的操作复杂度。</p>
+<a id="more"></a>
+<h2 id="自平衡的二叉查找树"><a href="#自平衡的二叉查找树" class="headerlink" title="自平衡的二叉查找树"></a>自平衡的二叉查找树</h2><p>上一篇中的<a href="https://aojueliuyun.github.io/2018/03/15/2018.3.15--binary-search-tree/">二叉查找树</a>在多次插入删除后，树的节点会向其中一边下沉，操作（插入/删除/查找）的复杂度会从O(logn)渐渐增大。在数据量很大时，操作时间可能变得不可接受。而且当建树的一组数据是已经排好序的极端情况时，普通的二叉查找树就会退化为代价高昂的链表，而时间复杂度将会退化为线性的O(n)。</p>
+<p>而要避免以上问题，我们需要为二叉查找树建立一个平衡的附加结构条件。条件不同，实现不同。当附加平衡条件后，二叉树便可以实现自平衡，即当大量插入删除时仍然可以保持O(logn)的最坏操作时间复杂度，我们将其称作平衡二叉搜索树（Self-balancing binary search tree）。平衡二叉树常见的实现有AVL树、红黑树（Red Black Tree）、伸展树（Splay tree）等。工程中大量使用红黑树，以后有机会讨论。这里简要实现AVL树。</p>
+<h2 id="AVL-Tree"><a href="#AVL-Tree" class="headerlink" title="AVL Tree"></a>AVL Tree</h2><p><a href="https://en.wikipedia.org/wiki/AVL_tree" target="_blank" rel="noopener">AVL树</a>是以它的发明者（G.M. Adelson-Velsky 和 E.M. Landis）来命名的，也是最先发明的自平衡二叉查找树，于1962年发明。<br>AVL树的<strong>平衡条件</strong>是：每个节点的左子树与右子树高度相差不超过1。其中只有一个根节点的高度定义为0，空树高度定义为-1。</p>
+<p>这里需要区分两个概念，节点的深度与高度，深度是从根节点到该节点的唯一路径的长度，高度是从该节点到其后代的树叶的最长路径。则根节点深度为0，对一棵树来说，树的高等于根节点的高，也等于该树最深的树叶的深度，即树的深度。</p>
+<p>因为插入和删除可能会破坏AVL树的平衡条件，所以插入和删除后如果失衡则必须对其进行修正/平衡化。我们称其为<strong>旋转</strong>。<br>首先考虑插入，我们把必须要重新平衡的节点就做a，因此高度不平衡时，a的左子树与右子树高度相差2。这可以分为以下4种情况：</p>
+<ol>
+<li>对a的左儿子的左子树进行了一次插入。</li>
+<li>对a的左儿子的右子树进行了一次插入。</li>
+<li>对a的右儿子的左子树进行了一次插入。</li>
+<li>对a的右儿子的右子树进行了一次插入。</li>
+</ol>
+<p>情形1和4是对称的，2和3也是对称的。因为需要通过节点的高度来判断是否平衡，所以我们在节点中增加一个域height来表示该节点的高度。所以节点定义如下。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Max(a,b) (a&gt;b?a:b)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> ElemType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	ElemType element;</span><br><span class="line">	TreeNode * left;</span><br><span class="line">	TreeNode * right;</span><br><span class="line">	<span class="keyword">int</span> height;</span><br><span class="line">&#125; * pNode, * AvlTree;</span><br></pre></td></tr></table></figure></p>
+<p>操作声明：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Height</span><span class="params">(pNode p)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(AvlTree &amp; T,ElemType x)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Delete</span><span class="params">(AvlTree &amp; T,ElemType x)</span></span>;</span><br><span class="line"><span class="function">pNode <span class="title">Single_rotate_left</span><span class="params">(pNode p)</span></span>; <span class="comment">//从左向右单旋</span></span><br><span class="line"><span class="function">pNode <span class="title">Single_rotate_right</span><span class="params">(pNode p)</span></span>;<span class="comment">//从右向左单旋</span></span><br><span class="line"><span class="function">pNode <span class="title">Double_rotate_left</span><span class="params">(pNode p)</span></span>;</span><br><span class="line"><span class="function">pNode <span class="title">Double_rotate_right</span><span class="params">(pNode p)</span></span>;</span><br><span class="line"><span class="function">AvlTree <span class="title">CreateTree</span><span class="params">(ElemType A[],<span class="keyword">int</span> n)</span></span>;<span class="comment">//从数组建树</span></span><br></pre></td></tr></table></figure></p>
+<p>由于需要通过计算高度来判断平衡，所以必须定义一个计算节点高度的函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Height</span><span class="params">(pNode p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(p == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> p-&gt;height;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从数组建树：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">AvlTree <span class="title">CreateTree</span><span class="params">(ElemType A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	AvlTree T = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">		Insert(T,A[i]);</span><br><span class="line">	<span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="单旋转"><a href="#单旋转" class="headerlink" title="单旋转"></a>单旋转</h3><p>考虑情形1，如果对a的左儿子的左子树进行了一次插入，导致a的左子树比右子树高度大2的话，那么我们可以通过如下的单旋转来使其重新平衡。</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/single-rotation-left.png" alt="此处输入图片的描述"></p>
+<p>旋转后，返回tmp，很容易看出旋转后，依然满足二叉查找树的性质，而且重新达到了平衡。这一过程的实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pNode <span class="title">Single_rotate_left</span><span class="params">(pNode p)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	pNode tmp = p-&gt;left;</span><br><span class="line">	p-&gt;left = tmp-&gt;right;</span><br><span class="line">	tmp-&gt;right = p;</span><br><span class="line">	p-&gt;height = Max(Height(p-&gt;left),Height(p-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">	tmp-&gt;height = Max(Height(tmp-&gt;left),p-&gt;height) + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>类似的情形4，则如图所示。</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/single-rotate-right.png" alt="此处输入图片的描述"></p>
+<p>实现（与情形1镜像对称）：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pNode <span class="title">Single_rotate_right</span><span class="params">(pNode p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	pNode tmp = p-&gt;right;</span><br><span class="line">	p-&gt;right = tmp-&gt;left;</span><br><span class="line">	tmp-&gt;left = p;</span><br><span class="line">	p-&gt;height = Max(Height(p-&gt;left),Height(p-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">	tmp-&gt;height = Max(Height(tmp-&gt;right),p-&gt;height) + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> tmp; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的实现中，<code>Single_rotate_left</code>表示的是从左向右单旋，<code>Single_rotate_right</code>是从右向左单旋。</p>
+<h3 id="双旋转"><a href="#双旋转" class="headerlink" title="双旋转"></a>双旋转</h3><p>情形2和3则无法通过单旋转实现平衡，但可以通过一次双旋转来完成。就情形2来说，对a的左儿子的右子树进行了一次插入导致a的左子树比右子树高度大了2。则可以通过如下的旋转使得再次达到平衡。</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/double-rotate-left-right.png" alt="此处输入图片的描述"></p>
+<p>可以很明显的看出双旋转可以通过两次单旋转来完成，上图中，首先对子树k1进行可一次从右向左的单旋，然后对k3进行了一次从左向右的单旋。所以实现时调用上述函数即可。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pNode <span class="title">Double_rotate_left</span><span class="params">(pNode p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	p-&gt;left = Single_rotate_right(p-&gt;left);</span><br><span class="line">	<span class="keyword">return</span> Single_rotate_left(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>类似，情形3，如下。</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/double-rotate-right-left.png" alt="此处输入图片的描述"></p>
+<p>实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pNode <span class="title">Double_rotate_right</span><span class="params">(pNode p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	p-&gt;right = Single_rotate_left(p-&gt;right);</span><br><span class="line">	<span class="keyword">return</span> Single_rotate_right(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的1,2,3,4四种情形也经常因为插入位置被称为LL,LR,RL,RR。<br>一个描述了这几种旋转的动图：<br><img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/AVL_Tree_Example.gif" alt="此处输入图片的描述"></p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>旋转实现了，则插入就可以实现了，注意旋转中必须对节点高度进行必要的更新。AVL树插入节点的实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(AvlTree &amp; T,ElemType x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		T = <span class="keyword">new</span> TreeNode;</span><br><span class="line">		T-&gt;element = x;</span><br><span class="line">		T-&gt;height = <span class="number">0</span>;</span><br><span class="line">		T-&gt;left = T-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &lt; T-&gt;element)</span><br><span class="line">	&#123;</span><br><span class="line">		Insert(T-&gt;left,x);<span class="comment">//在T的左子树插入 		</span></span><br><span class="line">		<span class="keyword">if</span>(Height(T-&gt;left) - Height(T-&gt;right) == <span class="number">2</span>) <span class="comment">//左子树失衡，需要平衡 </span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(x &lt; T-&gt;left-&gt;element)<span class="comment">//插入在T的左孩子的左子树，单旋转，情形1</span></span><br><span class="line">				T = Single_rotate_left(T);</span><br><span class="line">			<span class="keyword">else</span>			<span class="comment">//插入在T的左孩子的右子树，双旋转，情形2</span></span><br><span class="line">				T = Double_rotate_left(T); </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &gt; T-&gt;element)			</span><br><span class="line">	&#123;</span><br><span class="line">		Insert(T-&gt;right,x);<span class="comment">//在T的右子树插入</span></span><br><span class="line">		<span class="keyword">if</span>(Height(T-&gt;right) - Height(T-&gt;left) == <span class="number">2</span>) <span class="comment">//右子树失衡，需要平衡</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(x &gt; T-&gt;right-&gt;element)<span class="comment">//插入在T的右孩子的右子树，单旋转，情形4</span></span><br><span class="line">				T = Single_rotate_right(T);</span><br><span class="line">			<span class="keyword">else</span>			<span class="comment">//插入在T的右孩子的左子树，双旋转，情形3</span></span><br><span class="line">				T = Double_rotate_right(T);</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//else x is aleardy exist in the tree, we'll do nothing.</span></span><br><span class="line">	<span class="comment">//Don't forget to update the height of root </span></span><br><span class="line">	T-&gt;height = Max(Height(T-&gt;left),Height(T-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>比较复杂，暂时未实现。待补。</p>
+<p>参考资料：<a href="https://book.douban.com/subject/1139426/" target="_blank" rel="noopener">数据结构与算法分析——C语言描述</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/20/2018.3.20--hash-table/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          哈希表
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/15/2018.3.15--binary-search-tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">二叉查找树</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自平衡的二叉查找树"><span class="nav-number">1.</span> <span class="nav-text">自平衡的二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AVL-Tree"><span class="nav-number">2.</span> <span class="nav-text">AVL Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单旋转"><span class="nav-number">2.1.</span> <span class="nav-text">单旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双旋转"><span class="nav-number">2.2.</span> <span class="nav-text">双旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">2.3.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">2.4.</span> <span class="nav-text">删除</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

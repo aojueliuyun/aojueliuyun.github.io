@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【离散数学】计数/排列组合 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="离散数学第三篇，讨论基本的计数技术——排列组合及其推广。组合数学是离散数学的重要组成部分，这里比较简略，待到有时间详细学习组合数学后再讨论一些复杂一点的问题。那何为组合数学呢？组合数学（Combinatorics）是研究一定条件的组态的存在、计数以及构造的科学。直白说就是研究物体如何安排的科学。这里的组合数学是狭义的组合数学，广义的组合数学就是离散数学。因计算机科学的核心就是使用算法研究离散数据">
+<meta name="keywords" content="离散数学,组合数学,集合论,计数,排列组合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【离散数学】计数&#x2F;排列组合">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/02/10/2018.2.10--counting-arrangement-&-combination/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="离散数学第三篇，讨论基本的计数技术——排列组合及其推广。组合数学是离散数学的重要组成部分，这里比较简略，待到有时间详细学习组合数学后再讨论一些复杂一点的问题。那何为组合数学呢？组合数学（Combinatorics）是研究一定条件的组态的存在、计数以及构造的科学。直白说就是研究物体如何安排的科学。这里的组合数学是狭义的组合数学，广义的组合数学就是离散数学。因计算机科学的核心就是使用算法研究离散数据">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-06-24T10:54:32.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【离散数学】计数&#x2F;排列组合">
+<meta name="twitter:description" content="离散数学第三篇，讨论基本的计数技术——排列组合及其推广。组合数学是离散数学的重要组成部分，这里比较简略，待到有时间详细学习组合数学后再讨论一些复杂一点的问题。那何为组合数学呢？组合数学（Combinatorics）是研究一定条件的组态的存在、计数以及构造的科学。直白说就是研究物体如何安排的科学。这里的组合数学是狭义的组合数学，广义的组合数学就是离散数学。因计算机科学的核心就是使用算法研究离散数据">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.2.10--counting-arrangement-&amp;-combination" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【离散数学】计数/排列组合
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/10/2018.2.10--counting-arrangement-&-combination/" class="article-date">
+	  <time datetime="2018-02-09T16:00:00.000Z" itemprop="datePublished">2018-02-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>离散数学第三篇，讨论基本的计数技术——排列组合及其推广。组合数学是离散数学的重要组成部分，这里比较简略，待到有时间详细学习组合数学后再讨论一些复杂一点的问题。那何为组合数学呢？组合数学（Combinatorics）是研究一定条件的组态的存在、计数以及构造的科学。直白说就是研究物体如何安排的科学。这里的组合数学是狭义的组合数学，广义的组合数学就是离散数学。因计算机科学的核心就是使用算法研究离散数据，所以组合数学在算法科学中具有重要地位。本文主要内容：基本计数原则、鸽巢原理、排列组合及其推广、二项式定理与恒等式以及生成排列组合的算法。</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="基本计数原则"><a href="#基本计数原则" class="headerlink" title="基本计数原则"></a>基本计数原则</h1><h2 id="乘法原则"><a href="#乘法原则" class="headerlink" title="乘法原则"></a>乘法原则</h2><p>如果一个任务被分解为相互独立的两个步骤，完成第一个步骤有 $n_1$ 种方法，第二个步骤有 $n_2$ 种方法，则完成整个过程方法数为$n_1\cdot n_2$。推广到多个步骤就是$n_1\cdot n_2\cdot \dots \cdot n_k$，共k个步骤，$n_i$是第$i$个步骤的方法数。</p>
+<p>用集合语言描述如下：$|A_1\times A_2\times \dots \times A_k|= |A_1|\cdot |A_2|\cdot\dots \cdot |A_k|$</p>
+<h2 id="求和原则"><a href="#求和原则" class="headerlink" title="求和原则"></a>求和原则</h2><p>如果有两种独立的途径完成一项任务，第一种有 $n_1$ 种方法，第二种有 $n_2$ 种方法，则完成该任务共有$n_1+n_2$种方法。推广到多种途径就是 $n_1+ n_2+ \dots + n_k$ 种方法。</p>
+<p>也称为<strong>加法原则</strong>。用集合语言描述：$|A_1\cup A_2\cup \dots \cup A_k|= |A_1|+ |A_2|+\dots + |A_k|$，其中$A_i\cap A_j=\varnothing$，对所有 $i$，$j$.</p>
+<h2 id="减法原则"><a href="#减法原则" class="headerlink" title="减法原则"></a>减法原则</h2><p>如果一个任务可以有两种途径完成，第一种有 $n_1$ 种方法，第二种有 $n_2$ 种方法，两种途径中有 $n_3$ 种方法是相同的。则完成该任务共有 $n_1+n_2-n_3$ 种方法。</p>
+<p>集合语言描述：即是两个集合的容斥原理 $|A_1\cup A_2| = |A_1|+|A_2|-|A_1\cap A_2|$</p>
+<h2 id="除法原则"><a href="#除法原则" class="headerlink" title="除法原则"></a>除法原则</h2><p>如果一个任务可以由 $n$ 种方法完成，而在这 $n$ 中方法中每一种完成的方式在 $n$ 种中正好有 $d$ 种与之对应（即在该问题的研究中可以看做一种方法），则完成该任务的方法数为 $n/d$。</p>
+<p>这几个原则乃是计数最基础的原则，很好理解。</p>
+<hr>
+<h1 id="鸽巢原理"><a href="#鸽巢原理" class="headerlink" title="鸽巢原理"></a>鸽巢原理</h1><p>鸽巢原理的通俗描述：如果鸽子比笼子多，那么一定有一个笼子里面至少有两只鸽子。</p>
+<h2 id="鸽巢原理-1"><a href="#鸽巢原理-1" class="headerlink" title="鸽巢原理"></a>鸽巢原理</h2><p>描述：把 $k+1$ 个甚至更多物体放入 $k$ 个盒子，那么至少有一个盒子里面有两只甚至更多个物体。</p>
+<p>推论：从 $k+1$ 个甚至更多个元素的集合到 $k$ 个元素的集合的函数 $f$ 一定不是一对一函数。</p>
+<h2 id="广义鸽巢原理"><a href="#广义鸽巢原理" class="headerlink" title="广义鸽巢原理"></a>广义鸽巢原理</h2><p>描述：将 $N$ 个物体放入 $k$ 个盒子，那么至少有一个盒子里面有 $\lceil  N/k \rceil$ 个物体。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>定理：每个由 $n^2+1$ 个不同实数构成的序列都包含一个长度为 $n$ 的严格递增子序列或严格递减子序列。</p>
+<p>上述定理可以使用广义鸽巢原理证明。</p>
+<p><strong>拉姆齐数（Ramsey number）</strong>：$R(m,n)$（其中$m,n\geq 2$） 是这样一个数 $N$，使得在 $N$ 个人中有 $m$ 个人互相认识或 $n$ 个人互相不认识需要的最小人数 $N$。其中两个人要么互相认识，要么互相不认识。</p>
+<p><strong>拉姆齐定理（Ramsey theory）</strong>是组合学的一个重要组成部分，用来处理集合元素的子集分配问题。<br>拉姆齐数也是图论中的重要函数之一。已知的拉姆齐数非常少，这包括 $R(2,n)=n$ (其中$n\geq 2)$，$R(3,3)=6$，$R(4,4)=18$ 等。有一个关于拉姆齐数的笑话</p>
+<blockquote>
+<p>想像有队外星人军队在地球降落，要求取得R(5,5)的值，否则便会毁灭地球。在这个情况，我们应该集中所有电脑和数学家尝试去找这个数值。若它们要求的是R(6,6)的值，我们要尝试毁灭这班外星人了。</p>
+</blockquote>
+<p>形象的描述了寻找拉姆齐数的难度。我们只能知道很多拉姆齐数的上下界，包括著名的 $43\leq R(5,5) \leq 49$ 。</p>
+<hr>
+<h1 id="排列组合"><a href="#排列组合" class="headerlink" title="排列组合"></a>排列组合</h1><p>解决某些计数问题时，我们会发现可以通过找到特定大小集合中不用元素的排列的方法数来解决问题，其中元素的次序收到限制，即是排列问题（Arrangement）。而另一些问题可以通过找到从特定大小元素集合中选出特定数量元素的方法数来解决，即是组合问题（Combination）。这里详细阐述这两类问题。</p>
+<h2 id="排列"><a href="#排列" class="headerlink" title="排列"></a>排列</h2><p>从$n$个不同元素组成的集合中选出$r$个元素排成一列，即需要考虑排列的次序。这种有序安排称为$n$元素集合的r排列。排列的方法数记作$P(n,r)$（也记作 $A_n^r$ 或者 $P_n^r$），读作$n$元素集合的$r$排列数。</p>
+<p>显然，$P(n,r)$ $\;=n(n-1)(n-2)\cdots(n-r+1)$ $=\dfrac {n!}{(n-r)!}$<br>则$n$元素集合的全排列为$P(n,n)=n!$</p>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p>从$n$个不同元素组成的集合中无序选出$r$个元素，即不需要考虑排列的次序。这些无序选取的元素构成该集合的子集，称为$n$元素的一个$r$组合。组合的方法数记作$C(n,r)$（或者$C_n^r$），读作$n$元素集合的$r$组合数。也记作$\big(_r^n\big )$，并且称为二项式系数。</p>
+<p>显然，$C(n,r)$ $\;=\dfrac{n!}{r!\ (n-r)!}$ $\;=\dfrac{P(n,r)}{P(r,r)}$ $\;=\dfrac{n(n-1)(n-2)\cdots(n-r+1)}{r!}$</p>
+<p>显然有 <script type="math/tex">C(n,r)=C(n,n-r)</script> 和 <script type="math/tex">P(n,r)=C(n,r)\cdot P(r,r)</script>基础不过多解释。</p>
+<hr>
+<h1 id="二项式定理与恒等式"><a href="#二项式定理与恒等式" class="headerlink" title="二项式定理与恒等式"></a>二项式定理与恒等式</h1><p>$n$ 元素集合的 $r$ 排列数常记作$\big( ^n_r\big)$，由于这些数出现在二项式幂$(a+b)^n$的展开式中作为系数，所以也称<strong>二项式系数</strong>。</p>
+<h2 id="二项式定理"><a href="#二项式定理" class="headerlink" title="二项式定理"></a>二项式定理</h2><p>设$x$，$y$是变量，$n$是非负整数，那么<script type="math/tex">(x+y)^n=\sum_{j=0}^{n}\Big(^n_j\Big)x^{n-j}y^j</script>这很容易理解，由二项式定理可以得到任何一个$(x+y)^n$的展开式。</p>
+<p>一些推论：</p>
+<ul>
+<li>$\sum_{k=0}^{n}\Big(^n_k\Big) = 2^n$，令$x=y=1$得到。</li>
+<li>$\sum_{k=0}^{n}(-1)^k\Big(^n_k\Big) = 0$，令$x=1$，$y=-1$得到。</li>
+<li>$\sum_{k=0}^{n}2^k\Big(^n_k\Big) = 3^n$，令$x=1$，$y=2$得到。</li>
+</ul>
+<h2 id="帕斯卡恒等式"><a href="#帕斯卡恒等式" class="headerlink" title="帕斯卡恒等式"></a>帕斯卡恒等式</h2><p>设 $n$ 和 $k$ 是满足 $n\geq k$ 的正整数，则有$\Big(^{n+1}_{k}\Big )=\Big(^{n}_{k-1}\Big )+\Big(^{n}_{k}\Big )$.</p>
+<p>证明：现从n+1个元素中取k个元素组成一个集合，将n+1个元素集合分为两部分，一个包含n个元素，一个包含1个元素。现要从n+1个集合中取出k个元素，则将有两种选择——包含这单独的一个元素与否，若包含，则只需要从n个元素中取出另外的k-1个，若不包含，则需从n个中取出全部k个，由加法原则有$\big(^{n+1}_{k}\big )=\big(^{n}_{k-1}\big )+\big(^{n}_{k}\big )$。</p>
+<p>我们可以使用帕斯卡恒等式递归定义二项式系数。</p>
+<h2 id="帕斯卡三角形"><a href="#帕斯卡三角形" class="headerlink" title="帕斯卡三角形"></a>帕斯卡三角形</h2><p>帕斯卡三角形的基础是帕斯卡恒等式，亦是著名的<strong>杨辉三角</strong>。<br>如下:</p>
+<script type="math/tex; mode=display">(^0_0)\\
+(^1_0)\quad(^1_1)\\
+(^2_0)\quad(^2_1)\quad(^2_2)\\
+(^3_0)\quad(^3_1)\quad(^3_2)\quad(^3_2)\\
+(^4_0)\quad(^4_1)\quad(^4_2)\quad(^4_3)\quad(^4_4)\\
+(^5_0)\quad(^5_1)\quad(^5_2)\quad(^5_3)\quad(^5_4)\quad(^5_5)\\
+(^6_0)\quad(^6_1)\quad(^6_2)\quad(^6_3)\quad(^6_4)\quad(^6_5)\quad(^6_6)\\
+\dots</script><p>计算出数值：</p>
+<script type="math/tex; mode=display">1\\1\quad1\\1\quad2\quad1\\1\quad3\quad3\quad1\\1\quad4\quad6\quad4\quad1\\1\quad5\quad10\quad10\quad5\quad1\\1\quad6\quad15\quad20\quad15\quad6\quad1\\\cdots</script><p>在上述三角形中，用帕斯卡恒等式可以证明，每个二项式系数均等于该数其上一行左右两系数之和（左边或者右边没有数的可以看做是0），即每一行相邻两个系数相加就产生了下一行的这两个系数中间的二项式系数。</p>
+<h2 id="其他二项式系数恒等式"><a href="#其他二项式系数恒等式" class="headerlink" title="其他二项式系数恒等式"></a>其他二项式系数恒等式</h2><p>范德蒙德恒等式：<script type="math/tex">\Big(^{m+n}_r\Big)=\sum_{k=0}^{r}\Big( ^m_{r-k}\Big)\Big( ^n_{k}\Big)</script><br>证明方法：将m+n个元素的集合分为m个和n个元素的两个集合，从这两个集合中合取r个元素的方法数与从原来m+n个元素集合中取r个元素的方法数相等。</p>
+<p>推论：<br>令 $m=n$ 即可得到：$\big( ^{2n}_{n}\big) = \sum_{k=0}^r\big(^n_k\big)^2$</p>
+<p>定理：$r$，$n$为非负整数，$r\leq n$，那么<script type="math/tex">\Big(^{n+1}_{r+1}\Big)=\sum_{j=r}^n\Big(^j_n\Big)</script></p>
+<p>证明：考虑包含r+1个1的n+1位01位串，最后一个1出现的位置可能是r+1，r+2，…，n+1位上，则其余的1则出现在前面。若最后一位在第j+1位上，则前面j位出现的r个1的位串数为$(^j_r)$，由加法法则即可证明上述恒等式。</p>
+<h2 id="多项式定理"><a href="#多项式定理" class="headerlink" title="多项式定理"></a>多项式定理</h2><p>类比二项式定理，由排列组合与计数原则可以得到：<br>多项式定理：如果n是正整数，则<script type="math/tex">(x_1+x_2+\cdots+x_m)^n=\sum_{x_1+x_2+\cdots+x_m=n}C(n;n_1,n_2,...,n_m)x_1^{n_1}x_2^{n_2}\cdots x_n^{n_m}</script><br>其中多项式系数$C(n;n_1,n_2,…,n_m)=\dfrac{n!}{n_1!n_2!\cdots n_m!}$</p>
+<p>证明：从$n$次幂中选出$n_1$次给$x_1$，$n_2$次给$x_2$，…，$n_m$给$x_m$即可，系数$C(n;n_1,n_2,…,n_m)=$$C(n,n_1)\cdot C(n-n_1,n_2)\dots C(n_m,n_m)$ 化简即可得到上述式子。</p>
+<hr>
+<h1 id="排列组合的推广"><a href="#排列组合的推广" class="headerlink" title="排列组合的推广"></a>排列组合的推广</h1><p>单纯的排列与组合能解决的问题十分有限。因为排列与组合要求所有元素不同，而且不能重复选择一个元素。而某些问题中涉及重复选择与具有不可区分的元素的排列组合。这时需要对排列组合进行推广。我们还可以通过模拟把物体放入盒子的过程来解决许多问题，其中的物体可以是可分辨的与不可分辨的，盒子也可以是可分辨的与不可分辨的。</p>
+<h2 id="有重复的排列"><a href="#有重复的排列" class="headerlink" title="有重复的排列"></a>有重复的排列</h2><p>当元素允许重复时，由乘法法则很容易得到排列数。</p>
+<p>定理：$n$ 个元素集合的<strong>允许重复</strong>的 $r$ 排列数是 $n^r$。</p>
+<h2 id="有重复的组合"><a href="#有重复的组合" class="headerlink" title="有重复的组合"></a>有重复的组合</h2><p>$n$ 个元素集合的允许重复的 $r$ 组合有$C(n+r-1,r)$$=C(n+r-1,n-1)$个。</p>
+<p>证明：因为n个元素可以重复，我们可以将其等效为n个盒子，放入其中的元素不区分，并用n-1条隔板将其分隔。则n元素集合的允许重复的r组合数即是将选出r个元素放入n个盒子中，即用n-1个隔板将其隔开。则从n个元素中可重复地选r个即可等价为从隔板和物体构成的n+r-1个物体或者隔板的排列中选出r个物体或者选出n-1个隔板的位置。即是$C(n+r-1,r)$$=C(n+r-1,n-1)$。</p>
+<p>允许重复与不允许的排列组合数：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">允许重复</th>
+<th style="text-align:center">公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">r 排列</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">$\frac {n!}{(n-r)!}$</td>
+</tr>
+<tr>
+<td style="text-align:center">r 组合</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">$\frac {n!}{r!\,(n-r)!}$</td>
+</tr>
+<tr>
+<td style="text-align:center">r 排列</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">$n^r$</td>
+</tr>
+<tr>
+<td style="text-align:center">r 组合</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">$\frac{(n+r-1)!}{r!\,(n-1)!}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="具有不可区分物体的排列"><a href="#具有不可区分物体的排列" class="headerlink" title="具有不可区分物体的排列"></a>具有不可区分物体的排列</h2><p>设类型 $j$ 有 $n_j$ 个物体，$1\leq j \leq k$，$n_1+n_2+\dots+n_k=n$，则 $n$ 个物体的不同排列数为<script type="math/tex">\dfrac {n!}{n_1!\,n_2!\,\dots n_k!}</script><br>即是从$n$个位置中选 $n_j$个来放类型$j$ 的物体，有：<br>$C(n,n_1)\cdot C(n-n_1,n_2)\dots C(n_k,n_k)$$ = \dfrac {n!}{n_1!\,n_2!\,\dots n_k!}$</p>
+<h2 id="把物体放入盒子的问题"><a href="#把物体放入盒子的问题" class="headerlink" title="把物体放入盒子的问题"></a>把物体放入盒子的问题</h2><p>许多问题都可以等效为把物体放入盒子的问题。其中的物体可以是可分辨的与不可分辨的，盒子也可以是可分辨的与不可分辨的。其中如果盒子是可分辨的，则可以转化为前面的问题。如果盒子是不可分辨的，不管物体可不可分辨，都将没有闭公式，可以通过列举或者编程求解来解决此类为题。</p>
+<h3 id="可分辨的物体与可分辨的盒子"><a href="#可分辨的物体与可分辨的盒子" class="headerlink" title="可分辨的物体与可分辨的盒子"></a>可分辨的物体与可分辨的盒子</h3><p>把 $n$ 个可分辨的物体放入 $k$ 个可分辨的盒子使得 $n_i$个物体放入盒子 $i$ ($i=1,2,…,k$)的方法数为：<script type="math/tex">\dfrac {n!}{n_1!\,n_2!\,\dots n_k!}</script></p>
+<h3 id="不可分辨的物体与可分辨的盒子"><a href="#不可分辨的物体与可分辨的盒子" class="headerlink" title="不可分辨的物体与可分辨的盒子"></a>不可分辨的物体与可分辨的盒子</h3><p>把 $n$ 个不可分辨的物体放入 $k$ 个可分辨的盒子使得 $n_i$个物体放入盒子 $i$ ($i=1,2,…,k$)的方法数为：$C(n+k-1,n)$</p>
+<p>可以看到这即是 $k$ 个元素集合的可重复的 $n$排列数。</p>
+<h3 id="可分辨的物体与不可分辨的盒子"><a href="#可分辨的物体与不可分辨的盒子" class="headerlink" title="可分辨的物体与不可分辨的盒子"></a>可分辨的物体与不可分辨的盒子</h3><p>这类问题求出公式比较复杂，列举可解决。这里略过。</p>
+<h3 id="不可分辨的物体与不可分辨的盒子"><a href="#不可分辨的物体与不可分辨的盒子" class="headerlink" title="不可分辨的物体与不可分辨的盒子"></a>不可分辨的物体与不可分辨的盒子</h3><p>列举同样可以解决，这里通过一个例子来说明。<br>例：将6个物体放入4个盒子，有以下方式：<br>6<br>5，1<br>4，2<br>3，3<br>4，1，1<br>3，2，1<br>2，2，2<br>3，1，1，1<br>2，2，1，1<br>共9种方式。</p>
+<p>将 $n$ 个不可分辨的物体放入 $k$ 个不可分辨的盒子等价于将 $n$ 写成  $k$ 个非递增正整数之和。其中的每一种方法，我们将其称作将正整数$n$划分成$k$个正整数的一个<strong>划分</strong>，用 $p_k(n)$ 来表示。则将 $n$ 个不可分辨的物体放入 $k$ 个不可分辨的盒子的方法数为 $p_k(n)$。对此，没有简单的公式来表示，略。</p>
+<hr>
+<h1 id="生成排列及组合的算法"><a href="#生成排列及组合的算法" class="headerlink" title="生成排列及组合的算法"></a>生成排列及组合的算法</h1><p>开学后补上。</p>
+<hr>
+<p><strong>参考资料：《离散数学及其应用》（本科教学版，Kenneth H.Rosen著，原书第七版）</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/27/2018.2.27--three-body-book-review/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          《三体》浮想
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/04/2018.2.4--set-funcion-sequence-matrix/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【离散数学】基本结构——集合、函数、序列、矩阵</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本计数原则"><span class="nav-number">1.</span> <span class="nav-text">基本计数原则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#乘法原则"><span class="nav-number">1.1.</span> <span class="nav-text">乘法原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求和原则"><span class="nav-number">1.2.</span> <span class="nav-text">求和原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#减法原则"><span class="nav-number">1.3.</span> <span class="nav-text">减法原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#除法原则"><span class="nav-number">1.4.</span> <span class="nav-text">除法原则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#鸽巢原理"><span class="nav-number">2.</span> <span class="nav-text">鸽巢原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#鸽巢原理-1"><span class="nav-number">2.1.</span> <span class="nav-text">鸽巢原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广义鸽巢原理"><span class="nav-number">2.2.</span> <span class="nav-text">广义鸽巢原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">2.3.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#排列组合"><span class="nav-number">3.</span> <span class="nav-text">排列组合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#排列"><span class="nav-number">3.1.</span> <span class="nav-text">排列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合"><span class="nav-number">3.2.</span> <span class="nav-text">组合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二项式定理与恒等式"><span class="nav-number">4.</span> <span class="nav-text">二项式定理与恒等式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#二项式定理"><span class="nav-number">4.1.</span> <span class="nav-text">二项式定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帕斯卡恒等式"><span class="nav-number">4.2.</span> <span class="nav-text">帕斯卡恒等式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帕斯卡三角形"><span class="nav-number">4.3.</span> <span class="nav-text">帕斯卡三角形</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他二项式系数恒等式"><span class="nav-number">4.4.</span> <span class="nav-text">其他二项式系数恒等式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多项式定理"><span class="nav-number">4.5.</span> <span class="nav-text">多项式定理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#排列组合的推广"><span class="nav-number">5.</span> <span class="nav-text">排列组合的推广</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#有重复的排列"><span class="nav-number">5.1.</span> <span class="nav-text">有重复的排列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有重复的组合"><span class="nav-number">5.2.</span> <span class="nav-text">有重复的组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具有不可区分物体的排列"><span class="nav-number">5.3.</span> <span class="nav-text">具有不可区分物体的排列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把物体放入盒子的问题"><span class="nav-number">5.4.</span> <span class="nav-text">把物体放入盒子的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可分辨的物体与可分辨的盒子"><span class="nav-number">5.4.1.</span> <span class="nav-text">可分辨的物体与可分辨的盒子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可分辨的物体与可分辨的盒子"><span class="nav-number">5.4.2.</span> <span class="nav-text">不可分辨的物体与可分辨的盒子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可分辨的物体与不可分辨的盒子"><span class="nav-number">5.4.3.</span> <span class="nav-text">可分辨的物体与不可分辨的盒子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可分辨的物体与不可分辨的盒子"><span class="nav-number">5.4.4.</span> <span class="nav-text">不可分辨的物体与不可分辨的盒子</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成排列及组合的算法"><span class="nav-number">6.</span> <span class="nav-text">生成排列及组合的算法</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

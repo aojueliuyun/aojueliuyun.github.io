@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>c++语法入门【1】命名空间、数据类型 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。  C++进阶之路（图片来自知乎）：">
+<meta name="keywords" content="C++,编程语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++语法入门【1】命名空间、数据类型">
+<meta property="og:url" content="http://aojueliuyun.github.io/2017/11/09/2017.11.9--C++started-namespace-datatype/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。  C++进阶之路（图片来自知乎）：">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF.jpg">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AD%89%E7%BA%A7.png">
+<meta property="og:updated_time" content="2018-01-23T06:34:27.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++语法入门【1】命名空间、数据类型">
+<meta name="twitter:description" content="初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。  C++进阶之路（图片来自知乎）：">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017.11.9--C++started-namespace-datatype" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      C++语法入门【1】命名空间、数据类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/09/2017.11.9--C++started-namespace-datatype/" class="article-date">
+	  <time datetime="2017-11-08T16:00:00.000Z" itemprop="datePublished">2017-11-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/C/">C++</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。</p>
+</blockquote>
+<p>C++进阶之路（图片来自知乎）：<br><img src="http://oxx8it1qo.bkt.clouddn.com/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png" alt="C++进阶"></p>
+<a id="more"></a>
+<hr>
+<h1 id="C-Started"><a href="#C-Started" class="headerlink" title="C++ Started"></a>C++ Started</h1><p>目前仍然算是开始阶段，C++ Primer Plus 是还没有看完的。<br>在写下了hello,world:<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello,world!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>之后，又粗略了解的C++的class之后，我感觉自己掌握了世界。C++不过如此嘛，自信是有的。然而学习C++的 self-confidence 曲线早已预知了一切。（渺小的凡人！）</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/C++%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF.jpg" alt="学习C++的自信曲线"></p>
+<p>而我一直以来都是把C++当做 C with classes 来用的，不对，应该是 C with cin and cout，输入输出用<code>cin</code>和<code>cout</code>，简洁明了，再加上一个看起来无比牛B的iostream头文件，瞬间感觉自己也是懂C++的男人了。（滑稽）</p>
+<p>而知乎上一位答主给出的C++学习阶段的等级，虽然我对C++并没有十分清醒的认识，但这个应该还是有一定参考性的。我认为自己是可以在第0级前徘徊的。而且会不会成为死在门前的小白鼠呢。</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/C++%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AD%89%E7%BA%A7.png" alt="精通C++？不存在的。"></p>
+<p>以上是对自己的吐槽以及学习方向的参考。<br>以下是学习C++时自己的理解，特别基础的东西是略过的，写下来也没有多大价值，还是要以书籍为本。其中会包含一些C和C++的比较。</p>
+<hr>
+<h1 id="命名空间-namespace"><a href="#命名空间-namespace" class="headerlink" title="命名空间 namespace"></a>命名空间 namespace</h1><p>C++标准库中的函数或者对象都是在命名空间<code>std</code>中定义的，所以我们要使用标准函数库中的函数或对象都要使用std来限定。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using namespace std;</span><br></pre></td></tr></table></figure></p>
+<p>也可以将要使用的函数或对象提前使用<code>using</code>声明，比如要使用<code>cin</code>和<code>cout</code>的话：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">using std::cin;</span><br><span class="line">using std::cout;</span><br></pre></td></tr></table></figure></p>
+<p>也可以在使用时加上<code>std::</code>前缀，<code>std::cin</code>或者<code>std::cout</code>。</p>
+<p>命名空间的细节下一次详述。</p>
+<hr>
+<h1 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h1><p>C++中基本数据类型和C一致。C++为了保持和C语言具有良好的兼容性，保留了很多C语言的特性（<strong>Zao Po</strong>）。</p>
+<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><p>长度上来说有<code>short</code>、<code>int</code>、<code>long (int)</code>、<code>long long (int)</code>四种。长度分别为16bit,16或32bit,32bit,64bit。</p>
+<p>从符号上来说有 <code>unsigned</code> 和 <code>signed</code>（缺省），即无符号和有符号。</p>
+<h2 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h2><p><code>float</code>(32bit),<code>double</code>(64bit),<code>long double</code>(128)bit。同样有<code>unsigned</code>。</p>
+<h2 id="字符型"><a href="#字符型" class="headerlink" title="字符型"></a>字符型</h2><p><code>char</code>（8bit），<code>unsigned char</code>，宽字符型<code>wchar_t</code>。C++11新增 <code>char16_t</code>（16bit） 和 <code>char32_t</code>（32bit）。</p>
+<h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p><code>true</code> 和 <code>false</code> 两个取值。隐式转换：一切非0值转换为<code>true</code>，0转换为<code>false</code>。</p>
+<h2 id="const-常量"><a href="#const-常量" class="headerlink" title="const 常量"></a>const 常量</h2><p><code>const</code>限定符修饰，不可变，不可赋值。用来取代C语言中的宏定义（定义符号常量时）。宏定义<code>#define</code>的本质是替换，在某些不严谨的编码中会产生问题，<code>const</code>则不会。然而宏定义在某些情况下（比如在头文件中）依然很常用。</p>
+<p>在C++中，应该用以下代码来替代宏定义。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Max_Size = <span class="number">100</span>;</span><br></pre></td></tr></table></figure></p>
+<p>取代：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Max_Size 100</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p>运算符的优先级关系需注意，不赘述。</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>C++中将使用<code>{ }</code>来初始化叫做初始化列表（list-initialization）。初始化列表比直接赋值更加严格。</p>
+<p>格式：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a &#123;<span class="number">1</span>&#125;;  <span class="comment">//a = 1</span></span><br></pre></td></tr></table></figure></p>
+<p>或者<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = &#123;<span class="number">1</span>&#125;；</span><br></pre></td></tr></table></figure></p>
+<p>如果在使用初始化列表时将double·类型赋给int型，在GCC编译器，ISOC++11标准下会报warning。</p>
+<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><p>在表达式中会将低优先级的类型转换为高优先级的。大体上 long double &gt; double &gt; double &gt; long long &gt; long &gt; int &gt; short &gt; char , signed &gt; unsigned。（并不十分严谨，请查阅C++编译器校验表）</p>
+<p>传递参数时形参实参类型不同也会自动转换。</p>
+<h2 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h2><p>C语言写法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">typename</span>) value</span><br></pre></td></tr></table></figure></p>
+<p>C++标准写法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typename</span> (value)</span><br></pre></td></tr></table></figure></p>
+<p>C++还引入了强制类型转换运算符，使用要求更为严格，更安全。如<code>static_cast&lt;typename&gt; (value)</code></p>
+<h2 id="auto声明"><a href="#auto声明" class="headerlink" title="auto声明"></a>auto声明</h2><p>C++11的auto关键字可以让你不用定义数据类型。如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> a = <span class="number">1</span>;         <span class="comment">//int</span></span><br><span class="line"><span class="keyword">auto</span> b = <span class="number">1.0</span>;       <span class="comment">//duoble</span></span><br><span class="line"><span class="keyword">auto</span> x = <span class="number">1.3e14</span>L;   <span class="comment">//long double</span></span><br></pre></td></tr></table></figure></p>
+<p>但实际上auto并不是这样来使用的。<br>真正用法，例如C++98下的下列代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; scores;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;::iterator itor = scores.begin();</span><br></pre></td></tr></table></figure></p>
+<p>在C++11中完全可以写作：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; scores;</span><br><span class="line"><span class="keyword">auto</span> itor = scores.begin();</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="复合数据类型"><a href="#复合数据类型" class="headerlink" title="复合数据类型"></a>复合数据类型</h1><p>更新于2017.12.4。时间过得真快啊。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="C中的数组"><a href="#C中的数组" class="headerlink" title="C中的数组"></a>C中的数组</h3><p>数组声明格式<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typename</span> arrayname[arraysize];</span><br></pre></td></tr></table></figure></p>
+<p>数组在内存中的存储是连续的，数组名被解释为指向数组第一个元素的指针，每个单元的大小就是<code>typename</code>的字节。不同于一般的指针变量，数组名不可被赋值。<code>&amp;arrayname</code>表示指向整个数组的指针，单元大小是整个数组大小。（arrayname和&amp;arrayname表示的地址相同但含义不同）。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> A[<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; A &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;A &lt;&lt; <span class="built_in">endl</span>;         <span class="comment">//A和&amp;A地址一致</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; A+<span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>;        <span class="comment">//A+1地址比A大4个字节（64位windows中int类型大小为4字节）</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;A+<span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>;       <span class="comment">//&amp;A+1地址比A大16个字节（&amp;A指向整个数组）</span></span><br></pre></td></tr></table></figure></p>
+<p>若在定义时由初始化列表初始化，可不指定数组大小。此时数组大小确立由编译器完成。例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;    <span class="comment">//数组大小为4</span></span><br></pre></td></tr></table></figure></p>
+<p>C99标准中支持<strong>变长数组</strong>（<strong>VLA</strong>，variable length array），C89并不支持，GCC编译器同时支持了C和C++的语法，支持这一特性。而在VC++因为使用C++的编译器（对C语言只支持到了C89）可能不支持。也就是说下列代码在GCC编译器向下是可执行的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> A[n];</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; A[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>突然想到大一时C语言老师按照C89标准讲的知识，数组长度必须是常数，然后用VC++6.0写C。无力吐槽。</p>
+<p>C语言中的数组并不提供越界检查，也就是说数组下标管理需要程序员来完成。数组下标越界属于未定义行为，在不同机器，不同编译器环境下可能出现不同结果。一般情况下可能出现程序能编译但运行时会崩溃。</p>
+<p>在C/C++数组中，<strong>A[i]完全等价于*(A+i)</strong>，所以说存在下列有趣的现象。这在C语言/C++中是完全正确的语法，一定程度上来说并不安全，所以C++提供了可以代替数组的更安全的类。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; i[A];    <span class="comment">//等价于*(i+A),即*(A+i)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="C-中数组的替代"><a href="#C-中数组的替代" class="headerlink" title="C++中数组的替代"></a>C++中数组的替代</h3><p>C++提供了两个类来替代数组，array类(C++11)和vector类。本质上来说是对数组的封装，比C风格的数组更安全。<br>array对象长度不可变，需包含头文件<code>array</code>，声明格式：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">typename</span>,arraysize&gt; arr;  <span class="comment">//arraysize不能是变量</span></span><br></pre></td></tr></table></figure></p>
+<p>vector对象长度可变，并且在运行时可以改变长度，需包含头文件<code>vector</code>，声明格式：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">typename</span>&gt; vec(n);    <span class="comment">//n可以是整型变量或常量</span></span><br></pre></td></tr></table></figure></p>
+<p>array类和vector类可以通过和数组相同的访问方式——即<code>[ ]</code>运算符访问。由于vector类长度可变，所以array类性能高于vector类。</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="C风格字符串"><a href="#C风格字符串" class="headerlink" title="C风格字符串"></a>C风格字符串</h3><p>C语言中用char数组表示字符串，字符串以空字符<code>&#39;\0&#39;</code>结尾，不以<code>&#39;\0&#39;</code>结尾的char数组不是字符串。对C风格字符串的操作结束标志都是<code>&#39;\0&#39;</code>。与普通数组相同，字符串名称指向字符串的第一个字符地址（字符串首地址）。<br>初始化：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[] = <span class="string">"hello,world!"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>则字符串长度为12，但字符数组大小为13，初始化时编译器会在末尾自动填’\0’。<br>C中库<code>string.h</code>，C++中<code>cstring</code>库（C中的标准库在C++中都加上了前缀c且不带后缀.h，如<code>math.h</code>变为<code>cmath</code>，<code>string.h</code>变为<code>cstring</code>）提供了一系列C风格字符串的操作。如求串长的<code>strlen()</code>，比较两个字符串的<code>strcmp()</code>，拷贝字符串的<code>strcpy()</code>，拼接字符串的<code>strcat()</code>等。</p>
+<p>对于定义时初始化的字符串，字符串求串长的函数<code>strlen()</code>求得的是字符串长度，而用<code>sizeof()</code>方法求得的尺寸要包含末尾的<code>&#39;\0&#39;</code>，既有sizeof(str) = strlen(str)+1。</p>
+<p>在C++中，字符串常量同样是用字符串首地址来表示。比如可以通过如下方式来打印字符串第一个字符。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; *<span class="string">"hello"</span>;   <span class="comment">//打印结果为h</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"world"</span>[<span class="number">2</span>]; <span class="comment">//打印结果为l</span></span><br></pre></td></tr></table></figure></p>
+<p>C++中提供字符串按行输入方法<code>cin.getline(str,len)</code>，则字符串最长长度为len-1。</p>
+<h3 id="C-中的string类"><a href="#C-中的string类" class="headerlink" title="C++中的string类"></a>C++中的string类</h3><p>C++中提供的string类来更好的表示字符串，string对象无固定长度，可直接赋值，可使用<code>[]</code>运算符访问字符，提供了一系列处理字符串的方法。例如<code>length()</code>/<code>size()</code>方法求串长，可直接用<code>+</code>运算符拼接两个字符串，可直接使用<code>==</code>判断字符串相等/或者使用<code>compare()</code>方法,etc.</p>
+<p>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str = <span class="string">"hello,world!"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>string类同样有按行输入方法<code>getline(cin,str)</code>。</p>
+<p>这里简要说明，以后会有标准模板库的详细介绍。</p>
+<h2 id="指针与自由存储空间"><a href="#指针与自由存储空间" class="headerlink" title="指针与自由存储空间"></a>指针与自由存储空间</h2><h3 id="指针（pointer）"><a href="#指针（pointer）" class="headerlink" title="指针（pointer）"></a>指针（pointer）</h3><p>指针变量的定义使用运算符<code>*</code>，指针变量保存的内容是地址。定义格式如下。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typename</span> *pointer;      <span class="comment">//则pointer是一个指向typename类型的指针</span></span><br></pre></td></tr></table></figure></p>
+<p>例如指向int类型的指针的意思是指针变量中存放着一个int变量的地址。通过取地址运算符<code>&amp;</code>可以将int类型变量的地址赋给指针，解除引用运算符<code>*</code>（或者说取内容）可以取出指针变量的地址指向的变量。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;a;            <span class="comment">//定义时初始化，指针变量p的值即为a的地址</span></span><br><span class="line"><span class="comment">//p = &amp;a;               //定以后初始化，与上面等价    </span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; *p &lt;&lt; <span class="built_in">endl</span>;     <span class="comment">//*p等价于a，即会打印出1</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; p &lt;&lt; <span class="built_in">endl</span>;      <span class="comment">//打印指针变量保存的地址，即是&amp;a，格式为一个十六进制数</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a &lt;&lt; <span class="built_in">endl</span>;     <span class="comment">//与p内容相同</span></span><br></pre></td></tr></table></figure></p>
+<p>对于上述指针变量p，我们称其类型为 <code>int *</code>类型，即指向int的指针。但是在同时定义多个指针变量时，需要在每一个指针前加上<code>*</code>。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> * b,c;      <span class="comment">//定义了一个指向int的指针b，和一个int型变量c</span></span><br></pre></td></tr></table></figure></p>
+<p>指针变量在定义时即被分配内存，但是计算机并不会分配指针所指向数据的内存，所以指针必须先初始化为一个变量的地址才可使用。所以以下代码是错误的，尽管编译器可能并不会报错，但很可能会崩溃。如果p指向内存中系统部分内存，则有可能造成系统崩溃。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p;     <span class="comment">//未初始化，初值随机</span></span><br><span class="line">*p = <span class="number">20</span>;    <span class="comment">//不能这样操作,将20存放在了一个未知的地址，将造成错误</span></span><br></pre></td></tr></table></figure></p>
+<p>上述指针是指向基础类型的，指针还可以指向对象、结构、或者指针。</p>
+<h3 id="自动存储（栈中分配）"><a href="#自动存储（栈中分配）" class="headerlink" title="自动存储（栈中分配）"></a>自动存储（栈中分配）</h3><p>在函数内部（包括main函数）定义的变量称为局部变量。程序运行时局部变量在<strong>栈</strong>（stack）中分配，当程序离开变量所属代码块后便被释放（出栈）。局部变量的作用域为所属代码块，即用<code>{ }</code>括起来的部分。</p>
+<h3 id="静态存储"><a href="#静态存储" class="headerlink" title="静态存储"></a>静态存储</h3><p>全局变量或者用关键字<code>static</code>修饰的静态变量存储方式为静态存储，其在整个程序执行期间都存在。其中全局变量（在函数外定义）在整个程序中都可以使用。静态变量如果在局部代码块中定义，则为静态局部变量，则在整个程序执行期间都存在，但只能在该代码块中使用。</p>
+<h3 id="动态存储（堆中分配）"><a href="#动态存储（堆中分配）" class="headerlink" title="动态存储（堆中分配）"></a>动态存储（堆中分配）</h3><p>在C++中，可以通过<code>new</code>运算符在堆（heap，或称为自由存储空间）上分配内存。这种存储方式成为动态存储。对应的释放所分配的内存的运算符为<code>delete</code>。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>;           <span class="comment">//申请一个int大小的内存</span></span><br><span class="line"><span class="keyword">int</span> *pn = <span class="keyword">new</span> <span class="keyword">int</span>[Size];    <span class="comment">//申请一块内存，大小为sizeof(int)*Size</span></span><br><span class="line"><span class="keyword">delete</span> p;                   <span class="comment">//释放内存</span></span><br><span class="line"><span class="keyword">delete</span> [] pn;               <span class="comment">//释放内存块</span></span><br><span class="line">p = <span class="literal">NULL</span>;                   <span class="comment">//释放内存后为避免以后再使用到该指针时造成错误应将指针置为空（NULL）</span></span><br><span class="line">pn = <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure></p>
+<p>申请了内存后便可使用指针访问，申请的内存块也叫作动态数组，可以通过数组的方式访问。</p>
+<p>在C语言中使用<code>malloc</code>和<code>free</code>函数来申请和释放内存。格式如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));        <span class="comment">//使用(int *)强制类型转换将所分配到的内存块地址转换为int *类型</span></span><br><span class="line"><span class="keyword">int</span> *pn = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*Size);  <span class="comment">//分配内存块大小作为参数传入malloc函数</span></span><br><span class="line"><span class="built_in">free</span>(p);        <span class="comment">//释放方式相同</span></span><br><span class="line"><span class="built_in">free</span>(pn);</span><br></pre></td></tr></table></figure></p>
+<h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><p>使用<code>struct</code>关键字定义，是OOP（面向对象）思想的基础【类是面向对象的基础，而结构体是类的基础】。结构（体）是对不同数据的封装。结构可以将任意类型任意数目的数据封装为一种数据类型。然后利用结构创建变量，通过这个变量即可调用它的数据成员。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">people</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">double</span> height;</span><br><span class="line">    <span class="keyword">bool</span> is_male;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这里定义了一个people（人）的结构，包含人的四个属性：姓名、年龄、身高、性别。使用people结构创建了变量之后，便可以对其赋值，可以用<code>.</code>运算符调用其数据成员，如果有一个指向结构的指针，可以通过<code>-&gt;</code>算符来调用其指向的结构的数据成员。例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">people Jim = &#123;<span class="string">"Jim"</span>,<span class="number">18</span>,<span class="number">178.5</span>,<span class="literal">true</span>&#125;;     <span class="comment">//可以使用初始化列表按顺序对其数据成员赋值</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"name: "</span> &lt;&lt; Jim.name &lt;&lt; <span class="built_in">endl</span>;   <span class="comment">//使用.运算符调用其数据成员</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"age:  "</span> &lt;&lt; Jim.age &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"height:  "</span> &lt;&lt; Jim.height &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"gender:  "</span> &lt;&lt; (Jim.is_male?<span class="string">"boy"</span>:<span class="string">"girl"</span>)&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">people *p_kim = <span class="keyword">new</span> people;             <span class="comment">//动态分配 </span></span><br><span class="line">*p_kim = &#123;<span class="string">"Kim"</span>,<span class="number">20</span>,<span class="number">165</span>,<span class="literal">false</span>&#125;; </span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"name: "</span> &lt;&lt; p_kim-&gt;name &lt;&lt; <span class="built_in">endl</span>;        <span class="comment">//还用-&gt;运算符调用p_kim指向的结构的数据成员</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"age:  "</span> &lt;&lt; p_kim-&gt;age &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"height:  "</span> &lt;&lt; p_kim-&gt;height &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"gender:  "</span> &lt;&lt; (p_kim-&gt;is_male?<span class="string">"boy"</span>:<span class="string">"girl"</span>)&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">delete</span> p_kim;</span><br><span class="line">p_kim = <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure></p>
+<p>结构可以像基本数据类型那样相互赋值，或者作为函数的参数或者返回值。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">people the_2nd_Jim = Jim;   <span class="comment">//赋值时对应所有数据项全部被拷贝</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="共用体"><a href="#共用体" class="headerlink" title="共用体"></a>共用体</h2><p>公用体是一种数据格式，能够存储不同数据类型，但同时只能一种类型。节省了内存。可用在C语言/C++编写嵌入式程序。使用<code>union</code>关键字定义，定义格式类似于结构，这里不赘述。</p>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><p>C++中可使用<code>enum</code>关键字创建符号常量，某些情况下这种方式可以替代<code>const</code>。如果按如下语句：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> color&#123;red,green,blue,yellow,orange&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>则color成为一种新数据类型的名称，即枚举。所以可以通过强类型转换将一个枚举中存在的整数转换为一个枚举量。默认情况下上面五个表示颜色的符号常量会被赋予相对应的整数值0~5，也可以被显式地赋予一个整数。从前往后，每个符号常量的值会依次增大1。</p>
+<hr>
+<p><strong>参考资料：C++ Primer Plus</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/08/2017.12.8--C++started-function/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          C++语法入门【2】函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/07/2017.11.7--a-few-very-simple-algorithms/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">常识性算法一弹</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-Started"><span class="nav-number">1.</span> <span class="nav-text">C++ Started</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命名空间-namespace"><span class="nav-number">2.</span> <span class="nav-text">命名空间 namespace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本数据类型"><span class="nav-number">3.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整型"><span class="nav-number">3.1.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浮点型"><span class="nav-number">3.2.</span> <span class="nav-text">浮点型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符型"><span class="nav-number">3.3.</span> <span class="nav-text">字符型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bool类型"><span class="nav-number">3.4.</span> <span class="nav-text">bool类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const-常量"><span class="nav-number">3.5.</span> <span class="nav-text">const 常量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符"><span class="nav-number">3.6.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">3.7.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型转换"><span class="nav-number">3.8.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强制类型转换"><span class="nav-number">3.9.</span> <span class="nav-text">强制类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#auto声明"><span class="nav-number">3.10.</span> <span class="nav-text">auto声明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复合数据类型"><span class="nav-number">4.</span> <span class="nav-text">复合数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">4.1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C中的数组"><span class="nav-number">4.1.1.</span> <span class="nav-text">C中的数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-中数组的替代"><span class="nav-number">4.1.2.</span> <span class="nav-text">C++中数组的替代</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串"><span class="nav-number">4.2.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C风格字符串"><span class="nav-number">4.2.1.</span> <span class="nav-text">C风格字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-中的string类"><span class="nav-number">4.2.2.</span> <span class="nav-text">C++中的string类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针与自由存储空间"><span class="nav-number">4.3.</span> <span class="nav-text">指针与自由存储空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指针（pointer）"><span class="nav-number">4.3.1.</span> <span class="nav-text">指针（pointer）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动存储（栈中分配）"><span class="nav-number">4.3.2.</span> <span class="nav-text">自动存储（栈中分配）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态存储"><span class="nav-number">4.3.3.</span> <span class="nav-text">静态存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态存储（堆中分配）"><span class="nav-number">4.3.4.</span> <span class="nav-text">动态存储（堆中分配）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体"><span class="nav-number">4.4.</span> <span class="nav-text">结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共用体"><span class="nav-number">4.5.</span> <span class="nav-text">共用体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举"><span class="nav-number">4.6.</span> <span class="nav-text">枚举</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

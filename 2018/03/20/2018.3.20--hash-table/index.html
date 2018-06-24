@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>哈希表 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="哈希表是一种 以常数平均时间执行插入、删除和查找操作的数据结构，但是哈希表一般不提供任何与排序相关的操作，如FindMax，FindMin，sort。">
+<meta name="keywords" content="数据结构,hash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="哈希表">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/03/20/2018.3.20--hash-table/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="哈希表是一种 以常数平均时间执行插入、删除和查找操作的数据结构，但是哈希表一般不提供任何与排序相关的操作，如FindMax，FindMin，sort。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/hash-table-list.png">
+<meta property="og:updated_time" content="2018-06-23T15:28:44.366Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="哈希表">
+<meta name="twitter:description" content="哈希表是一种 以常数平均时间执行插入、删除和查找操作的数据结构，但是哈希表一般不提供任何与排序相关的操作，如FindMax，FindMin，sort。">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/hash-table-list.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.3.20--hash-table" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      哈希表
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/20/2018.3.20--hash-table/" class="article-date">
+	  <time datetime="2018-03-19T16:00:00.000Z" itemprop="datePublished">2018-03-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>哈希表是一种 以常数平均时间执行插入、删除和查找操作的数据结构，但是哈希表一般不提供任何与排序相关的操作，如FindMax，FindMin，sort。</p>
+<a id="more"></a>
+<h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><p>散列表（<a href="https://en.wikipedia.org/wiki/Hash_table" target="_blank" rel="noopener">Hash table</a>，也叫哈希表），是根据关键字的值(Key value)而直接进行访问的数据结构。这里的关键字可能是数或者字符串。也就是说，通过将关键字的值映射到表中一个位置来查找。这个映射叫做<strong>哈希函数</strong>，即有 Hash(key)=address （存储结构一般是数组，所以address一般就是数组下标）。知道key之后，通过哈希函数计算出地址，即可在O(1)的时间内完成查找，插入，删除等操作，可以看到这是非常高效的。这与数组链表等都不同，数组的特点是：寻址容易，插入和删除困难；而链表的特点是：寻址困难，插入和删除容易，而哈希表则集中了他们的优点。但同样也有缺点，一种数据结构不可能没有缺点，不同的数据结构都有不同的应用场合，这也是它们的特点决定的。哈希表对排序相关的操作并不提供支持。</p>
+<h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>一个好的哈希函数所具有的的特点：<strong>计算简单+分布均匀</strong>（计算得到的散列地址分布均匀）<br>常用的哈希函数的构造方法：<br>直接寻址：H(key)=key 或 H(key) = a·key + b<br>数字分析法：在多组关键字中取重复较少的来作为key<br>除留取余法：Hash(key) = key % p，p一般取一个小于等于表长的素数。<br>另外还有：平方取中法、折叠法、随机数法、斐波那契散列法等。可参见<a href="https://en.wikipedia.org/wiki/Perfect_hash_function" target="_blank" rel="noopener">Perfect hash function</a>。</p>
+<h2 id="哈希冲突"><a href="#哈希冲突" class="headerlink" title="哈希冲突"></a>哈希冲突</h2><p>我们通过哈希函数来求得地址，但是由于内存等限制，我们不可能将地址范围取得非常非常大，这样如果只存储少量元素则是非常低效的。而关键字值key通常会具有某些相似性。这样就有可能使得两个不同关键字通过哈希函数计算出的哈希值产生相同的情况。这被称为<strong>哈希冲突</strong>。比如，我们常用的一个最简单的哈希函数——除留取余法，即 Hash(key) = key % p，p一般取一个素数。这样很容易就会得到一样的地址。所以我们需要处理哈希冲突。</p>
+<p>虽然哈希冲突基本上是不可避免的，但是首先必须得选择一个好的哈希函数。</p>
+<p>为了保证查找效率，存储一般都选择数组。这里介绍两种处理哈希冲突的方法：<br><strong>分离链接法</strong>（拉链法）：<br>将地址相同的元素链在前一个元素后面，使用链表，一个地址存放多个元素。如下图：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/hash-table-list.png" alt="此处输入图片的描述"></p>
+<p><strong>开放定址法</strong>：<br>依然采用数组存储，但是在遇到冲突时，哈希函数调整为 H<sub>i</sub>(key) = (Hash(key) + F(i)) % TableSize，其中函数F是冲突解决方法，F(0)=0，这样我们就可以依次尝试选择H<sub>0</sub>(key),H<sub>1</sub>(key),H<sub>2</sub>(key)等作为哈希函数。并将该元素放入第一个被选中的没有被占据的位置。<br>对于不同的F可以将其称作不同的方法，比如F(i)=i，线性探测法；F(i)=i<sup>2</sup>，平方探测法；F(i)=i·Hash<sub>2</sub>(key)，双散列法。</p>
+<p>这样做有一个问题，当删除其中的一些元素后，那些原来因为这个位置被填充而存储到其他位置的元素，就会面临查找时找不到的情况。所以我们一般使用<strong>懒惰删除</strong>，只是将其状态置为删除。并不真正从数组中删除（尽管在数组中并没有真正意义的删除）。所以我们需要将数组的类型定义为结构，并将元素状态封装在其中（可使用枚举变量）。</p>
+<h2 id="填充因子"><a href="#填充因子" class="headerlink" title="填充因子"></a>填充因子</h2><p> λ = 已填充元素个数/表长，对于分离链接法，达到1左右最佳。对于开放定址法，不应使其超过0.5，否则性能可能会急剧下降。对于开放定址法，当 λ 达到0.5后，可以将其复制到一个更大的表中，这将花费O(n)的操作时间。称其为<strong>再哈希（rehash</strong>）。下面的第二个实现中实现了rehash。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>这里简要实现以下，哈希函数采用最简单的取余法，并且没有取素数，这里只是一个demo。</p>
+<p>分离链接法实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2018.3.20</span></span><br><span class="line"><span class="comment">//哈希表-分离链接法</span></span><br><span class="line"><span class="comment">//这次带头结点了，一点点空间而已，没必要增大编写难度 </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> ElemType;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HashTable</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">int</span> Index;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		ElemType element;</span><br><span class="line">		ListNode * next;</span><br><span class="line">	&#125; * Position, * List;</span><br><span class="line">	<span class="keyword">int</span> Table_Size;</span><br><span class="line">	List * Lists;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="function">Index <span class="title">Hash</span><span class="params">(ElemType key)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> key % Table_Size; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function">Position <span class="title">Find</span><span class="params">(ElemType key)</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	HashTable(<span class="keyword">int</span> table_size);</span><br><span class="line">	~HashTable();</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(ElemType key)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Delete</span><span class="params">(ElemType key)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">HashTable <span class="title">H</span><span class="params">(<span class="number">20</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		H.Insert(i);</span><br><span class="line">	&#125;</span><br><span class="line">	H.Print();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">50</span>; i++)</span><br><span class="line">		H.Delete(i);</span><br><span class="line">	H.Print();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">HashTable::HashTable(<span class="keyword">int</span> table_size)</span><br><span class="line">&#123;</span><br><span class="line">	Table_Size = table_size;</span><br><span class="line">	Lists = <span class="keyword">new</span> Position[table_size];<span class="comment">//Lists存放指向ListNode的指针 </span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;table_size; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		Lists[i] = <span class="keyword">new</span> ListNode;<span class="comment">//we need a header ndoe</span></span><br><span class="line">		Lists[i]-&gt;element = <span class="number">0</span>;</span><br><span class="line">		Lists[i]-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//	cout &lt;&lt; "HashTable()" &lt;&lt; endl;</span></span><br><span class="line">&#125;</span><br><span class="line">HashTable::~HashTable()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Table_Size; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		Position p = Lists[i];</span><br><span class="line">		<span class="keyword">while</span>(p != <span class="literal">NULL</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			Position tmp = p;</span><br><span class="line">			p = p-&gt;next;</span><br><span class="line">			<span class="keyword">delete</span> tmp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">delete</span> [] Lists;</span><br><span class="line">&#125;</span><br><span class="line">HashTable::Position HashTable::Find(ElemType key)</span><br><span class="line">&#123;</span><br><span class="line">	Position p = Lists[Hash(key)]-&gt;next;</span><br><span class="line">	<span class="keyword">while</span>(p != <span class="literal">NULL</span> &amp;&amp; p-&gt;element != key)<span class="comment">//判断顺序一定不能变 </span></span><br><span class="line">		p = p-&gt;next;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> HashTable::Insert(ElemType key)</span><br><span class="line">&#123;</span><br><span class="line">	Position pos = Find(key);</span><br><span class="line">	<span class="keyword">if</span>(pos == <span class="literal">NULL</span>)<span class="comment">//key不存在则在表头插入</span></span><br><span class="line">	&#123;</span><br><span class="line">		List L = Lists[Hash(key)];</span><br><span class="line">		Position p = <span class="keyword">new</span> ListNode;</span><br><span class="line">		p-&gt;element = key;</span><br><span class="line">		p-&gt;next = L-&gt;next;</span><br><span class="line">		L-&gt;next = p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//存在则do nothing</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> HashTable::Delete(ElemType key)</span><br><span class="line">&#123;</span><br><span class="line">	Position pos = Find(key);</span><br><span class="line">	<span class="keyword">if</span>(pos != <span class="literal">NULL</span>)<span class="comment">//存在则删除 </span></span><br><span class="line">	&#123;</span><br><span class="line">		Position pre = Lists[Hash(key)];</span><br><span class="line">		<span class="keyword">while</span>(pre-&gt;next != pos)</span><br><span class="line">			pre = pre-&gt;next;</span><br><span class="line">		pre-&gt;next = pos-&gt;next;</span><br><span class="line">		<span class="keyword">delete</span> pos;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//按照一定的规则将哈希表中元素分布打印出来 </span></span><br><span class="line"><span class="keyword">void</span> HashTable::Print()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Table_Size; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		Position p = Lists[i]-&gt;next;</span><br><span class="line">		<span class="keyword">if</span>(p == <span class="literal">NULL</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"index:"</span> &lt;&lt; i &lt;&lt; <span class="string">" No elements"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"index:"</span> &lt;&lt; i &lt;&lt; <span class="string">" elements: "</span>; </span><br><span class="line">			<span class="keyword">while</span>(p != <span class="literal">NULL</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; p-&gt;element &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">				p = p-&gt;next;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　<br>开放定址法实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2018.3.20</span></span><br><span class="line"><span class="comment">//hash table --开放定址法</span></span><br><span class="line"><span class="comment">//线性探测法，平方探测法，双散列法 </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> ElemType;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Min_cell_num = <span class="number">20</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HashTable</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">enum</span> Cell_State &#123; legitimate, empty, deleted &#125;;<span class="comment">//legitimate合法的 </span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> Index;</span><br><span class="line">	<span class="keyword">typedef</span> Index Position;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Cell</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		ElemType element;</span><br><span class="line">		<span class="keyword">enum</span> Cell_State info;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">int</span> Table_Size;</span><br><span class="line">	Cell * Cells;</span><br><span class="line">	<span class="keyword">int</span> Elements_num;<span class="comment">//已填充的元素个数，包括已删除的 </span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	HashTable(<span class="keyword">const</span> <span class="keyword">int</span> table_size);</span><br><span class="line">	~HashTable();</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> ElemType key)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Delete</span><span class="params">(<span class="keyword">const</span> ElemType key)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">Get_elements_num</span><span class="params">()</span> <span class="keyword">const</span></span>; </span><br><span class="line"><span class="keyword">private</span>: </span><br><span class="line">	<span class="function">Position <span class="title">Find</span><span class="params">(<span class="keyword">const</span> ElemType key)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> Index <span class="title">Hash</span><span class="params">(<span class="keyword">const</span> ElemType key)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> key % Table_Size;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">ReHash</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">HashTable <span class="title">H</span><span class="params">(<span class="number">19</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		H.Insert(i);</span><br><span class="line">	&#125;</span><br><span class="line">	H.Print();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> A[<span class="number">10</span>] = &#123;<span class="number">3</span>,<span class="number">7</span>,<span class="number">32</span>,<span class="number">34</span>,<span class="number">47</span>,<span class="number">25</span>,<span class="number">13</span>,<span class="number">9</span>,<span class="number">28</span>,<span class="number">22</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++)</span><br><span class="line">		H.Insert(A[i]);</span><br><span class="line">	H.Print();</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; H.Get_elements_num() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">HashTable::HashTable(<span class="keyword">const</span> <span class="keyword">int</span> table_size)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(table_size &gt;= Min_cell_num)</span><br><span class="line">		Table_Size = table_size;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"The table size is too small , already set Table_Size = "</span> &lt;&lt; Min_cell_num &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		Table_Size = Min_cell_num; </span><br><span class="line">	&#125;</span><br><span class="line">	Cells = <span class="keyword">new</span> Cell[Table_Size];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Table_Size; i++)<span class="comment">//初始化必不可少 </span></span><br><span class="line">		Cells[i].info = empty;</span><br><span class="line">	Elements_num = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">HashTable::~HashTable()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">delete</span> Cells;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">HashTable::Position HashTable::Find(<span class="keyword">const</span> ElemType key)</span><br><span class="line">&#123;</span><br><span class="line">	Position current_pos = Hash(key);</span><br><span class="line">	<span class="keyword">int</span> offset = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(Cells[current_pos].info != empty &amp;&amp; Cells[current_pos].element != key)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//线性探测法 </span></span><br><span class="line">		<span class="comment">//current_pos ++;</span></span><br><span class="line">		<span class="comment">//平方探测法</span></span><br><span class="line">		current_pos += <span class="number">2</span> * ++offset <span class="number">-1</span>;	<span class="comment">//此处采用递推关系f(i) = f(i-1)+2*i-1,f(0)=0 </span></span><br><span class="line">		<span class="comment">//双散列法</span></span><br><span class="line">		<span class="comment">//current_pos += (R-R%key);//需要事先定义一个素数R </span></span><br><span class="line">		<span class="keyword">if</span>(current_pos &gt;= Table_Size)</span><br><span class="line">			current_pos -= Table_Size;<span class="comment">//取模</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> current_pos; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> HashTable::Insert(<span class="keyword">const</span> ElemType key)</span><br><span class="line">&#123;</span><br><span class="line">	Position pos = Find(key);</span><br><span class="line">	<span class="comment">//这里可能存在关键字为key的元素，不存在或者存在且被删除就插入，存在合法就跳过 </span></span><br><span class="line">	<span class="keyword">if</span>(Cells[pos].info != legitimate)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(Cells[pos].info == empty)</span><br><span class="line">			Elements_num ++;</span><br><span class="line">		Cells[pos].info = legitimate;</span><br><span class="line">		Cells[pos].element = key;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(Elements_num &gt;= Table_Size/<span class="number">2</span>)<span class="comment">//填充因子达到0.5就再哈希 </span></span><br><span class="line">		ReHash();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> HashTable::Delete(<span class="keyword">const</span> ElemType key)</span><br><span class="line">&#123;</span><br><span class="line">	Position pos = Find(key);</span><br><span class="line">	<span class="keyword">if</span>(Cells[pos].info == legitimate)</span><br><span class="line">		Cells[pos].info == deleted;<span class="comment">//存在且合法则将其置为删除状态 </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> HashTable::Print() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Table_Size; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(Cells[i].info == legitimate)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"Index: "</span> &lt;&lt; i &lt;&lt; <span class="string">" element: "</span> &lt;&lt; Cells[i].element &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"Index: "</span> &lt;&lt; i &lt;&lt; <span class="string">" no elements !"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> HashTable::Get_elements_num() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> Elements_num;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//再哈希，当填充因子达到0.5时则将其复制到一个两倍大的表中</span></span><br><span class="line"><span class="keyword">void</span> HashTable::ReHash()</span><br><span class="line">&#123;</span><br><span class="line">	Cell * Old_cells = Cells;</span><br><span class="line">	<span class="keyword">int</span> Old_size = Table_Size;</span><br><span class="line">	Cells = <span class="keyword">new</span> Cell [<span class="number">2</span>*Table_Size+<span class="number">1</span>] ;</span><br><span class="line">	Table_Size = <span class="number">2</span>*Table_Size+<span class="number">1</span>;</span><br><span class="line">	Elements_num = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Table_Size; i++)<span class="comment">//初始化是很重要的，不初始化是会crash的 </span></span><br><span class="line">	&#123;</span><br><span class="line">		Cells[i].info = empty;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Old_size; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(Old_cells[i].info == legitimate)</span><br><span class="line">			Insert(Old_cells[i].element);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">delete</span> Old_cells;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"The hash table has been rehashed , now the table size is "</span> &lt;&lt; Table_Size &lt;&lt; <span class="built_in">endl</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/23/2018.3.23--priority-queue-&-heap-&-leftist-heap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          优先队列 &amp; 堆
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/17/2018.3.17--avl-tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AVL树</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希表"><span class="nav-number">1.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希函数"><span class="nav-number">2.</span> <span class="nav-text">哈希函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希冲突"><span class="nav-number">3.</span> <span class="nav-text">哈希冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#填充因子"><span class="nav-number">4.</span> <span class="nav-text">填充因子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">5.</span> <span class="nav-text">实现</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【write a toy cpu】实现 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇">
+<meta name="keywords" content="CPU,verilog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【write a toy cpu】实现">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/05/16/2018.5.16--write-a-toy-cpu--implementation/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/computer-layers.jpg">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/computer-network-layers.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/mips-register.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/mips-cpu-architecture.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/mips-five-stage-pipeline.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/instruction-format-ori.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/ori-modules.jpg">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/test1-ori.PNG">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/test2-ori-forwarding.PNG">
+<meta property="og:updated_time" content="2018-05-25T09:50:46.211Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【write a toy cpu】实现">
+<meta name="twitter:description" content="自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/computer-layers.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.5.16--write-a-toy-cpu--implementation" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【write a toy cpu】实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/16/2018.5.16--write-a-toy-cpu--implementation/" class="article-date">
+	  <time datetime="2018-05-15T16:00:00.000Z" itemprop="datePublished">2018-05-16</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/计算机科学/">计算机科学</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇编，对汇编有了一点基础的了解。大概知道CPU是读取一条条的机器指令来执行的，特定的指令会对寄存器、内存、特定的标志位进行操作。处理器内部电路依旧不知，汇编如何翻译成机器码依旧不知。但也只剩下这两个问题了。所以现在只需要解决两个问题：汇编如何翻译成机器码，机器码是如何在CPU里面运行起来的。</p>
+<p>而汇编，很明显，是与具体的处理器相关的。也即是不同处理器的指令集体系结构（<a href="https://en.wikipedia.org/wiki/Instruction_set_architecture" target="_blank" rel="noopener">ISA</a>,Instruction Set Architecture）是不同的。对应的处理器设计也必然是不同的。主要可分为RISC和CISC，这里实现MIPS32指令集的部分指令。正文会简单介绍。</p>
+<p>自4月份大概快结束时环境搭好后，实现大概花了半个月的课余时间，到现在都五月中旬了。很多时候在划水，其实应该要不了这么久的。而且我的目标只实现一部分指令就行了，能玩就可以了。按照实现顺序依次实现了：ori，逻辑运算、移位指令和空指令，移动操作指令，部分算术操作指令，条件分支、无条件转移指令，加载存储指令。没有实现协处理器相关指令和中断异常相关指令。至于什么指令级并行、数据级并行、乱序发射啥的统统都是没有的。不过有了前面的那些已经可以进行很多操作了。下面简单说一下实现思路。细节可参考《<a href="https://book.douban.com/subject/25960657/" target="_blank" rel="noopener">自己动手写CPU</a>》，或者<a href="https://blog.csdn.net/leishangwen/article/list/5" target="_blank" rel="noopener">作者博客</a>。我的实现基本上否是参考这本书，以及这个repo:<a href="https://github.com/abcdabcd987/toy-cpu" target="_blank" rel="noopener">abcdabcd987/toy-cpu</a>.</p>
+<a id="more"></a>
+<h1 id="ISA"><a href="#ISA" class="headerlink" title="ISA"></a>ISA</h1><p>先来看一下ISA的定义，<a href="https://en.wikipedia.org/wiki/Instruction_set_architecture" target="_blank" rel="noopener">ISA-Wikipedia</a>：</p>
+<blockquote>
+<p>An instruction set architecture (ISA) is an abstract model of a computer. It is also referred to as architecture or computer architecture. A realization of an ISA is called an implementation. An ISA permits multiple implementations that may vary in performance, physical size, and monetary cost (among other things); because the ISA serves as the interface between software and hardware. Software that has been written for an ISA can run on different implementations of the same ISA. This has enabled binary compatibility between different generations of computers to be easily achieved, and the development of computer families. Both of these developments have helped to lower the cost of computers and to increase their applicability. For these reasons, the ISA is one of the most important abstractions in computing today.</p>
+</blockquote>
+<p>首先ISA是一个抽象模型，一个ISA可以有不同的实现。ISA的角色是<strong>硬件和软件的接口</strong>。CPU通过电路物理上实现ISA，软件通过编译器将高级语言编译为ISA对应的汇编语言进而翻译为机器码，即可在实现了该ISA的处理器上运行。ISA可以说是计算机中最重要的抽象。</p>
+<p>只要ISA相同，实现方式的不同并不会影响软件的运行，这也是<strong>接口</strong>这个伟大的抽象的意义。接口面向调用者，需要进行的所有操作通过接口去调用，内部实现对调用者是完全透明的。这样对于一款处理器，知道其ISA，我们就可以编写程序，而不需要知道内部实现。</p>
+<h2 id="抽象-接口-分层"><a href="#抽象-接口-分层" class="headerlink" title="抽象-接口-分层"></a>抽象-接口-分层</h2><p>有了接口这个抽象，我们便可以将计算机体系进行分层，分层在计算机科学中是广泛存在的，比如计算机层次结构：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/computer-layers.jpg" alt="layers"></p>
+<p>和计算机网络中的国际标准OSI七层模型与事实工业标准的TCP/IP四层模型：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/computer-network-layers.png" alt="computer-network-layers"></p>
+<p>都是很好的体现。在哪一层操作，我们只需要知道其下层的接口，而不必知道具体实现。这可以简化问题的复杂度，使我们只需专心处理其中一层的问题。</p>
+<h2 id="指令集体系结构"><a href="#指令集体系结构" class="headerlink" title="指令集体系结构"></a>指令集体系结构</h2><p>一个指令集体系结构定义了：</p>
+<ul>
+<li>支持的数据类型（supported data types）</li>
+<li>主存与寄存器（the main memory and registers）</li>
+<li>内存一致性，寻址方式（memory consistency and addressing modes）</li>
+<li>机器指令集合（the set of machine instructions）</li>
+<li>输入输出模型（input/output model）</li>
+</ul>
+<h2 id="MIPS指令集"><a href="#MIPS指令集" class="headerlink" title="MIPS指令集"></a>MIPS指令集</h2><p>详细信息参见<a href="https://en.wikipedia.org/wiki/MIPS_architecture" target="_blank" rel="noopener">MIPS architecture - Wikipedia</a>。MIPS指令集是精简指令集（CISC）的典型代表。<a href="https://baike.baidu.com/item/%E9%BE%99%E8%8A%AF/145607?fr=aladdin" target="_blank" rel="noopener">龙芯</a>使用的便是MIPS指令集。MIPS算是一类架构，并不单一，有各种扩展以及子架构等。如MIPS I，MIPS II，MIPS III…MIPS 32，MIPS 64，MIPS 64 R2…等等。这算是一个比较学院派的指令集，在商业上并不算成功（相比Intel x86-64），但这对这里的实现并不会有什么影响。其设计者<a href="https://amturing.acm.org/award_winners/hennessy_1426931.cfm" target="_blank" rel="noopener">John L. Hennessy</a>与 <a href="https://amturing.acm.org/award_winners/patterson_2316693.cfm" target="_blank" rel="noopener">David A. Patterson</a>是去年(2017)<a href="https://amturing.acm.org/" target="_blank" rel="noopener">ACM图灵奖</a>的获得者。下面看一下MIPS32指令集的一些细节。</p>
+<p><strong>数据类型</strong>：一个字4个字节32bit，支持半字与字节。<br><strong>寄存器</strong>：定义了32个通用寄存器（与x86的专用寄存器设计不同）命名为<code>$0...$31</code>，很明显需要5个二进制位来寻址寄存器。并且还定义了两个专用寄存器<code>HI</code>和<code>LO</code>用来存储两个32位操作数的乘积或者商与余数。</p>
+<p><strong>指令类型</strong>：MIPS32的所有指令均为32位，分为三大类<strong>R型</strong>、<strong>I型</strong>、<strong>J型</strong>.</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/mips-register.png" alt="mips-register"></p>
+<p>其中<code>opcode</code>为指令码，R型指令中<code>rs</code>,<code>rt</code>保存源操作数的寄存器号，I型指令中一般<code>rs</code>位源操作数，<code>rt</code>为目的操作数，具体的指令具体看。<code>rd</code>代表要写入的目的寄存器。<code>shamt</code>代表位移量（仅在移位指令中使用）。<code>funct</code>为功能码，<code>opcode</code>相同的不同R型指令通过<code>funct</code>字段来区分。<code>immediate</code>代表16位立即数。<code>address</code>为26位地址，在分支跳转指令中使用。</p>
+<p><strong>寻址方式</strong>：立即数寻址、寄存器寻址、基址寻址、PC相对寻址。</p>
+<p><strong>所有指令</strong>：详细信息可以在<a href="https://en.wikipedia.org/wiki/MIPS_architecture" target="_blank" rel="noopener">MIPS architecture - Wikipedia</a> 和 <a href="https://github.com/MIPT-ILab/mipt-mips/wiki/MIPS-Instruction-Set" target="_blank" rel="noopener">MIPT-ILab/mipt-mips</a>中找到，太多不抄。</p>
+<h1 id="处理器结构"><a href="#处理器结构" class="headerlink" title="处理器结构"></a>处理器结构</h1><p>现在指令集有了，机器语言也有了（就是每一条汇编语句对应的32位机器码），那就需要来实现了。很明显我们需要对每条32位指令进行解码，然后执行，执行之前需要从寄存器堆中取出操作数。解码之前需要取出指令，所以就要有一个指向当前指令的程序计数器(PC)以及存储指令的指令存储器。执行完了之后需要将结果写入特定寄存器或者数据存储器。</p>
+<p>那么一个处理器的大致结构就有了。具体怎么得到的请参考《<a href="https://book.douban.com/subject/10441748/" target="_blank" rel="noopener">计算机组成与设计：硬件软件接口</a>》第三章（下面框图均来自该书）。这里没有包含控制模块，只给出了一些模块的控制信号。</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/mips-cpu-architecture.png" alt="mips-cpu-architecture"></p>
+<p>简单解释一下：</p>
+<ol>
+<li>PC为程序计数器，最小编址单位为字节，一条指令32字节。上面的加法器+4使PC移动到下一条指令。</li>
+<li>从指令存储器取出指令解码后，需要从寄存器堆中取出最多两个源操作数，以及写入一个目的操作数。所以有两个读端口，一个写端口。</li>
+<li><code>Sign-extend</code>即符号扩展，这里将16位立即数（I型指令后16位）符号扩展到32位传递到下一阶段参与下一步操作。</li>
+<li>在ALU中对操作数执行操作，得到结果，具体执行什么操作由具体指令决定。</li>
+<li>执行之后的结果保存至存储器或者寄存器堆。</li>
+<li>右上角的为分支跳转指令的地址处理模块，左移两位代表着分支跳转指令中的地址单位是字，所以需要左移两位(乘以4)。</li>
+<li>执行条件转移指令时，下一条执行的指令由条件判定得到，即最右上角多路选择器输入信号为条件判定结果。</li>
+<li>ALU为通用的算术逻辑运算单元，可以对输入的32位操作数进行加减移位等操作。</li>
+</ol>
+<h2 id="流水线（pipeline）"><a href="#流水线（pipeline）" class="headerlink" title="流水线（pipeline）"></a>流水线（pipeline）</h2><p>如果将上面所有操作都放在一个时钟周期内执行，那么时钟周期的取值必须要大于上面框图中最大的延时。我们可以将上述过程分为下列五个阶段：</p>
+<ul>
+<li>取指（instruction fetch）IF</li>
+<li>译码（instruction decode）ID</li>
+<li>执行（execution）EX</li>
+<li>访存（memory）MEM</li>
+<li>写回（write back）WB</li>
+</ul>
+<p>如果按照上面的数据流图来设计处理器，同一时刻必然只能执行上面五个操作中的一个，而执行其余操作额模块处于空闲状态，资源浪费明显。所以我们需要引入<strong>流水线机制</strong>。这五个阶段便是典型的五级流水线的流水阶段。我们在每一个阶段之间加入一个触发器，在时钟上升沿触发，将数据传送到下一阶段。如果流水线划分得当，可以使时钟周期下降为原来的五分之一。虽然一条指令需要五个周期才能执行完，但一个时钟周期内同时执行了五条指令。毫无疑问提高了效率。</p>
+<p>MIPS的典型五级流水线框图：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/mips-five-stage-pipeline.png" alt="mips-five-stage-pipeline"></p>
+<p>这里加上了控制模块。其中的<code>IF/ID</code>、<code>ID/EX</code>、<code>EX/MEM</code>、<code>MEM/WB</code>均为触发器，时钟上升沿来临时将信息传递到下一阶段。</p>
+<h2 id="流水线冒险"><a href="#流水线冒险" class="headerlink" title="流水线冒险"></a>流水线冒险</h2><blockquote>
+<p>任何事物都是有两面性的，如果一个事物看起来只有好处而没有任何坏处，那么它隐藏在水面下的暗流一定会在什么时候掀翻你的小船。——Tiko.T</p>
+</blockquote>
+<p>流水线当然也不例外，伴随着流水线而来的便是<strong>冒险（hazard）</strong>，冒险指的是下一个周期的下一条指令将不能按照预定的计划执行，如果执行便会产生非预期结果的情况。</p>
+<p>冒险分为三类：<br><strong>结构冒险</strong>：硬件资源冲突，这在这里实现的流水线中非常容易避免。<br><strong>数据冒险</strong>：后面执行的指令依赖于前面指令执行的结果，然而在后面指令需要数据的时候，前面的指令还未将其写入指定存储位置/寄存器。<br><strong>控制冒险</strong>：流水线分支指令修改PC造成的冒险。</p>
+<p>这里实现只会产生数据相关造成的冒险。解决途径：<br><strong>流水线暂停</strong>：将依赖于前面指令运行结果的指令暂停，等到前面指令将结果写入后，再运行即可。<br><strong>数据前推</strong>：某些指令在<code>EX</code>或者<code>MEM</code>阶段便已经得到结果。只需要将这时候的数据传递回ID阶段，便可以解决。<br>结合上述两种方式，便可以解决这里要实现的所有数据相关问题。</p>
+<h1 id="verilog实现"><a href="#verilog实现" class="headerlink" title="verilog实现"></a>verilog实现</h1><p>使用verilog进行编程，verilog的编写思路与高级编程语言很不一样，就我个人的感觉。用verilog写电路是已经有了这个电路的功能、连接关系、时序后直接将其翻译为相应的verilog描述即可。这里只采用行为级描述与RTL级描述。不需要任何结构描述，我们只需要知道功能以及接口就可以了，不需要从晶体管、逻辑门层级上去建模。所以使用的全都是最简单的语法如<code>if</code>，<code>else</code>，<code>case</code>，<code>assign</code>，<code>&lt;=</code>。verilog语法比较简单，但是就是因为简单，所以很多时候带来的是大量的冗余和重复代码下面介绍带参宏可以很好的解决这个问题。不得不说行为级描述非常棒，像我这种搞不懂晶体管的也可以写一个电路来娱乐一下。下面的代码就不贴了，已上传到<a href="https://github.com/aojueliuyun/toy_cpu" target="_blank" rel="noopener">Github</a>，逻辑都比较简单，这里只简要叙述一下每个流水线阶段进行的操作。</p>
+<h2 id="第一条指令ori的实现"><a href="#第一条指令ori的实现" class="headerlink" title="第一条指令ori的实现"></a>第一条指令ori的实现</h2><p>第一条实现的指令是<code>ori</code>，执行立即数或操作。<br>指令用法：<code>ori rs,rt,immidiate</code><br>操作：<code>$rt = $rs | zero-extended(immidiate)</code>，即将立即数无符号扩展（即零扩展，前面填16个0即可）至32位后，与寄存器<code>rs</code>的值进行按位或操作，结果写入寄存器<code>rt</code>。<br>指令格式：I型，<code>op = 6&#39;b001101</code><br><img src="http://oxx8it1qo.bkt.clouddn.com/instruction-format-ori.png" alt="ori"></p>
+<p>实现：</p>
+<ul>
+<li>IF阶段：将32bit指令从指令存储器中取经过信号线<code>inst</code>传递到到ID（中间会经过触发器IF/ID，后同）。</li>
+<li>ID阶段译码：简单的<code>case</code>语句，判断<code>inst[31:26]</code>是否等于<code>ori</code>的<code>op</code>，是的话，将<code>rs</code>，<code>rt</code>寄存器的值，具体指令类型，符号扩展后的<code>immidiate</code>传到EX阶段。</li>
+<li>EX阶段执行：根据前一阶段传递过来的类型，对两个源操作数执行或操作，生成1bit寄存器写使能信号<code>we</code>，5bit要写入的寄存器编号<code>waddr</code>，32bit要写入寄存器的值<code>wdata</code>到MEM阶段。</li>
+<li>MEM阶段：仅传递这三个信号不执行任何其他操作。</li>
+<li>WB阶段：将这三个信号传递到寄存器堆<code>regfile</code>。</li>
+<li><code>regfile</code>在下一个时钟周期上升沿来临时依据输入的三个信号，判断是否要写入，<code>we</code>有效则将值写入相应寄存器。则一条指令执行完成。</li>
+</ul>
+<p>可以看到从ID到执行完毕，经过了四个触发器，并且<code>regfile</code>在时钟上升沿来临将值写入，指令执行完毕，共消耗五个时钟周期。<code>ori</code>实现完成。</p>
+<p>上面的过程很简单，但是实际编码还是有一定的编码量的，需要实现的模块有：</p>
+<ul>
+<li><code>inst_rom</code>，指令存储器，使用<code>$readmemh</code>读入指令文件<code>inst_ori_test.txt</code></li>
+<li><code>pc_reg</code>，程序计数器</li>
+<li><code>if_id</code>，触发器</li>
+<li><code>id</code>，译码阶段</li>
+<li><code>regfile</code>，寄存器堆</li>
+<li><code>ex</code>，执行阶段</li>
+<li><code>ex_mem</code>，触发器</li>
+<li><code>mem</code>，访存阶段</li>
+<li><code>mem_wb</code>，触发器</li>
+<li><code>openmips</code>，除去存储器之外的模块实例化，连接模块</li>
+<li><code>open_mips_min_sopc</code>，最小SOPC，openmips以及inst_rom实例化</li>
+<li><code>open_mips_min_sopc_tb</code>，test bench测试模块，使用<code>$dumpvars</code>和<code>$dumnpfile</code>将波形导出到<code>open_mips_min_sopc_tb.vcd</code>。</li>
+</ul>
+<p>模块间连接关系如图（来自作者博客，侵删）：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/ori-modules.jpg" alt="ori-modules"></p>
+<p>测试使用的汇编源文件<code>inst_ori_test.s</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  .org 0x0             # 指示地址从0x0开始</span><br><span class="line">  .global _start       # 定义一个全局符号 _start</span><br><span class="line">  .set noat            # 允许自由使用寄存器$1</span><br><span class="line">_start:</span><br><span class="line">  ori $1,$0,0x1100</span><br><span class="line">  ori $2,$0,0x0020</span><br><span class="line">  ori $3,$0,0xff00</span><br><span class="line">  ori $4,$0,0xffff</span><br></pre></td></tr></table></figure></p>
+<p>编译得到机器码用十六进制字符表示，文件<code>inst_ori_test.txt</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">34011100</span><br><span class="line">34020020</span><br><span class="line">3403ff00</span><br><span class="line">3404ffff</span><br></pre></td></tr></table></figure></p>
+<p>如何编译查看上一篇文章：<a href="http://localhost:4000/2018/04/30/2018.4.30--write-a-toy-cpu--environment/" target="_blank" rel="noopener">【write a toy cpu】环境搭建</a>。</p>
+<p>实现之后，依次执行下列命令编译、仿真、查看波形：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iverilog -s open_mips_min_sopc_tb -o a.out ./*.v</span><br><span class="line">vvp a.out</span><br><span class="line">gtkwave open_mips_min_sopc_tb.vcd</span><br></pre></td></tr></table></figure></p>
+<p>即可看到以下波形：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/test1-ori.PNG" alt="test1-ori"></p>
+<p>上述波形给出了很详细的主要阶段的信号变化。可以看到<code>ori</code>指令应该实现正确了。<br>上面四条指令并没有出现数据相关，现在我们考虑数据相关。这里采用<strong>数据前推</strong>的方式解决。细节参见：<a href="https://blog.csdn.net/leishangwen/article/details/38298787" target="_blank" rel="noopener">自己动手写CPU之第五阶段（1）——流水线数据相关问题</a>。</p>
+<p>解决数据相关之后，测试如下汇编源文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  .org 0x0 </span><br><span class="line">  .global _start</span><br><span class="line">  .set noat</span><br><span class="line">_start:</span><br><span class="line">  ori $1,$0,0x1100</span><br><span class="line">  ori $2,$1,0x0020</span><br><span class="line">  ori $3,$2,0xff00</span><br><span class="line">  ori $4,$3,0xffff</span><br></pre></td></tr></table></figure></p>
+<p>得到波形如下：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/test2-ori-forwarding.PNG" alt="ori-forwarding"></p>
+<p><code>ori</code>实现之后的源码：<a href="http://oxx8it1qo.bkt.clouddn.com/OpenMIPS%20v0.02%20ori%20&amp;%20data%20hazard.rar" target="_blank" rel="noopener">点击下载</a>。</p>
+<h2 id="后续指令实现"><a href="#后续指令实现" class="headerlink" title="后续指令实现"></a>后续指令实现</h2><p>后续依次实现逻辑、移位、空指令、移动操作指令（增加<code>hilo_reg</code>模块，同样采用数据前推处理数据相关）、算术操作指令（实现流水线暂停机制，增加模块<code>ctrl</code>）、转移指令（实现延迟分支）、加载存储指令（增加<code>data_ram</code>数据存储器模块，处理load相关，采用流水线暂停处理）。后续还有协处理器访问指令和异常相关指令，我并没有做实现。</p>
+<p>细节不过多赘述，最后大概也就1k行代码左右，其中还有一半左右是输入输出信号线声明、模块实例化啥的，代码量不算大，但我感觉自己写了很久，还是太菜的缘故吧！有兴趣的话可参考《自己动手写CPU》，以及我的实现：<a href="https://github.com/aojueliuyun/toy_cpu" target="_blank" rel="noopener">aojueliuyun/toy_cpu</a>。</p>
+<h1 id="tricks"><a href="#tricks" class="headerlink" title="tricks"></a>tricks</h1><p>编写verilog时的一些小trick。</p>
+<h2 id="带参宏"><a href="#带参宏" class="headerlink" title="带参宏"></a>带参宏</h2><p><code>verilog</code>的语法是很简单的，这导致了很多时候经常要进行重复的赋值操作。人肉编码很容易出错，copy，paste也很麻烦，波形看花眼。而verilog中的函数是不可综合的。但是依然可以使用带参宏，整洁美观，缩减了代码量，提高可维护性。</p>
+<p>如<code>id.v</code>中定义的：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="meta-keyword">define</span> SET_INST(i_aluop, i_alusel, i_re1, i_reg1_addr, i_re2, i_reg2_addr, i_we, i_waddr, i_imm, i_inst_valid) if(1) begin \</span></span><br><span class="line">    aluop_o       &lt;=  i_aluop       ; \</span><br><span class="line">    alusel_o      &lt;=  i_alusel      ; \</span><br><span class="line">    reg1_re_o     &lt;=  i_re1         ; \</span><br><span class="line">    reg1_addr_o   &lt;=  i_reg1_addr   ; \</span><br><span class="line">    reg2_re_o     &lt;=  i_re2         ; \</span><br><span class="line">    reg2_addr_o   &lt;=  i_reg2_addr   ; \</span><br><span class="line">    we_o          &lt;=  i_we          ; \</span><br><span class="line">    waddr_o       &lt;=  i_waddr       ; \</span><br><span class="line">    imm           &lt;=  i_imm         ; \</span><br><span class="line">    inst_valid    &lt;=  i_inst_valid  ; \</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>便可以很好的简化后续的赋值操作，这里使用了一个继承自C语言的梗<code>do ... while(0)</code>或者<code>if(1) ... else if(0)</code>。verilog中可使用后者。这样定义便可以像函数一样调用，后面就可以加上<code>;</code>。</p>
+<h2 id="内存分块"><a href="#内存分块" class="headerlink" title="内存分块"></a>内存分块</h2><p>在<code>data_ram</code>模块的实现中，因为需要进行字节操作，如果只定义一个一维的内存的话，实现起来会不方便。所以可以分块定义为四个块，每个地址的字就是将四个块中对应地址的字节组合起来。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">reg</span>  [<span class="meta">`ByteWidth]    bank0 [0:`DataMemNum-1];</span></span><br><span class="line"><span class="keyword">reg</span>  [<span class="meta">`ByteWidth]    bank1 [0:`DataMemNum-1];</span></span><br><span class="line"><span class="keyword">reg</span>  [<span class="meta">`ByteWidth]    bank2 [0:`DataMemNum-1];</span></span><br><span class="line"><span class="keyword">reg</span>  [<span class="meta">`ByteWidth]    bank3 [0:`DataMemNum-1];</span></span><br></pre></td></tr></table></figure>
+<h2 id="dumpvars"><a href="#dumpvars" class="headerlink" title="$dumpvars"></a>$dumpvars</h2><p>使用系统任务<code>$dumpvars</code>导出变量到波形。<br>调用：<code>$dumpvars(level, module1, module2, ...)</code>，<code>level</code>为指定的模块向下的模块层次。也可以单独指定某一个信号，模块可以是某一模块的子模块。<br>使用系统任务<code>$dumpfile</code>将波形导出到vcd文件。<br>调用：<code>$dumpfile(&quot;test.vcd&quot;)</code></p>
+<h2 id="wire-amp-reg"><a href="#wire-amp-reg" class="headerlink" title="wire &amp; reg"></a>wire &amp; reg</h2><p>这是verilog基础，<code>wire</code>型只能使用<code>assign</code>进行连续性赋值，<code>reg</code>型只能在过程快中使用<code>=</code>或者<code>&lt;=</code>进行赋值，多用<code>&lt;=</code>非阻塞性赋值，不需要阻塞。并且多次使用<code>&lt;=</code>赋值以最后一个为准，这在高级语言中是不言自明的，但是<code>&lt;=</code>是非阻塞性赋值，是并行对所有信号线赋值的，所以这个需要注意。</p>
+<p>输出一般情况下使用<code>reg</code>，某些信号也可以使用<code>wire</code>，输入均使用<code>wire</code>。定义存储器均使用<code>reg</code>。</p>
+<h2 id="input-amp-output"><a href="#input-amp-output" class="headerlink" title="input &amp; output"></a>input &amp; output</h2><p>输入输出信号声明可以是在模块的端口列表中，也可以是在模块内部，我使用的全部是在端口列表中声明。缺省类型<code>wire</code>。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> data_ram (</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span>                    clk    ,</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span>                    ce     ,</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span>                    we     ,</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span>  [ <span class="number">3</span>:<span class="number">0</span>        ]    sel    ,</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span>  [<span class="meta">`DataAddrBus]    addr   ,</span></span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span>  [<span class="meta">`DataBus    ]    data_i ,</span></span><br><span class="line">    <span class="keyword">output</span>  <span class="keyword">reg</span>  [<span class="meta">`DataBus    ]    data_o  </span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="signed"><a href="#signed" class="headerlink" title="$signed"></a>$signed</h2><p>使用<code>$signed()</code>将无符号数转换为有符号数，而无需自己通过检测最高位来判断有符号数的正负，这在有符号数加减法需要检测溢出时非常方便。<br><code>ex.v</code>中加减法以及置位指令实现片段：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> (aluop_i)</span><br><span class="line">    <span class="meta">`EXE_SLT_OP   : arith_res &lt;= $signed(opv1_i) &lt; $signed(opv2_i);</span></span><br><span class="line">    <span class="meta">`EXE_SLTU_OP  : arith_res &lt;= opv1_i &lt; opv2_i;</span></span><br><span class="line">    <span class="meta">`EXE_ADD_OP   : arith_res &lt;= $signed(opv1_i) + $signed(opv2_i);</span></span><br><span class="line">    <span class="meta">`EXE_ADDU_OP  : arith_res &lt;= opv1_i + opv2_i;</span></span><br><span class="line">    <span class="meta">`EXE_ADDI_OP  : arith_res &lt;= $signed(opv1_i) + $signed(opv2_i);</span></span><br><span class="line">    <span class="meta">`EXE_ADDIU_OP : arith_res &lt;= opv1_i + opv2_i;</span></span><br><span class="line">    <span class="meta">`EXE_SUB_OP   : arith_res &lt;= $signed(opv1_i) - $signed(opv2_i);</span></span><br><span class="line">    <span class="meta">`EXE_SUBU_OP  : arith_res &lt;= opv1_i - opv2_i;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="内建的-amp"><a href="#内建的-amp" class="headerlink" title="内建的 / &amp; *"></a>内建的 / &amp; *</h2><p>乘法和除法指令实现时为了方便我采用的是内建的<code>/</code>和<code>*</code>，这样乘法和除法均在一周期内完成，这样效率并不高。作者并没有这样实现，想查看细节可以参考：<a href="https://blog.csdn.net/leishangwen/article/details/39079817" target="_blank" rel="noopener">自己动手写CPU之第七阶段（9）——除法指令说明及实现思路</a>。</p>
+<h2 id="溢出检测"><a href="#溢出检测" class="headerlink" title="溢出检测"></a>溢出检测</h2><p>某些算术运算指令不检测溢出，但是某些需要。所以需要一个一位信号来保存。<br><code>ex.v</code>中：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wire</span>  sum_overflow = (<span class="built_in">$signed</span>(opv1_i) &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">$signed</span>(opv2_i) &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">$signed</span>(arith_res) &lt; <span class="number">0</span></span><br><span class="line">                   || <span class="built_in">$signed</span>(opv1_i) &lt; <span class="number">0</span> &amp;&amp; <span class="built_in">$signed</span>(opv2_i) &lt; <span class="number">0</span> &amp;&amp; <span class="built_in">$signed</span>(arith_res) &gt; <span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>对存储器的初始化放在<code>initial</code>中一次性完成，<code>initial</code>是不可综合的，所以我编写时是将指令存储器的初始化放在了<code>test bench</code>中的。但最后综合出来其实没有太大意义，所以我没有做这一步，也不知道能否通过综合，就语法上来说应该是可以的。</p>
+<p>初始化采用<code>$readmemh</code>任务读取，<code>$readmemh</code>任务采用16进制读取，要求输入文件每一行为8位16进制数，读取到存储单元的连续32bit中。</p>
+<h2 id="PC"><a href="#PC" class="headerlink" title="PC"></a>PC</h2><p>程序计数器模块是这样编写的：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="meta-keyword">include</span> "const.v"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> pc_reg (</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span>                    clk            ,</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span>                    rst            ,</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span>  [<span class="meta">`StallBus   ]    stall          ,</span></span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span>                    branch_flag_i  ,</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span>  [<span class="meta">`RegBus     ]    branch_addr_i  ,</span></span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span>  [<span class="meta">`InstAddrBus]    pc             ,</span></span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span>                    ce                <span class="comment">// chip enable to inst_rom</span></span><br><span class="line">);</span><br><span class="line">    <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(rst == <span class="meta">`RESET_ENABLE) begin </span></span><br><span class="line">            ce &lt;= <span class="meta">`CHIP_DISABLE;</span></span><br><span class="line">        <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">            ce &lt;= <span class="meta">`CHIP_ENABLE;</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(ce == <span class="meta">`CHIP_DISABLE) begin</span></span><br><span class="line">            pc &lt;= <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span> (stall[<span class="number">0</span>] == <span class="meta">`NOSTOP) begin           // the pipeline do not stop</span></span><br><span class="line">                <span class="keyword">if</span>(branch_flag_i == <span class="meta">`BRANCH)              // branch</span></span><br><span class="line">                     pc &lt;= branch_addr_i;</span><br><span class="line">                <span class="keyword">else</span> pc &lt;= pc + <span class="number">4</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到这里在复位信号从有效变为无效后，需要最多两个周期，即下下个时钟周期上升沿来临之后，才会输出有效的PC信号，进行指令的读取。</p>
+<h2 id="regfile"><a href="#regfile" class="headerlink" title="regfile"></a>regfile</h2><p>寄存器堆中读取是组合逻辑电路，而写入是时序逻辑电路。为了防止错误，必须这样做。因为如果读取和写入的是一个寄存器，我们必须先读取后写入。而如果都是组合逻辑，那么在上升沿来临之前，最后读取的寄存器值就会变成刚写入的结果。</p>
+<p><code>regfile</code>读写端口操作：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//write port operation</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(rst == <span class="meta">`RESET_DISABLE) begin </span></span><br><span class="line">        <span class="keyword">if</span>((we == <span class="meta">`READ_ENABLE) &amp;&amp; (waddr != `RegNumLog2'h0)) begin</span></span><br><span class="line">            regs[waddr] &lt;= wdata;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//read port 1 operation</span></span><br><span class="line"><span class="keyword">always</span> @(*) <span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(rst == <span class="meta">`RESET_ENABLE) begin</span></span><br><span class="line">        rdata1 &lt;= <span class="meta">`ZERO_WORD;</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(raddr1 == <span class="meta">`RegNumLog2'h0) begin </span></span><br><span class="line">        rdata1 &lt;= <span class="meta">`ZERO_WORD;</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>((raddr1 == waddr) &amp;&amp; (we == <span class="meta">`WRITE_ENABLE) &amp;&amp; (re1 == `READ_ENABLE)) begin</span></span><br><span class="line">        rdata1 &lt;= wdata;          <span class="comment">// handle data-dependant hazard about instruction away from two inst</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(re1 == <span class="meta">`READ_ENABLE) begin </span></span><br><span class="line">        rdata1 &lt;= regs[raddr1];   <span class="comment">// read data</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">        rdata1 &lt;= <span class="meta">`ZERO_WORD;</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="自动测试"><a href="#自动测试" class="headerlink" title="自动测试"></a>自动测试</h2><p>项目的<a href="https://github.com/aojueliuyun/toy_cpu/tree/master/test" target="_blank" rel="noopener">test目录</a>下是对每一个功能的自动测试。在汇编器没有做任何优化时（使用<code>.set noreorder</code>指示不要对指令重新排序），一段汇编的执行在任何一个时刻的CPU内部状态（包括PC、寄存器值、堆栈等）在仿真环境中都是可预测的。所以可以在test bench中对其进行断言，并输出是否通过测试的信息。</p>
+<p>文件<code>assert.v</code>定义了几个相关宏：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="meta-keyword">ifndef</span> ASSERT_V</span></span><br><span class="line"><span class="meta">`<span class="meta-keyword">define</span> ASSERT_V</span></span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="meta-keyword">define</span> ASSERT(x) if(1) begin \</span></span><br><span class="line">    <span class="keyword">if</span> (!(x)) <span class="keyword">begin</span> \</span><br><span class="line">        <span class="built_in">$display</span>(<span class="string">"\033[91;1m[%s:%0d] ASSERTION FAILURE: %s\033[0m"</span>, <span class="meta">`<span class="meta-keyword">__FILE__</span>,  `<span class="meta-keyword">__LINE__</span>, `"x`"); \</span></span><br><span class="line">        $finish_and_return(<span class="number">1</span>); \</span><br><span class="line">    <span class="keyword">end</span> \</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="meta-keyword">define</span> PASS(test) #2 if(1) begin $display("\033[92;1m%s -&gt; PASS\033[0m", `"test`"); $finish; end <span class="meta-keyword">else</span> if(0)</span></span><br><span class="line"><span class="meta">`<span class="meta-keyword">define</span> AR(id, expected) `ASSERT(open_mips_min_sopc0.openmips0.regfile1.regs[id] === expected) // generic register assertion</span></span><br><span class="line"><span class="meta">`<span class="meta-keyword">define</span> AHI(expected) `ASSERT(open_mips_min_sopc0.openmips0.hilo_reg0.hi_o === expected)       // register HI assertion</span></span><br><span class="line"><span class="meta">`<span class="meta-keyword">define</span> ALO(expected) `ASSERT(open_mips_min_sopc0.openmips0.hilo_reg0.lo_o === expected)       // register LO assertion</span></span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
+<p>这里只需要对使用了的通用寄存器、<code>HI</code>、<code>LO</code>进行断言判断是否正确按照预期执行就OK了。</p>
+<h1 id="run-test"><a href="#run-test" class="headerlink" title="run test"></a>run test</h1><p>上面的都编写完之后，可以写一个makefile来一键运行所有测试。但是我的开发环境是windows，用不了make，虚拟机体验又不太好。所以写了一个<a href="https://github.com/aojueliuyun/toy_cpu/blob/master/test/runtest.sh" target="_blank" rel="noopener">shell脚本</a>来替代一下，windows下（需要一个Bash，<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git Bash</a>就很好）和linux下都能运行。</p>
+<p>有兴趣clone下来运行一下的话可以执行如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/aojueliuyun/toy_cpu ./toy_cpu</span><br><span class="line">cd ./toy_cpu/test</span><br><span class="line">./runtest.sh -t</span><br></pre></td></tr></table></figure>
+<p>依赖：Git，Icarus verilog，Gtkwave</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p>[1] 雷思磊.自己动手写CPU[M].电子工业出版社,2014.<br>[2] 戴维 A.帕特森 (David A.Patterson),约翰 L.亨尼斯 (John L.Hennessy).计算机组成与设计(原书第5版)[M].机械工业出版社,2017.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/25/2018.5.25--the-linux-command-line/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          The Linux Command Line
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/30/2018.4.30--write-a-toy-cpu--environment/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【write a toy cpu】环境搭建</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ISA"><span class="nav-number">1.</span> <span class="nav-text">ISA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象-接口-分层"><span class="nav-number">1.1.</span> <span class="nav-text">抽象-接口-分层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令集体系结构"><span class="nav-number">1.2.</span> <span class="nav-text">指令集体系结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MIPS指令集"><span class="nav-number">1.3.</span> <span class="nav-text">MIPS指令集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#处理器结构"><span class="nav-number">2.</span> <span class="nav-text">处理器结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#流水线（pipeline）"><span class="nav-number">2.1.</span> <span class="nav-text">流水线（pipeline）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流水线冒险"><span class="nav-number">2.2.</span> <span class="nav-text">流水线冒险</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#verilog实现"><span class="nav-number">3.</span> <span class="nav-text">verilog实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一条指令ori的实现"><span class="nav-number">3.1.</span> <span class="nav-text">第一条指令ori的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续指令实现"><span class="nav-number">3.2.</span> <span class="nav-text">后续指令实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tricks"><span class="nav-number">4.</span> <span class="nav-text">tricks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带参宏"><span class="nav-number">4.1.</span> <span class="nav-text">带参宏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存分块"><span class="nav-number">4.2.</span> <span class="nav-text">内存分块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpvars"><span class="nav-number">4.3.</span> <span class="nav-text">$dumpvars</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wire-amp-reg"><span class="nav-number">4.4.</span> <span class="nav-text">wire &amp; reg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-amp-output"><span class="nav-number">4.5.</span> <span class="nav-text">input &amp; output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#signed"><span class="nav-number">4.6.</span> <span class="nav-text">$signed</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内建的-amp"><span class="nav-number">4.7.</span> <span class="nav-text">内建的 / &amp; *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#溢出检测"><span class="nav-number">4.8.</span> <span class="nav-text">溢出检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">4.9.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PC"><span class="nav-number">4.10.</span> <span class="nav-text">PC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#regfile"><span class="nav-number">4.11.</span> <span class="nav-text">regfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动测试"><span class="nav-number">4.12.</span> <span class="nav-text">自动测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#run-test"><span class="nav-number">5.</span> <span class="nav-text">run test</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">6.</span> <span class="nav-text">reference</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

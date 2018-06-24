@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>三大简单排序算法——插入、选择、冒泡 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="排序作为一个如此经典与常见的问题，排序算法自然也是各种各样、各具特点。本文主要讨论三个时间复杂度为O(n2)的简单排序算法，即插入排序、选择排序和冒泡排序。在Wiki了排序算法之后，瞬间感觉世界之大排序算法之多。Wiki链接。      简单排序算法 最好时间复杂度 最坏时间复杂度 平均时间复杂度 是否原址     插入排序 O(n) O(n2) O(n2) 是   希尔排序 O(nlogn)">
+<meta name="keywords" content="排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三大简单排序算法——插入、选择、冒泡">
+<meta property="og:url" content="http://aojueliuyun.github.io/2017/10/27/2017.10.27--three-simple-sort-algorithms/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="排序作为一个如此经典与常见的问题，排序算法自然也是各种各样、各具特点。本文主要讨论三个时间复杂度为O(n2)的简单排序算法，即插入排序、选择排序和冒泡排序。在Wiki了排序算法之后，瞬间感觉世界之大排序算法之多。Wiki链接。      简单排序算法 最好时间复杂度 最坏时间复杂度 平均时间复杂度 是否原址     插入排序 O(n) O(n2) O(n2) 是   希尔排序 O(nlogn)">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/b/b0/Selection_sort_animation.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/3/37/Sorting_gnomesort_anim.gif">
+<meta property="og:updated_time" content="2018-02-20T10:33:13.889Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三大简单排序算法——插入、选择、冒泡">
+<meta name="twitter:description" content="排序作为一个如此经典与常见的问题，排序算法自然也是各种各样、各具特点。本文主要讨论三个时间复杂度为O(n2)的简单排序算法，即插入排序、选择排序和冒泡排序。在Wiki了排序算法之后，瞬间感觉世界之大排序算法之多。Wiki链接。      简单排序算法 最好时间复杂度 最坏时间复杂度 平均时间复杂度 是否原址     插入排序 O(n) O(n2) O(n2) 是   希尔排序 O(nlogn)">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017.10.27--three-simple-sort-algorithms" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      三大简单排序算法——插入、选择、冒泡
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/27/2017.10.27--three-simple-sort-algorithms/" class="article-date">
+	  <time datetime="2017-10-26T16:00:00.000Z" itemprop="datePublished">2017-10-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>排序作为一个如此经典与常见的问题，排序算法自然也是各种各样、各具特点。<br>本文主要讨论三个时间复杂度为<strong>O(n<sup>2</sup>)</strong>的简单排序算法，即<strong>插入排序、选择排序和冒泡排序</strong>。<br>在Wiki了排序算法之后，瞬间感觉世界之大排序算法之多。<a href="https://en.wikipedia.org/wiki/Sorting_algorithm" target="_blank" rel="noopener">Wiki链接</a>。</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>简单排序算法</th>
+<th style="text-align:center">最好时间复杂度</th>
+<th style="text-align:center">最坏时间复杂度</th>
+<th style="text-align:center">平均时间复杂度</th>
+<th style="text-align:center">是否原址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入排序</td>
+<td style="text-align:center">O(n)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td style="text-align:center">O(nlogn)</td>
+<td style="text-align:center">O(nlog<sup>2</sup>n)</td>
+<td style="text-align:center">O(nlog<sup>2</sup>n) or O(n<sup>5/4</sup>)</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td>冒泡排序</td>
+<td style="text-align:center">O(n)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td>地精排序</td>
+<td style="text-align:center">O(n)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">O(n<sup>2</sup>)</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+</div>
+<a id="more"></a>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.png" alt="各种排序详细特性"><br>上图截自Wikipedia，足可见排序算法是如此得花式繁多。但这里只介绍常用的三种简单排序及其改进版本。</p>
+<p>排序分为内排序和外排序，内排序为在内存中进行地排序，外排序主要是外存储器中大文件的排序。</p>
+<p>内排序按照排序方式可以分为<strong>基于比较的排序</strong>，和<strong>不基于比较的排序</strong>。其中基于比较的排序算法有插入排序，交换排序，选择排序，归并排序等。不基于比较的排序有基数排序，桶排序等。以下算法均以升序排列为例。</p>
+<p>如果一个排序算法在排序过程中只有常数个元素需要存储在数组之外，则称该排序算法为<strong>原址</strong>的。后面会介绍一些非原址的排序算法，如归并排序。（next time）</p>
+<p>首先定义一个交换元素的函数供下面的函数调用：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> temp = x;</span><br><span class="line">	x = y;</span><br><span class="line">	y = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="插入排序-Insertion-Sort"><a href="#插入排序-Insertion-Sort" class="headerlink" title="插入排序(Insertion Sort)"></a>插入排序(Insertion Sort)</h1><h2 id="直接插入排序"><a href="#直接插入排序" class="headerlink" title="直接插入排序"></a>直接插入排序</h2><p>在生活中我们也许经常用到插入排序，例如玩扑克牌时按照大小整理牌序的过程。</p>
+<p>思路（步骤）：</p>
+<ol>
+<li>对第一个元素不做任何处理，作为初始时的已排序列</li>
+<li>从第二个元素开始，在已排序的序列中查找该元素其应该位于的位置</li>
+<li>在查找过程中，将大元素依次往后移，直到遇到合适位置</li>
+<li>将该元素插入该位置，已排序列元素个数加1</li>
+<li>重复2，3，4直到最后一个元素</li>
+</ol>
+<p>当已经排好序时，最好时间复杂度为O(n)。逆序时，最坏时间复杂度为O(n<sup>2</sup>)。平均时间复杂度也是O(n<sup>2</sup>)。</p>
+<p>伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Insertion_Sort(A)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for i=2 to A.length</span><br><span class="line">    key = A[i]</span><br><span class="line">    j = i-1</span><br><span class="line">    while j&gt;0 and A[j]&gt;key</span><br><span class="line">        A[j+1] = A[j]</span><br><span class="line">        j = j-1</span><br><span class="line">    A[j+1] = key</span><br></pre></td></tr></table></figure>
+<p>其中A表示一个数组，”.”号表示调用属性，比如A.length表示数组A的长度，伪代码中数组下标从1开始，即为数组元素的逻辑位序。采用缩进表示语句间的层次等特点。<br><strong>伪代码表示算法的优点：</strong> 简单易读，屏蔽了高级语言的细节，对于由程序设计语言基础的人来说根据伪代码写出对应的代码会非常容易。当遇到复杂问题时先写出伪代码也许会是解决问题的一个好途径。</p>
+<p>采用C++/C实现上述伪代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insertion_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,key;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        key = A[i];</span><br><span class="line">        j = i<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(j&gt;=<span class="number">0</span> &amp;&amp; A[j]&gt;key)</span><br><span class="line">        &#123;</span><br><span class="line">            A[j+<span class="number">1</span>] = A[j];</span><br><span class="line">            j --;</span><br><span class="line">        &#125;</span><br><span class="line">        A[j+<span class="number">1</span>] = key;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>排序过程的动图（以下均来自Wikipedia）演示如下：<br><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt="堆排序"></p>
+<h2 id="折半插入排序-Binary-Insertion-Sort"><a href="#折半插入排序-Binary-Insertion-Sort" class="headerlink" title="折半插入排序(Binary Insertion Sort)"></a>折半插入排序(Binary Insertion Sort)</h2><p>可以看到上述插入排序中查找和移动是结合在一起的，并且在插入第i个元素时，前i-1个元素时有序的。那么可以使用有序表的二分查找代替逐项查找，并且先查找再移动。那么就可以改进其中查找过程的时间复杂度。但由于并没有改进移动过程。所以总体时间复杂度并不会产生变化，仍为O(n<sup>2</sup>)。<br>伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bin_Insertion_Sort(A)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">for i=2 to A.length</span><br><span class="line">    if A[i-1] &gt; A[i]</span><br><span class="line">        key = A[i]</span><br><span class="line">        low = 1</span><br><span class="line">        high = i-1</span><br><span class="line">        while low &lt;= high</span><br><span class="line">            mid = (high+low)/2</span><br><span class="line">            if key &gt; A[mid]     //插入点在左半区</span><br><span class="line">                high = mid-1</span><br><span class="line">            else                //插入点在于右半区</span><br><span class="line">                low = mid+1</span><br><span class="line">        while j=i-1 downto high+1   //元素集中后移</span><br><span class="line">            A[j+1] = A[j]</span><br><span class="line">        A[high+1] = key         //插入</span><br></pre></td></tr></table></figure>
+<p>C++实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Bin_Insertion_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span>  <span class="comment">//升序</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j,low,high,mid;</span><br><span class="line">	<span class="keyword">int</span> key;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(A[i<span class="number">-1</span>] &gt; A[i])   <span class="comment">//反序时 </span></span><br><span class="line">		&#123;</span><br><span class="line">			key = A[i];</span><br><span class="line">			low = <span class="number">0</span>;</span><br><span class="line">			high = i<span class="number">-1</span>;</span><br><span class="line">			<span class="keyword">while</span>(low &lt;= high)</span><br><span class="line">			&#123;</span><br><span class="line">				mid = (low+high)/<span class="number">2</span>;	 </span><br><span class="line">				<span class="keyword">if</span>(key &lt; A[mid])</span><br><span class="line">					high = mid<span class="number">-1</span>;	<span class="comment">//插入点前半区 </span></span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">					low = mid+<span class="number">1</span>; 	<span class="comment">//插入点后半区 </span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=high+<span class="number">1</span>;j--)	<span class="comment">//元素集中后移</span></span><br><span class="line">				A[j+<span class="number">1</span>] = A[j];</span><br><span class="line">			A[high+<span class="number">1</span>] = key;		<span class="comment">//插入 </span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="希尔排序-Shell-Sort"><a href="#希尔排序-Shell-Sort" class="headerlink" title="希尔排序(Shell Sort)"></a>希尔排序(Shell Sort)</h2><p>希尔排序也是一种插入排序，是简单插入排序经过改进后的一个高效版本，也称缩小增量排序。同时希尔排序也是冲破O(n<sup>2</sup>)的第一批算法之一。</p>
+<p>思路（步骤）：</p>
+<ol>
+<li>d = n/2</li>
+<li>将序列分为d个分组，在每个分组内进行直接插入排序</li>
+<li>d=d/2，重复2，直到d=1</li>
+</ol>
+<p>分析：对于一趟排序过程，A[1…n]被分为d个子序列。即A[1],A[1+d],A[1+2d]…、A[2],A[2+d],A[2+2d]…等d个序列。一趟排序完成之后，每个子序列内部有序，再将d缩小为d/2，重复这一过程。直到d=1时，会对整个数组进行一次直接插入排序。所以最后得到的结果一定是正确的。</p>
+<p>时间复杂度：最好为O(nlogn)，平均O(n<sup>1.25</sup>)，证明过程复杂，这里不做证明。可参考<a href="https://en.wikipedia.org/wiki/Shellsort" target="_blank" rel="noopener">ShellSort</a>。</p>
+<p>伪代码表示如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Shell_Sort(A)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">d = A.length/2</span><br><span class="line">while d&gt;0</span><br><span class="line">    for i=d+1 to n      //从第一个序列的第二个元素开始</span><br><span class="line">        temp = A[i]</span><br><span class="line">        j = i-d</span><br><span class="line">        while j&gt;0 and temp &lt; A[j]   //对每一个序列进行插入排序</span><br><span class="line">            A[j+d] =A[j]</span><br><span class="line">            j = j-d</span><br><span class="line">        A[j+d] = temp</span><br><span class="line">    d = d/2</span><br></pre></td></tr></table></figure>
+<p>C++实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Shell_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j,d,temp;</span><br><span class="line">	d = n/<span class="number">2</span>;</span><br><span class="line">	<span class="keyword">while</span>(d &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(i=d;i&lt;n;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			temp = A[i];</span><br><span class="line">			j = i-d;</span><br><span class="line">			<span class="keyword">while</span>(j&gt;=<span class="number">0</span> &amp;&amp; temp&lt;A[j])</span><br><span class="line">			&#123;</span><br><span class="line">				A[j+d] = A[j];</span><br><span class="line">				j = j-d;</span><br><span class="line">			&#125;</span><br><span class="line">			A[j+d] = temp;</span><br><span class="line">		&#125;</span><br><span class="line">		d = d/<span class="number">2</span>;</span><br><span class="line">	&#125;	 </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>动图演示：<br><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt="希尔排序"></p>
+<hr>
+<h1 id="选择排序-Selection-Sort"><a href="#选择排序-Selection-Sort" class="headerlink" title="选择排序(Selection Sort)"></a>选择排序(Selection Sort)</h1><p>思路（步骤）：</p>
+<ol>
+<li>在所有n个元素中选出最小的元素排在第一个位置</li>
+<li>选出次小元素排在下一位置</li>
+<li>重复2直到排序完成</li>
+</ol>
+<p>因为在排序过程的比较次数与n<sup>2</sup>成正比，仅仅是交换次数从0到n-1的变化。所以选择排序的最好、最坏和平均时间复杂度都是O(n<sup>2</sup>).</p>
+<p>伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Selection_Sort(A)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for i=1 to A.length-1</span><br><span class="line">    min = A[i]</span><br><span class="line">    for j=i+1 to A.length</span><br><span class="line">        if(A[j] &lt; min)</span><br><span class="line">            min = A[j]</span><br><span class="line">            k = j</span><br><span class="line">    exchange A[j] with A[k]</span><br></pre></td></tr></table></figure>
+<p>C++实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Selection_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j,k,min;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		min = A[i];</span><br><span class="line">		<span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(A[j]&lt;min)</span><br><span class="line">			&#123;</span><br><span class="line">				min = A[j];</span><br><span class="line">				k = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(min != A[i])</span><br><span class="line">			swap(A[i],A[k]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>动图演示：<br><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Selection_sort_animation.gif" alt="选择排序"></p>
+<hr>
+<h1 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序(Bubble Sort)"></a>冒泡排序(Bubble Sort)</h1><p>冒泡排序为交换排序中的最简单的一种。交换排序主要有冒泡排序和快速排序。（快速排序next time）</p>
+<h2 id="基础版本"><a href="#基础版本" class="headerlink" title="基础版本"></a>基础版本</h2><p>思路（步骤）：</p>
+<ol>
+<li>将序列分为（全局）有序区和待排无序区，初始时所有元素位于待排无序区中</li>
+<li>从待排无序区末尾开始将元素与前一元素比较，若小则交换</li>
+<li>一轮循环后，无序区最小元素移到最前方并入有序区中，无序区缩小</li>
+<li>重复2，3直到排序完成</li>
+</ol>
+<p>最好时间复杂度在已排好的序列时取到为O(n)，平均和最坏时间复杂度均为O(n<sup>2</sup>)</p>
+<p>伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bubble_Sort(A)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for i=1 to A.length-1</span><br><span class="line">    for j=A.length downto i+1</span><br><span class="line">        if(A[j] &lt; A[j-1])</span><br><span class="line">            exchange A[j] with A[j-1]</span><br></pre></td></tr></table></figure>
+<p>C++实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Bubble_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=n<span class="number">-1</span>;j&gt;i;j--)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(A[j] &lt; A[j<span class="number">-1</span>])</span><br><span class="line">			    swap(A[j],A[j<span class="number">-1</span>]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>动图演示（图中为从后往前）：<br><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif" alt="冒泡排序"></p>
+<h2 id="稍加改进"><a href="#稍加改进" class="headerlink" title="稍加改进"></a>稍加改进</h2><p>改进思路：若在冒泡过程中那一轮循环结束后已经排好了序（不再冒泡/交换），则直接结束。增加一个表示本轮循环是否交换的变量即可。<br>C++实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Bubble_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> exchange;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        exchange = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=n<span class="number">-1</span>;j&gt;i;j--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[j] &lt; A[j<span class="number">-1</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                swap(A[j],A[j<span class="number">-1</span>]);</span><br><span class="line">                exchange = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!exchange)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="地精排序-Gnome-Sort"><a href="#地精排序-Gnome-Sort" class="headerlink" title="地精排序(Gnome Sort)"></a>地精排序(Gnome Sort)</h2><p>地精排序号称最简单的排序。交换排序的一种。又称Stupid Sort。只使用一层循环。<a href="https://en.wikipedia.org/wiki/Gnome_sort" target="_blank" rel="noopener">Wiki链接</a></p>
+<p>思路：默认情况下前进冒泡，一旦遇到冒泡的情况就往回冒，直到把这个数放好为止。</p>
+<p>分析：就排序过程而言，与插入排序基本一致，唯一区别就是地精排序通过交换元素实现元素的向后移动，而插入排序是借助了一个额外的存储空间使元素往后移动。所以说插入排运行时间略优于地精排序。</p>
+<p>其时间复杂度同样是最好为O(n)，平均和最坏均为O(n<sup>2</sup>)。</p>
+<p>步骤：</p>
+<ol>
+<li>初始时，i为0，则直接自加1</li>
+<li>然后将A[i]与A[i-1]比较，发生交换则i自减1，没发生交换则自加1</li>
+<li>重复2直到排序完成</li>
+</ol>
+<p>伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Gnome Sort(A)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">i=1</span><br><span class="line">while(i&lt;=A.length)</span><br><span class="line">    if i==1 or A[i]&gt;=A[i-1]</span><br><span class="line">        i++</span><br><span class="line">    else</span><br><span class="line">        exchange A[i] with A[i-1]</span><br><span class="line">        i--</span><br></pre></td></tr></table></figure>
+<p>C++实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Gnome_Sort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(i&lt;n)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span> || A[i]&gt;=A[i<span class="number">-1</span>])<span class="comment">//升序 </span></span><br><span class="line">		&#123;</span><br><span class="line">			i ++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			swap(A[i],A[i<span class="number">-1</span>]);</span><br><span class="line">			i --;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中可改进的地方还很多，这里不做实现。<br>动图演示：<br><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Sorting_gnomesort_anim.gif" alt="Gonme Sort"></p>
+<p><strong>参考资料：算法导论</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/01/2017.11.1--heap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基本数据结构——堆
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/16/2017.10.16--stack/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">基本数据结构--栈</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插入排序-Insertion-Sort"><span class="nav-number">1.</span> <span class="nav-text">插入排序(Insertion Sort)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#直接插入排序"><span class="nav-number">1.1.</span> <span class="nav-text">直接插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#折半插入排序-Binary-Insertion-Sort"><span class="nav-number">1.2.</span> <span class="nav-text">折半插入排序(Binary Insertion Sort)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#希尔排序-Shell-Sort"><span class="nav-number">1.3.</span> <span class="nav-text">希尔排序(Shell Sort)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择排序-Selection-Sort"><span class="nav-number">2.</span> <span class="nav-text">选择排序(Selection Sort)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#冒泡排序-Bubble-Sort"><span class="nav-number">3.</span> <span class="nav-text">冒泡排序(Bubble Sort)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础版本"><span class="nav-number">3.1.</span> <span class="nav-text">基础版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稍加改进"><span class="nav-number">3.2.</span> <span class="nav-text">稍加改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地精排序-Gnome-Sort"><span class="nav-number">3.3.</span> <span class="nav-text">地精排序(Gnome Sort)</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

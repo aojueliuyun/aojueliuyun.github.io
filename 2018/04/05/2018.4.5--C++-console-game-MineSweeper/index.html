@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>写一个简单的c++控制台游戏——扫雷 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="扫雷 MineSweeper用过Windows XP的用户一定不会忘记那一款有趣、烧脑(maybe)的扫雷游戏。（反正我是没有怎么玩过）这里将用C++控制台程序简单实现这个挖雷游戏。下面应该是Win7的挖雷，就是这个画风：">
+<meta name="keywords" content="C++ console game">
+<meta property="og:type" content="article">
+<meta property="og:title" content="写一个简单的C++控制台游戏——扫雷">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/04/05/2018.4.5--C++-console-game-MineSweeper/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="扫雷 MineSweeper用过Windows XP的用户一定不会忘记那一款有趣、烧脑(maybe)的扫雷游戏。（反正我是没有怎么玩过）这里将用C++控制台程序简单实现这个挖雷游戏。下面应该是Win7的挖雷，就是这个画风：">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/win-XP-MineSweeper.jpg">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/game-mine-sweeper.png">
+<meta property="og:updated_time" content="2018-04-17T05:05:07.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="写一个简单的C++控制台游戏——扫雷">
+<meta name="twitter:description" content="扫雷 MineSweeper用过Windows XP的用户一定不会忘记那一款有趣、烧脑(maybe)的扫雷游戏。（反正我是没有怎么玩过）这里将用C++控制台程序简单实现这个挖雷游戏。下面应该是Win7的挖雷，就是这个画风：">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/win-XP-MineSweeper.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.4.5--C++-console-game-MineSweeper" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      写一个简单的C++控制台游戏——扫雷
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/05/2018.4.5--C++-console-game-MineSweeper/" class="article-date">
+	  <time datetime="2018-04-04T16:00:00.000Z" itemprop="datePublished">2018-04-05</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Toy-Programs/">Toy Programs</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="扫雷-MineSweeper"><a href="#扫雷-MineSweeper" class="headerlink" title="扫雷 MineSweeper"></a>扫雷 MineSweeper</h2><p>用过Windows XP的用户一定不会忘记那一款有趣、烧脑(maybe)的扫雷游戏。（反正我是没有怎么玩过）这里将用C++控制台程序简单实现这个挖雷游戏。<br>下面应该是Win7的挖雷，就是这个画风：</p>
+<p><img src="http://oxx8it1qo.bkt.clouddn.com/win-XP-MineSweeper.jpg" alt="win7 minesweeper"></p>
+<a id="more"></a>
+<p>首先，我们分析一下这个游戏：</p>
+<ul>
+<li>地图由正方形小方块组成的矩形，每个小方块内要么有雷，要么没有雷</li>
+<li>随意点击一个方块开始，如果有雷，爆炸了，则游戏结束，没有爆炸则继续</li>
+<li>没有爆炸的方块会显示出以它为中心的九宫格内的雷的数量，为空则表示没有</li>
+<li>一次点击后，如果没有爆炸，且周围有雷，则不会显示出多余方块，如果周围没有雷，则会显示出周围所有没有雷的方块，并且显示出数字的方块会作为边界</li>
+<li>为什么要这样呢？因为为空白的话，可以直接将周围剩余8个方块依次点击出来（都没有雷），所以电脑帮我们做了这一步，让我们进行接下来的分析</li>
+</ul>
+<p>可以看到，上面的过程中最重要的就是：点击的块周围没有雷时，显示出整个可以确定没有雷的一块区域和边界。这很显然要用到<strong>广度优先搜索</strong>，用<strong>队列</strong>实现，并不复杂。</p>
+<p>实现效果图：<br><img src="http://oxx8it1qo.bkt.clouddn.com/game-mine-sweeper.png" alt="my-mine-sweeper"></p>
+<p>因为是纯粹的C++控制台游戏，所以输入坐标进行挖雷。<br>游戏逻辑就是：每一次接受输入，然后挖雷，刷新地图上所有位置的状态，清屏，输出，挖到雷就结束。<br>雷的数量作为输入，自己设置。然后程序随机生成雷的位置。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>IDE：VS 2017 Community</p>
+<p>文件结构<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">game-MineSweeper</span><br><span class="line">|</span><br><span class="line">|----block.h        <span class="comment">//block类以及Map类的声明</span></span><br><span class="line">|----stdafx.h       <span class="comment">//VS必须有这个头文件，VS会自动生成三个，其余略</span></span><br><span class="line">|----block.cpp      <span class="comment">//Map类的方法实现</span></span><br><span class="line">|____game-MineSweeper.cpp       <span class="comment">//主函数，逻辑主体</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>block.h</code>——<code>block</code> 和 <code>Map</code> 类定义</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2018.4.5 In XDU </span></span><br><span class="line"><span class="comment">// block class and Map class definition</span></span><br><span class="line"><span class="comment">// IDE: VS 2017 Community</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cout</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cin</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">queue</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::pair;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_X = <span class="number">20</span>;		<span class="comment">//也可以将block改造为模板类，将这两个参数作为模板参数传入接口</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_Y = <span class="number">20</span>;		<span class="comment">//如果要实现输入控制地图大小，可在堆上分配数组，作为参数传入构造函数，一维数组模拟二维数组即可</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> offset_X = <span class="number">5</span>;		<span class="comment">//打印地图时相对纵轴偏移量，下为横轴</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> offset_Y = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T <span class="title">max</span><span class="params">(T a, T b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T <span class="title">min</span><span class="params">(T a, T b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a &lt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">block</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">bool</span> has_mine;			<span class="comment">//是否有雷</span></span><br><span class="line">	<span class="keyword">int</span> mine_around_num;	        <span class="comment">//周围的雷的数量</span></span><br><span class="line">	<span class="keyword">bool</span> digged;			<span class="comment">//是否已经被挖开，挖开有雷则直接返回，没有则显示周围的雷的数量</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Map</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	block Cube[max_X][max_Y];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//传入雷的数量，将Cube初始化</span></span><br><span class="line">	Map(<span class="keyword">int</span> n);</span><br><span class="line">	<span class="comment">//应该要采用广度优先搜索，将所有位置显示出来，挖到雷返回false</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">dig</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line">	<span class="comment">//打印地图，若碰到有雷炸了的情况，最后由下一个函数清屏打印最终结果</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//雷挖炸了之后，将所有位置情况打印出来</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">print_end</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>block.cpp</code>——<code>Map</code>的成员函数实现</li>
+</ul>
+<p>其中广搜很容易实现。<code>print</code>函数很多都是处理输出格式的内容。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"block.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">////传入雷的数量，对其进行初始化</span></span><br><span class="line">Map::Map(<span class="keyword">int</span> n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">memset</span>(Cube, <span class="number">0</span>, <span class="keyword">sizeof</span>(Cube));</span><br><span class="line">	srand(time(<span class="number">0</span>));            <span class="comment">//随机数种子</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)			<span class="comment">//随机埋上n个雷</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> x = rand() % max_X;</span><br><span class="line">		<span class="keyword">int</span> y = rand() % max_Y;</span><br><span class="line">		Cube[x][y].has_mine = <span class="literal">true</span>;</span><br><span class="line">		<span class="comment">//cout &lt;&lt; "(" &lt;&lt; x &lt;&lt; "," &lt;&lt; y &lt;&lt; ")" &lt;&lt; endl;</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; max_X; i++)		<span class="comment">//对地图进行初始化</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; max_Y; j++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> x = max(i - <span class="number">1</span>, <span class="number">0</span>); x &lt;= min(i + <span class="number">1</span>, max_X - <span class="number">1</span>); x++)</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> y = max(j - <span class="number">1</span>, <span class="number">0</span>); y &lt;= min(j + <span class="number">1</span>, max_Y - <span class="number">1</span>); y++)</span><br><span class="line">					<span class="keyword">if</span> (Cube[x][y].has_mine)</span><br><span class="line">						Cube[i][j].mine_around_num++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//应该要采用广度优先搜索，将所有位置显示出来，挖到雷返回false</span></span><br><span class="line"><span class="keyword">bool</span> Map::dig(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span><br><span class="line">&#123;</span><br><span class="line">	Cube[x][y].digged = <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">if</span> (Cube[x][y].has_mine)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (Cube[x][y].mine_around_num != <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">queue</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; Q;	<span class="comment">//采用队列进行广度优先搜索</span></span><br><span class="line">			Q.push(&#123; x,y &#125;);</span><br><span class="line">			<span class="keyword">while</span> (!Q.empty())</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">int</span> curx = Q.front().first;		<span class="comment">//最初挖出来的位置入队</span></span><br><span class="line">				<span class="keyword">int</span> cury = Q.front().second;</span><br><span class="line">				Q.pop();</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">4</span>; i++)	<span class="comment">//表示方向，1~4分别为上下左右</span></span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">int</span> tmpx = curx;</span><br><span class="line">					<span class="keyword">int</span> tmpy = cury;</span><br><span class="line">					<span class="keyword">switch</span> (i)					<span class="comment">//不会出现default的情况</span></span><br><span class="line">					&#123;</span><br><span class="line">					<span class="keyword">case</span> <span class="number">1</span>: tmpx = max(curx - <span class="number">1</span>, <span class="number">0</span>);		<span class="keyword">break</span>;</span><br><span class="line">					<span class="keyword">case</span> <span class="number">2</span>: tmpx = min(curx + <span class="number">1</span>, max_X - <span class="number">1</span>);	<span class="keyword">break</span>;</span><br><span class="line">					<span class="keyword">case</span> <span class="number">3</span>: tmpy = max(cury - <span class="number">1</span>, <span class="number">0</span>);		<span class="keyword">break</span>;</span><br><span class="line">					<span class="keyword">case</span> <span class="number">4</span>: tmpy = min(cury + <span class="number">1</span>, max_Y - <span class="number">1</span>);	<span class="keyword">break</span>;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> (!Cube[tmpx][tmpy].digged &amp;&amp; !Cube[tmpx][tmpy].has_mine)	<span class="comment">//没有被dig且没有雷且周围没有雷则入队</span></span><br><span class="line">					&#123;</span><br><span class="line">						<span class="keyword">if</span> (Cube[tmpx][tmpy].mine_around_num == <span class="number">0</span>)	<span class="comment">//挖出来的区域的中间位置，即周围没有雷的位置</span></span><br><span class="line">						&#123;</span><br><span class="line">							Q.push(&#123; tmpx,tmpy &#125;);</span><br><span class="line">							Cube[tmpx][tmpy].digged = <span class="literal">true</span>;</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">else</span></span><br><span class="line">							Cube[tmpx][tmpy].digged = <span class="literal">true</span>;			<span class="comment">//被挖出来区域的边界，周围有雷，置其状态但不入队</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//打印地图，若碰到有雷炸了的情况，直接返回false，由下一个函数清屏打印最终结果</span></span><br><span class="line"><span class="keyword">void</span> Map::print()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> oy = <span class="number">0</span>; oy &lt; offset_Y; oy++)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> ox = <span class="number">0</span>; ox &lt; offset_X + <span class="number">2</span> + max_X / <span class="number">2</span>; ox++)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"Y"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> oy = <span class="number">0</span>; oy &lt; offset_X + <span class="number">1</span>; oy++)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> ox = <span class="number">0</span>; ox &lt; max_Y; ox++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; ox;</span><br><span class="line">		<span class="keyword">if</span> (ox &lt; <span class="number">10</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="comment">//以上均为控制横向偏移</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; max_X; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> ox = <span class="number">0</span>; ox &lt; offset_X; ox++)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">		<span class="keyword">if</span> (i == (max_Y) / <span class="number">2</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"X"</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		<span class="keyword">if</span> (i &lt; <span class="number">10</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i;</span><br><span class="line">		<span class="comment">//以上为纵向偏移控制</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; max_Y; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (!Cube[i][j].digged)			<span class="comment">//没有被挖</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"■"</span>;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (Cube[i][j].has_mine)	<span class="comment">//被挖了且有雷</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"×"</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (Cube[i][j].mine_around_num != <span class="number">0</span>)	<span class="comment">//被挖了且没有雷且周围有雷</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span> &lt;&lt; Cube[i][j].mine_around_num;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//雷挖炸了之后，将所有位置情况打印出来，也可以选择只用print()打印出踩中的位置</span></span><br><span class="line"><span class="keyword">void</span> Map::print_end()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> oy = <span class="number">0</span>; oy &lt; offset_Y; oy++)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> ox = <span class="number">0</span>; ox &lt; offset_X + <span class="number">2</span> + max_X / <span class="number">2</span>; ox++)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"Y"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> oy = <span class="number">0</span>; oy &lt; offset_X + <span class="number">1</span>; oy++)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> ox = <span class="number">0</span>; ox &lt; max_Y; ox++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; ox;</span><br><span class="line">		<span class="keyword">if</span> (ox &lt; <span class="number">10</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="comment">//以上均为控制横向偏移</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; max_X; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> ox = <span class="number">0</span>; ox &lt; offset_X; ox++)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">		<span class="keyword">if</span> (i == (max_Y) / <span class="number">2</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"X"</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		<span class="keyword">if</span> (i &lt; <span class="number">10</span>)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i;</span><br><span class="line">		<span class="comment">//以上为纵向偏移控制</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; max_Y; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (Cube[i][j].has_mine)		<span class="comment">//有雷</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"×"</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (Cube[i][j].mine_around_num != <span class="number">0</span>)	<span class="comment">//没有雷且周围有雷</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span> &lt;&lt; Cube[i][j].mine_around_num;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>game-MIneSweeper.cpp</code>——主函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2018.4.5 In XDU </span></span><br><span class="line"><span class="comment">// MineSwepper, classic game in Windows XP, a simple implementation with WIN32 console.</span></span><br><span class="line"><span class="comment">// IDE: VS 2017 Community</span></span><br><span class="line"><span class="comment">// author : Tiko</span></span><br><span class="line"><span class="comment">// Github : aojueliuyun</span></span><br><span class="line"><span class="comment">// I'm a student , happy to study annd sahre, welcome to communicate with me !</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"block.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"一个简单的扫雷游戏，向 Windows XP 的扫雷致敬！"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"核心算法：广度优先搜索 "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"默认地图大小：20 * 20 , 可在头文件block.h中修改。"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"另外横向纵向的偏移量也可在block.h中修改。"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"规则："</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">"使用■表示未挖开的位置，×表示挖开炸掉了的雷，"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"数字表示以该格点为中心的九宫格内的雷的数量，空白为没有雷！"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"玩法："</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="string">"因为是纯控制台，所以采用做标输入的方式挖雷。"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"请输入地雷的数量(50左右为宜)："</span>;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">	<span class="function">Map <span class="title">mymap</span><span class="params">(n)</span></span>;</span><br><span class="line">	<span class="keyword">int</span> x, y;</span><br><span class="line">	system(<span class="string">"cls"</span>);</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)		<span class="comment">//挖炸了之后便不再循环，但其实并不靠这个结束循环</span></span><br><span class="line">	&#123;</span><br><span class="line">		mymap.print();</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t  请输入坐标(x,y)，用空格隔开! ps: x为纵，y为横"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t\t"</span>;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; x &gt;&gt; y;</span><br><span class="line">		<span class="keyword">while</span> (<span class="built_in">cin</span>.fail() || x&lt;<span class="number">0</span> || x &gt;= <span class="number">20</span> || x &gt;= max_X || y &gt;= max_Y)	<span class="comment">//读取输入失败或者输入不在指定范围</span></span><br><span class="line">		&#123;</span><br><span class="line">			system(<span class="string">"cls"</span>);</span><br><span class="line">			mymap.print();</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t  请输入坐标(x,y)，用空格隔开! ps: x为纵，y为横"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t输入有误，请重新输入!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">cin</span>.clear();		<span class="comment">//更改cin状态标示符</span></span><br><span class="line">			<span class="built_in">cin</span>.ignore();		<span class="comment">//清空输入缓冲区</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t\t"</span>;</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; x &gt;&gt; y;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (!mymap.dig(x, y))</span><br><span class="line">		&#123;</span><br><span class="line">			system(<span class="string">"cls"</span>);</span><br><span class="line">			mymap.print();		<span class="comment">//亦可选择print_end()函数，将所有位置打印出来</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t你踩中了("</span> &lt;&lt; x &lt;&lt; <span class="string">","</span> &lt;&lt; y &lt;&lt; <span class="string">")"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t恭喜客官中雷，慢走不送了，您吶！"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		system(<span class="string">"cls"</span>);		<span class="comment">//清屏，很好用的感觉</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t查看所有雷的位置 y/n ? "</span>;</span><br><span class="line">	<span class="keyword">char</span> c;</span><br><span class="line">	<span class="built_in">cin</span>.get();		<span class="comment">//读取回车</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">cin</span>.get(c) &amp;&amp; c == <span class="string">'y'</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		system(<span class="string">"cls"</span>);</span><br><span class="line">		mymap.print_end();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"\t\t"</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外VS中的<code>stdafx.h</code>等文件生成项目时会自行生成，不用VS可以不要应该。</p>
+<p>源码：<a href="https://github.com/aojueliuyun/Tiko_Cpp_Toys/tree/master/MineSweeper" target="_blank" rel="noopener">Github</a>，<a href="http://oxx8it1qo.bkt.clouddn.com/MineSweeper.rar" target="_blank" rel="noopener">点击直接下载源码</a>。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本来想写一个控制台的RPG游戏，有等级、经验、地图、道具、材料、装备、NPC等元素的勇士屠龙然后变成龙的RPG游戏的。但是大概很多个小时之后，发现很多地方的设计有问题。所有暂时搁置，等到先把 Bjarne Stroustrup 大佬的 The C++ programming language 看完了之后再来写。所以今天先写了一个扫雷，大概写了两个小时，调Bug又花了两个小时，然后控制格式逻辑什么的又花了大概两个小时。一天就这么就过去了，其实说到底就是一个广度优先搜索而已。以后要提高效率。</p>
+<p>PS：话说hexo博客默认里面的代码块TAB键缩进不是4个空格长度而是8个，与一般的编辑器不一致，就比较尴尬。注释就全部不规整了，难道以后要采用四个空格缩进？而且规范的代码风格是要求用4个空格缩进的，究其原因就是TAB键长度不确定。逼死强迫症系列，还好我只是轻微强迫症，但是如果碰到8个空格长度的情况，缩进层数多了代码就会老长，上面的<code>Map::dig()</code>函数就是这个情况。但空格输入又比较麻烦，但在所有编辑器里面都一致，而且每个空格占一个字符大小，而TAB只占一个。这是程序员圈子里面的无数圣战之一。见<a href="https://www.zhihu.com/question/38896090" target="_blank" rel="noopener">知乎：为什么规范的代码缩进通常用soft tab四个空格而不是tab？</a>当然每个人都有自己的主张，各抒己见，保留自己的观点是好的。但在团队开发中，保持一致且良好的代码风格是必须的。目前我认为最好的解决方案：在编辑器中使用TAB，编辑器自动将其替换为4个空格，如果支持的话（VS用户可在Tools-&gt;Options-&gt;Text Editer对每一种语言的缩进进行控制，极端好用）。简洁的书写，严格的对齐。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/24/2018.4.24--brainfuck/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Brainfuck
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/24/2018.3.26--efficient-sort-algorithms/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">高效排序算法——希尔排序、堆排序、归并排序、快速排序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#扫雷-MineSweeper"><span class="nav-number">1.</span> <span class="nav-text">扫雷 MineSweeper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

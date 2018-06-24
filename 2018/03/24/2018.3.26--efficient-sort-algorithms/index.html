@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>高效排序算法——希尔排序、堆排序、归并排序、快速排序 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="如标题，这里讨论的是基于比较的排序算法中最高效的三种算法和希尔排序。堆排序、归并排序、快速排序的平均时间复杂度均为O(NlogN)。前面有介绍过O(N2)的三种简单排序算法（见三大简单排序算法——插入、选择、冒泡），其中实际表现最好的要属希尔排序。可以证明通过交换相邻元素来进行排序的任何算法都需要O(N2)的平均时间，其中插入排序虽然不是通过交换来排序，但是可以等价为交换的操作，依然是O(N2)。">
+<meta name="keywords" content="排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高效排序算法——希尔排序、堆排序、归并排序、快速排序">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/03/24/2018.3.26--efficient-sort-algorithms/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="如标题，这里讨论的是基于比较的排序算法中最高效的三种算法和希尔排序。堆排序、归并排序、快速排序的平均时间复杂度均为O(NlogN)。前面有介绍过O(N2)的三种简单排序算法（见三大简单排序算法——插入、选择、冒泡），其中实际表现最好的要属希尔排序。可以证明通过交换相邻元素来进行排序的任何算法都需要O(N2)的平均时间，其中插入排序虽然不是通过交换来排序，但是可以等价为交换的操作，依然是O(N2)。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif">
+<meta property="og:updated_time" content="2018-04-09T14:12:50.013Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高效排序算法——希尔排序、堆排序、归并排序、快速排序">
+<meta name="twitter:description" content="如标题，这里讨论的是基于比较的排序算法中最高效的三种算法和希尔排序。堆排序、归并排序、快速排序的平均时间复杂度均为O(NlogN)。前面有介绍过O(N2)的三种简单排序算法（见三大简单排序算法——插入、选择、冒泡），其中实际表现最好的要属希尔排序。可以证明通过交换相邻元素来进行排序的任何算法都需要O(N2)的平均时间，其中插入排序虽然不是通过交换来排序，但是可以等价为交换的操作，依然是O(N2)。">
+<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.3.26--efficient-sort-algorithms" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      高效排序算法——希尔排序、堆排序、归并排序、快速排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/24/2018.3.26--efficient-sort-algorithms/" class="article-date">
+	  <time datetime="2018-03-23T16:00:00.000Z" itemprop="datePublished">2018-03-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如标题，这里讨论的是基于比较的排序算法中最高效的三种算法和希尔排序。堆排序、归并排序、快速排序的平均时间复杂度均为O(NlogN)。前面有介绍过O(N<sup>2</sup>)的三种简单排序算法（见<a href="https://aojueliuyun.github.io/2017/10/27/2017.10.27--three-simple-sort-algorithms/">三大简单排序算法——插入、选择、冒泡</a>），其中实际表现最好的要属希尔排序。可以证明通过交换相邻元素来进行排序的任何算法都需要O(N<sup>2</sup>)的平均时间，其中插入排序虽然不是通过交换来排序，但是可以等价为交换的操作，依然是O(N<sup>2</sup>)。这里讨论的堆排序、归并排序、快速排序均是平均时间复杂度O(NlogN)的算法，实际表现最好的要属快速排序。可以证明O(NlogN)是基于比较的排序算法的时间复杂度下界。所以这三种排序算法都是渐进最优的。最后介绍一下C++的<code>algorithm</code>库中的<code>sort()</code>函数，一般我们自己写的排序算法优化不够时都是达不到这个效率的。还有会对这些算法在大规模数据下的运行时间进行一个简单的测试。</p>
+<a id="more"></a>
+<h1 id="排序算法相关知识"><a href="#排序算法相关知识" class="headerlink" title="排序算法相关知识"></a>排序算法相关知识</h1><p><strong>逆序</strong>：逆序是指数组中具有性质$i&gt;j$但是$A[i]&lt;A[j]$的序偶$(A[i],A[j])$。（升序排列的情况，反之亦然）</p>
+<p><strong>排序的过程就是消除逆序的过程</strong>。很明显逆序的最大数目为$\sum _{i=1}^{N-1}i = \frac{N(N-1)}{2}$，平均情况下逆序数目为最大的一半即${N(N-1)}/{4}$。</p>
+<p>很容易看出，通过交换相邻元素一次最多只能消除一个逆序。所以通过交换相邻元素来排序的算法的平均时间复杂度一定为$O(N^2)$。</p>
+<p>而要突破$O(N^2)$的时间屏障，就必须在一次交换/操作中消除不止一个逆序。下面的排序算法都有这个特点。</p>
+<p>另外如果下列实现中有要交换元素的均调用如下的模板。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T &amp; x , T &amp; y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	T tmp = x;</span><br><span class="line">	x = y;</span><br><span class="line">	y = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><p>希尔排序（<a href="https://en.wikipedia.org/wiki/Shellsort" target="_blank" rel="noopener">Shell sort</a>）是第一批冲破$O(N^2)$时间屏障的算法之一。也称缩小增量排序。上一篇（<a href="https://aojueliuyun.github.io/2017/10/27/2017.10.27--three-simple-sort-algorithms/">三大简单排序算法——插入、选择、冒泡</a>）介绍得很详细。这里贴出代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//希尔排序，效率惊人</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Shell_sort</span><span class="params">(ElemType A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> d=n/<span class="number">2</span>; d&gt;<span class="number">0</span>; d/=<span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=d; i&lt;n; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			ElemType tmp = A[i];</span><br><span class="line">			<span class="keyword">int</span> j = i-d;</span><br><span class="line">			<span class="keyword">while</span>(j &gt;= <span class="number">0</span> &amp;&amp; tmp &lt; A[j])</span><br><span class="line">			&#123;</span><br><span class="line">				A[j+d] = A[j];</span><br><span class="line">				j = j-d;</span><br><span class="line">			&#125;</span><br><span class="line">			A[j+d] = tmp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的增量序列是$n/2,n/4,…,1$，为最原始的希尔序列。但这并不是高效的增量序列，一个更加高效的增量序列为Hibbard增量，形如$1,3,7,…,2^k-1$（使用时需要从合适的位置逆序），可以证明Hibbard增量的希尔排序最坏情形时间复杂度为$O(N^{3/2})$。希尔排序的算法实现很简单，但是分析却是很困难的。其实还有更好的增量序列，可以参见 <a href="https://en.wikipedia.org/wiki/Shellsort#Gap_sequences" target="_blank" rel="noopener">Shellsort - Wikipedia - Gap sequences</a>。<br>动图演示（以下动图均来自<a href="https://www.wikipedia.org/" target="_blank" rel="noopener">Wikipedia</a>）：<br><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt="此处输入图片的描述"></p>
+<h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><p><a href="https://en.wikipedia.org/wiki/Heapsort" target="_blank" rel="noopener">heap sort</a>，这个介绍堆时也是介绍的很详细的。见<a href="https://aojueliuyun.github.io/2017/11/01/2017.11.1--heap/">基本数据结构——堆</a>，<a href="https://aojueliuyun.github.io/2018/03/23/2018.3.23--priority-queue-&amp;-heap-&amp;-leftist-heap/">优先队列 &amp; 堆</a>。<br>实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//升序排列、最大堆 </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sift_down</span><span class="params">(ElemType A[],<span class="keyword">int</span> i,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ElemType tmp;</span><br><span class="line">	<span class="keyword">int</span> child;</span><br><span class="line">	<span class="keyword">for</span>(tmp = A[i]; <span class="number">2</span>*i &lt;= n; i = child)</span><br><span class="line">	&#123;</span><br><span class="line">		child = <span class="number">2</span>*i;</span><br><span class="line">		<span class="keyword">if</span>(child != n &amp;&amp; A[child+<span class="number">1</span>] &gt; A[child])</span><br><span class="line">			child ++;</span><br><span class="line">		<span class="keyword">if</span>(tmp &lt; A[child])</span><br><span class="line">			A[i] = A[child];</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">	&#125;</span><br><span class="line">	A[i] = tmp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将数组建堆然后排序——升序 </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heap_sort</span><span class="params">(ElemType A[],<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = n/<span class="number">2</span>; i&gt;<span class="number">0</span>; i--)</span><br><span class="line">		sift_down(A,i,n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=n; i&gt;<span class="number">1</span>; i--)</span><br><span class="line">	&#123;</span><br><span class="line">		swap&lt;ElemType&gt;(A[<span class="number">1</span>],A[i]);</span><br><span class="line">		sift_down(A,<span class="number">1</span>,i<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的是这里堆排序的实现要求给数组多分配一个内存。当然可以将其改为与其他排序一致，这很容易做到，但我个人更偏向于现在这种实现。<br>动图演示：<br><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt="此处输入图片的描述"></p>
+<h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><p>归并排序（<a href="https://en.wikipedia.org/wiki/Merge_sort" target="_blank" rel="noopener">Merge sort</a>）采用分治策略。思路也很简单：将数组分为两个等长子数组，对两个子数组递归采用归并排序来排序，然后将两个数组合并，其中递归结束条件为子数组长为1直接返回。则时间$T(N) = T(N/2) + N$，由主定理得到时间复杂度为$O(NlogN)$。</p>
+<p>实现也很清晰很简单。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge_sort</span><span class="params">(ElemType A[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ElemType * TmpArr = <span class="keyword">new</span> ElemType[n];</span><br><span class="line">	m_sort(A,TmpArr,<span class="number">0</span>,n<span class="number">-1</span>);</span><br><span class="line">	<span class="keyword">delete</span> [] TmpArr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">m_sort</span><span class="params">(ElemType A[], ElemType TmpArr[], <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(left &lt; right)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> center = (left + right) / <span class="number">2</span>;</span><br><span class="line">		m_sort(A, TmpArr, left, center);</span><br><span class="line">		m_sort(A, TmpArr, center+<span class="number">1</span>, right);</span><br><span class="line">		merge(A, TmpArr, left, center+<span class="number">1</span>, right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//两个子数组的合并，lpos~rpos-1 and rpos~rightend ,临时存储在TmpArr[rpos~rightend] </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(ElemType A[], ElemType TmpArr[], <span class="keyword">int</span> lpos, <span class="keyword">int</span> rpos, <span class="keyword">int</span> rightend)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> leftend = rpos - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> tmppos = lpos;</span><br><span class="line">	<span class="keyword">int</span> begin = lpos;</span><br><span class="line">	<span class="keyword">while</span>(lpos &lt;= leftend &amp;&amp; rpos &lt;= rightend)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(A[lpos] &lt;= A[rpos])</span><br><span class="line">			TmpArr[tmppos ++] = A[lpos ++];</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			TmpArr[tmppos ++] = A[rpos ++];</span><br><span class="line">		<span class="comment">//TmpArr[tmppos++] = A[lpos] &lt;= A[rpos] ? A[lpos ++] : A[rpos ++];</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(lpos &lt;= leftend)</span><br><span class="line">		TmpArr[tmppos ++] = A[lpos ++];</span><br><span class="line">	<span class="keyword">while</span>(rpos &lt;= rightend)</span><br><span class="line">		TmpArr[tmppos ++] = A[rpos ++];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = begin; i &lt;= rightend; i ++)</span><br><span class="line">		A[i] = TmpArr[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中动态分配了一个与原数组等长的数组存放那些临时子数组合并之后的数组。这样实现比在每一次递归中都去申请一个数组来存放临时数据要更好。<br>动图演示：<br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif" alt="此处输入图片的描述"></p>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>（<a href="https://en.wikipedia.org/wiki/Quicksort" target="_blank" rel="noopener">Quick sort</a>）真的无心去写。有空再优化。现在没有优化甚至都比不过希尔排序、堆排序和归并排序。当然差<code>std::sort</code>肯定是差远了。</p>
+<p>给一个算法导论上的实现：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//划分</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Partition</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> p, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> x = A[r];</span><br><span class="line">	<span class="keyword">int</span> i = p - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = p; j&lt;r; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (A[j] &lt;= x)</span><br><span class="line">		&#123;</span><br><span class="line">			i++;</span><br><span class="line">			<span class="keyword">if</span> (i != j)</span><br><span class="line">				swap(A[i], A[j]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	swap(A[i + <span class="number">1</span>], A[r]);</span><br><span class="line">	<span class="keyword">return</span> i + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//随机化的划分函数，使主元随机化 </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Randomized_Partition</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> p, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = rand() % (r - p + <span class="number">1</span>) + p;	<span class="comment">//产生p到r的随机数</span></span><br><span class="line">	swap(A[i], A[r]);</span><br><span class="line">	<span class="keyword">return</span> Partition(A, p, r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quick_Sort</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> p, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (p &lt; r)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> q = Randomized_Partition(A, p, r);</span><br><span class="line">		Quick_Sort(A, p, q - <span class="number">1</span>);</span><br><span class="line">		Quick_Sort(A, q + <span class="number">1</span>, r);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Quick_Sort(A, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>动图演示：<br><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif" alt="此处输入图片的描述"></p>
+<h1 id="排序算法的时间下界"><a href="#排序算法的时间下界" class="headerlink" title="排序算法的时间下界"></a>排序算法的时间下界</h1><p>可以使用决策树模型证明通过比较元素大小实现排序的排序算法的复杂度下界为O(NlogN)。所以快速排序、堆排序、归并排序都是渐进最优的。希尔排序由于增量序列的改变时间界会发生改变，但实际使用效果一般都很理想。并不差前面的三个排序算法多少，某些情况下甚至可能更优一点。</p>
+<h1 id="C-STL-sort-函数"><a href="#C-STL-sort-函数" class="headerlink" title="C++ STL sort()函数"></a>C++ STL sort()函数</h1><p>一般我们自己实现的排序算法在优化不够的情况下都达不到C++的<code>algorithm</code>库中的<code>sort()</code>函数的效率。<br><code>std::sort</code>的实现采用了快速排序、插入排序、堆排序。并且进行了编译优化。一般是比不过的。</p>
+<p>调用方式，可以传入两个参数，或者三个参数。第一个参数为指向初始元素的指针，第二个参数为指向最后一个待排序元素的下一个位置的指针（或者迭代器），第三个元素可选，默认进行升序排序，可以定义一个返回值为<code>bool</code>类型的比较函数。当对结构或者对象进行排序时，重载运算符或者传入一个函数参数都可以实现排序。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::sort(A,A+n);    <span class="comment">//对数组A中的n个元素排序</span></span><br><span class="line"><span class="built_in">std</span>::sort(A.begin(),A.end(),cmp);   <span class="comment">//对容器A中所有元素按照比较函数cmp()的规则进行排序</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="简单的时间测试"><a href="#简单的时间测试" class="headerlink" title="简单的时间测试"></a>简单的时间测试</h1><p>我对上述实现以及以前O(N<sup>2</sup>)的排序算法进行了一个测试。结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">test 1: 1e5 elements，静态分配</span><br><span class="line">simple aort algoritms :</span><br><span class="line">bubble sort time : 15735ms</span><br><span class="line">selection sort time : 10665ms</span><br><span class="line">insertion sort time : 1095ms</span><br><span class="line">binary insertion sort time : 872ms</span><br><span class="line"></span><br><span class="line">efficient sort algorithms :</span><br><span class="line">shell sort time : 13ms</span><br><span class="line">merge sort time : 15ms</span><br><span class="line">heap sort time : 8ms</span><br><span class="line">quick sort time : 9ms</span><br><span class="line">stl sort function time : 8ms</span><br><span class="line"> </span><br><span class="line">test 2: 1e7 elements, 动态分配</span><br><span class="line">efficient sort algorithms :</span><br><span class="line">shell sort time : 1985ms</span><br><span class="line">merge sort time : 1858ms</span><br><span class="line">heap sort time : 1816ms</span><br><span class="line">quick sort time : 2010ms</span><br><span class="line">stl sort function time : 697ms</span><br></pre></td></tr></table></figure>
+<p>ps： 测试时请将编译器设置为release模式。不然不开优化<code>std::sort</code>会非常慢。可以看到开启优化之后<code>std::sort</code>是吊打一切的存在。愉快地使用STL吧！</p>
+<p><strong><a href="http://oxx8it1qo.bkt.clouddn.com/sort-algorithms.rar" target="_blank" rel="noopener">源码下载。</a></strong></p>
+<p><strong>参考资料：数据结构与算法分析——C语言描述、算法导论</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/05/2018.4.5--C++-console-game-MineSweeper/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          写一个简单的C++控制台游戏——扫雷
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/23/2018.3.23--priority-queue-&-heap-&-leftist-heap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">优先队列 &amp; 堆</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#排序算法相关知识"><span class="nav-number">1.</span> <span class="nav-text">排序算法相关知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#希尔排序"><span class="nav-number">2.</span> <span class="nav-text">希尔排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#堆排序"><span class="nav-number">3.</span> <span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#归并排序"><span class="nav-number">4.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序"><span class="nav-number">5.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#排序算法的时间下界"><span class="nav-number">6.</span> <span class="nav-text">排序算法的时间下界</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-STL-sort-函数"><span class="nav-number">7.</span> <span class="nav-text">C++ STL sort()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的时间测试"><span class="nav-number">8.</span> <span class="nav-text">简单的时间测试</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

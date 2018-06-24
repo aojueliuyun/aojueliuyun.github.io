@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>the linux command line | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="This passage is about getting started with GNU/Linux by reading The Linux Command Line. Chinese version is available here. It’s an excellent introductory book of Linux. No more talk, let’s just get it">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Linux Command Line">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/05/25/2018.5.25--the-linux-command-line/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="This passage is about getting started with GNU/Linux by reading The Linux Command Line. Chinese version is available here. It’s an excellent introductory book of Linux. No more talk, let’s just get it">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/my-shell.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/linux-family.jpg">
+<meta property="og:updated_time" content="2018-06-03T13:16:46.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Linux Command Line">
+<meta name="twitter:description" content="This passage is about getting started with GNU/Linux by reading The Linux Command Line. Chinese version is available here. It’s an excellent introductory book of Linux. No more talk, let’s just get it">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/my-shell.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.5.25--the-linux-command-line" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      The Linux Command Line
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/25/2018.5.25--the-linux-command-line/" class="article-date">
+	  <time datetime="2018-05-24T16:00:00.000Z" itemprop="datePublished">2018-05-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This passage is about getting started with <a href="https://en.wikipedia.org/wiki/Linux" target="_blank" rel="noopener">GNU/Linux</a> by reading <em><a href="http://www.linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a></em>. Chinese version is available <a href="https://www.kancloud.cn/thinkphp/linux-command-line/39431" target="_blank" rel="noopener">here</a>. It’s an excellent introductory book of Linux. No more talk, let’s just get it started. If you want to see more details, read this book, because I will ignore many details of a commmand like “How many options does this command have?” or “How to use every option of a command ?”.<br><a id="more"></a></p>
+<p>我的环境: Unbuntu 18.04LTS virtual machine.<br>还是不用我那四级水平的英语了。这不是文档，只是笔记。详细信息请使用<code>man</code>或者查看文档。</p>
+<h1 id="Part-1-–-Learning-The-Shell"><a href="#Part-1-–-Learning-The-Shell" class="headerlink" title="Part 1 – Learning The Shell"></a>Part 1 – Learning The Shell</h1><h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><p>首先什么是Shell？Shell翻译为壳，是对应于核的概念，shell是CLI（Command Line Interface，与之对应的为GUI）的命令解析工具，类似于windows下的cmd。Shell读取用户从键盘的输入，将其解释为对应的命令，然后执行对应的程序。在Linux中，常用的Shell有<a href="https://en.wikipedia.org/wiki/Bash_%28Unix_shell%29" target="_blank" rel="noopener">Bash</a>，这里使用的即是Bash。</p>
+<p>当使用GUI时，通常我们需要使用终端模拟器来和Shell交互。不同GUI叫法不太一样，或Terminal（终端）或Console（控制台）或其他。</p>
+<p>Terminal Emulators 终端模拟器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$              #普通用户</span><br><span class="line">root@killing-boat:/home/tiko#     #superuser</span><br></pre></td></tr></table></figure></p>
+<p>键入每一条命令前的Shell提示符：<code>username@machinename : current-working-directory $</code><br>last character: <code>#</code> means superuser/administrator.</p>
+<p>最简单的几条命令：</p>
+<p><code>date</code> - display date<br><code>cal</code> - display the calender<br><code>df</code> - to see the current amount of free space on your disk drives<br><code>free</code> - display the amount of free memory<br><code>exit</code> - closing the terminal emulator window</p>
+<p>The Console Behind The Curtain:<br>Pressing Ctrl-Alt-F1 through Ctrl-Alt-F6 to switch.<br>My machine : Ctrl-Alt-F1/F2 are GUIs, Ctrl-Alt-F3 to F6 are CLIs.</p>
+<h2 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h2><p>Shell命令基本格式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command [选项options] [参数arguments]</span><br></pre></td></tr></table></figure></p>
+<p>有的选项不需要参数像<code>ls -l</code>，有的选项参数可选，像<code>ls &lt;file&gt;</code>不给参数则使用默认参数<code>.</code>。有的命令可以带多个参数。<br>选项分长选项与短选项，长选项如<code>--help</code>以<code>--</code>开头，短选项如<code>-l</code>以<code>-</code>开头。多个短选项可合并如<code>ls -alh</code>。</p>
+<p>每个命令具体选项信息、参考文档可以通过以下帮助命令得到：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">command --help  # 获取命令帮助的选项，较为简略</span><br><span class="line">help command    # Shell内部命令帮助，仅对内部命令有效，比如cd</span><br><span class="line">man command     # 命令手册manual，常用</span><br><span class="line">info command    # 比man更为详细</span><br></pre></td></tr></table></figure></p>
+<h2 id="Navigation"><a href="#Navigation" class="headerlink" title="Navigation"></a>Navigation</h2><p>使用下面的命令在系统中游走：<br><code>pwd</code> - Print name of current working directory<br><code>cd</code> - Change directory<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ..         # 上一级</span><br><span class="line">cd -          # 上一次工作目录</span><br><span class="line">cd ./subdir   # 子目录</span><br><span class="line">cd .          # 当前目录</span><br></pre></td></tr></table></figure></p>
+<p>Linux中使用目录（directory）而不使用文件夹（folder）的概念。<br>文件与目录的路径可以是绝对路径（like <code>/root/code/me</code>）或者相对路径（like <code>../mydir/mydir/file</code> <code>./subdir/file</code>）。</p>
+<p><code>ls</code> - List directory contents<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls dir-or-file-path  # default is .</span><br></pre></td></tr></table></figure></p>
+<p>常用选项：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ls -a   # 所有文件与目录，包括.开头的隐藏文件</span><br><span class="line">ls -l   # 长格式</span><br><span class="line">ls -h   # 文件大小以人可读的方式列出</span><br><span class="line">ls -d   # 列出目录本身，而不是其中的内容</span><br><span class="line">ls -F   # 在文件结尾附加文件类型</span><br><span class="line">          # * 可执行文件</span><br><span class="line">          # / 目录</span><br><span class="line">          # @ 链接文件</span><br><span class="line">          # | 管道文件</span><br><span class="line">          # = 套接字</span><br><span class="line">          # &gt; 进程间通讯设备</span><br></pre></td></tr></table></figure></p>
+<p>上面的<code>-a</code> <code>-l</code>等称为选项（options），而后跟参数（parameter）。<br><code>ls</code>命令所有选项与详细信息可使用下列命令得到：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls --help</span><br><span class="line">man ls</span><br><span class="line">info ls</span><br></pre></td></tr></table></figure></p>
+<p>根目录<code>/</code>下每一个目录都有其作用，可参见<a href="https://www.kancloud.cn/thinkphp/linux-command-line/39434" target="_blank" rel="noopener">这里</a>。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/        根目录，万物起源</span><br><span class="line">/bin     二进制程序</span><br><span class="line">/boot    Linux内核，RAM系统映像，启动加载程序</span><br><span class="line">/dev     设备节点，一切皆是文件</span><br><span class="line">/etc     系统层面配置文件，shell脚本</span><br><span class="line">/home    普通用户家目录上一级</span><br><span class="line">/lib     系统核心程序库文件</span><br><span class="line">/media   可移除设备自动挂载点</span><br><span class="line">/mnt     同上，早期linux系统中</span><br><span class="line">/opt     安装可选软件</span><br><span class="line">/proc    虚拟文件系统，内核相关</span><br><span class="line">/root    root用户家目录</span><br><span class="line">/sbin    系统二进制文件，为root用户保留</span><br><span class="line">/tmp     存储临时文件，重启清空</span><br><span class="line">/usr     包含用户所需要所有程序和文件</span><br><span class="line">/var     动态文件存储地址</span><br></pre></td></tr></table></figure></p>
+<p>我的根目录：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ls -F /</span><br><span class="line">bin/   cdrom/  etc/   initrd.img@      lib/    lost+found/  mnt/  proc/  run/   snap/  swapfile  tmp/  var/      vmlinuz.old@</span><br><span class="line">boot/  dev/    home/  initrd.img.old@  lib64/  media/       opt/  root/  sbin/  srv/   sys/      usr/  vmlinuz@</span><br></pre></td></tr></table></figure></p>
+<p><code>file</code> – Determine file type 显示文件类型<br><code>less</code> – View file contents 查看文本文件内容<br><code>cat</code> – 亦是查看文本内容，与<code>less</code>有区别<br><code>tree</code> – 以树形结构打印目录文件（需要先安装：<code>sudo apt-get install tree</code>）</p>
+<h2 id="Manipulating-Files-And-Directories"><a href="#Manipulating-Files-And-Directories" class="headerlink" title="Manipulating Files And Directories"></a>Manipulating Files And Directories</h2><p><code>cp</code> – Copy files and directories<br>使用<code>-i</code>选项来提示是否要覆盖已存在文件，若没有则直接覆盖。<br><code>mv</code> – Move/rename files and directories<br>移动到不同目录即移动，移动到当前目录即重命名。<br><code>mkdir</code> – Create directories<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir dir1 dir2 ../dir3</span><br><span class="line">mkdir -p ./mydir1/mydir2   # 递归创建</span><br></pre></td></tr></table></figure></p>
+<p><code>rm</code> – Remove files and directories 删除文件与目录<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /*    # 人们常开的玩笑 -f 强制执行，-r递归删除目录与文件</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>*</code>是通配符，详细信息查看<a href="https://www.kancloud.cn/thinkphp/linux-command-line/39435" target="_blank" rel="noopener">这里</a>。<br><code>ln</code> – Create hard and symbolic links 创建硬链接或者符号链接<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln fun fun-hard       # to create a hard link, point to a block of disk</span><br><span class="line">ln -s fun fun-soft    # to create a symbolic link, point to the path of a file</span><br></pre></td></tr></table></figure></p>
+<h2 id="Working-With-Commands"><a href="#Working-With-Commands" class="headerlink" title="Working With Commands"></a>Working With Commands</h2><p><code>type</code> – Indicate how a command name is interpreted 表明命令类型，分类：<code>alias</code>别名、<code>bulitin</code>Shell内建命令、<code>file</code>磁盘可执行文件、<code>function</code>Shell函数、<code>keyword</code>关键字/Shell保留字。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ type ls</span><br><span class="line">ls 是 `ls --color=auto' 的别名</span><br><span class="line">tiko@killing-boat:~$ type cd </span><br><span class="line">cd 是 shell 内建</span><br><span class="line">tiko@killing-boat:~$ type cp</span><br><span class="line">cp 是 /bin/cp</span><br></pre></td></tr></table></figure></p>
+<p><code>which</code> – Display which executable program will be executed<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ which gcc</span><br><span class="line">/usr/bin/gcc</span><br></pre></td></tr></table></figure></p>
+<p><code>help</code> – Get help for shell builtins<br><code>man</code> – Display a command’s manual page 使用<code>man</code>查手册<br><code>apropos</code> – Display a list of appropriate commands<br><code>info</code> – Display a command’s info entry<br><code>whatis</code> – Display a very brief description of a command<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ whatis ls</span><br><span class="line">ls (1)               - list directory contents</span><br></pre></td></tr></table></figure></p>
+<p><code>alias</code> – Create an alias for a command 给命令创建别名<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ll='ls -alF'</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>alias</code>不加选项与参数打印当前已经创建的别名。常用的已经创建的别名：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">alias grep='grep --color=auto'</span><br><span class="line">alias l='ls -CF'</span><br><span class="line">alias la='ls -A'</span><br><span class="line">alias ll='ls -alF'</span><br><span class="line">alias ls='ls --color=auto'</span><br></pre></td></tr></table></figure></p>
+<p>键入<code>alias</code>命令创建的别名在终端关闭后失效。</p>
+<h2 id="Redirection-重定向"><a href="#Redirection-重定向" class="headerlink" title="Redirection 重定向"></a>Redirection 重定向</h2><p><code>cat</code> － 连接文件并显示<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat log.txt test.txt</span><br></pre></td></tr></table></figure></p>
+<p><code>sort</code> － 排序文本行<br><code>uniq</code> － 报道或省略重复行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat log.txt | uniq        # 打印出log.txt中内容，重复行只打印一次</span><br><span class="line">cat log.txt | uniq -d     # 只打印重复行</span><br></pre></td></tr></table></figure></p>
+<p><code>grep</code> － 打印匹配行<br><code>wc</code> － 打印文件中换行符，字，和字节个数<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ wc new.txt </span><br><span class="line"> 19  61 416 new.txt</span><br></pre></td></tr></table></figure></p>
+<p><code>head</code> － 输出文件第一部分<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -n 10 new.txt    # 查看前10行</span><br></pre></td></tr></table></figure></p>
+<p><code>tail</code> - 输出文件最后一部分<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -n 10 new.txt    # 查看尾10行</span><br></pre></td></tr></table></figure></p>
+<p><code>&gt;</code> - 重定向标准输出<br><code>&gt;&gt;</code> - 以追加的方式重定向标准输出<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat log.txt test.txt &gt; new.txt  # 将前面两个文件的内容连接并输出到</span><br></pre></td></tr></table></figure></p>
+<p><code>2&gt;</code> - 重定向标准错误输出<br><code>2&gt;&gt;</code> - 以追加的方式重定向标准错误输出<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ahsjkfh 2&gt; log.txt</span><br><span class="line">tiko@killing-boat:~$ cat log.txt </span><br><span class="line">ahsjkfh：未找到命令</span><br></pre></td></tr></table></figure></p>
+<p><code>|</code> - 管道符，将一个命令的输出作为另一个命令的输入<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ll | sort | grep code    # 多个管道符连接使用，过滤器</span><br><span class="line">drwxrwx--x  8 tiko tiko  4096 5月  20 22:53 code/</span><br></pre></td></tr></table></figure></p>
+<p><strong>重定向到文件</strong>，<strong>管道符到命令</strong>，千万不要混淆。</p>
+<p><code>tee</code> － 从 Stdin 读取数据，并同时输出到 Stdout 和文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat log.txt | tee new.txt | grep ha</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>| tee</code>和重定向<code>&gt;</code>作用类似，但是<code>| tee</code>可以在输出到文件的同时将信息输出到终端。</p>
+<h2 id="Seeing-The-World-As-The-Shell-Sees-It"><a href="#Seeing-The-World-As-The-Shell-Sees-It" class="headerlink" title="Seeing The World As The Shell Sees It"></a>Seeing The World As The Shell Sees It</h2><p><code>echo</code> － 显示一行文本<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo hello.world!</span><br><span class="line">hello.world!</span><br><span class="line">tiko@killing-boat:~$ echo * </span><br><span class="line">code examples.desktop log.txt new.txt snap test.txt 公共的 模板 视频 图片 文档 下载 音乐 桌面</span><br><span class="line">tiko@killing-boat:~$ echo /*n</span><br><span class="line">/bin /run /sbin</span><br><span class="line">tiko@killing-boat:~$ echo /usr/*/share</span><br><span class="line">/usr/local/share</span><br><span class="line">tiko@killing-boat:~$ echo ~</span><br><span class="line">/home/tiko</span><br><span class="line">tiko@killing-boat:~$ echo ~root</span><br><span class="line">/root</span><br><span class="line">tiko@killing-boat:~$ echo $SHELL</span><br><span class="line">/bin/bash</span><br><span class="line">tiko@killing-boat:~$ echo $((2+3))</span><br><span class="line">5</span><br></pre></td></tr></table></figure></p>
+<p>甚至可以求解表达式，形式：<script type="math/tex">((expression))`，支持`+` `-` `*` `/` `%`  `**`(取幂)操作，`</script>表示变量或者参数。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo $(( (4-2+3**2*10) / 10 % 2))</span><br><span class="line">1</span><br></pre></td></tr></table></figure></p>
+<p>花括号展开，甚至可以嵌套<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo front-&#123;A,B,C&#125;-back</span><br><span class="line">front-A-back front-B-back front-C-back</span><br><span class="line">tiko@killing-boat:~$ echo A&#123;B&#123;1,2&#125;,C&#123;3,4&#125;&#125;D</span><br><span class="line">AB1D AB2D AC3D AC4D</span><br><span class="line">tiko@killing-boat:~$ echo &#123;A..Z&#125;</span><br><span class="line">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</span><br></pre></td></tr></table></figure></p>
+<p>然后可以这样，超级棒有木有？解放生产力！<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ mkdir mydir ; cd mydir</span><br><span class="line">tiko@killing-boat:~/mydir$ mkdir &#123;2007..2009&#125;-0&#123;1..9&#125; &#123;2007..2009&#125;-&#123;10..12&#125;</span><br><span class="line">tiko@killing-boat:~/mydir$ ls</span><br><span class="line">2007-01  2007-05  2007-09  2008-01  2008-05  2008-09  2009-01  2009-05  2009-09</span><br><span class="line">2007-02  2007-06  2007-10  2008-02  2008-06  2008-10  2009-02  2009-06  2009-10</span><br><span class="line">2007-03  2007-07  2007-11  2008-03  2008-07  2008-11  2009-03  2009-07  2009-11</span><br><span class="line">2007-04  2007-08  2007-12  2008-04  2008-08  2008-12  2009-04  2009-08  2009-12</span><br></pre></td></tr></table></figure></p>
+<p>参数展开<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~/mydir$ echo $USER</span><br><span class="line">tiko</span><br></pre></td></tr></table></figure></p>
+<p>命令替换，将一个命令的输出作为展开模式来使用，用法 <code>$(command)</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ls -l $(which cp)</span><br><span class="line">-rwxr-xr-x 1 root root 141528 1月  18 17:43 /bin/cp</span><br></pre></td></tr></table></figure></p>
+<p>也可以使用一种旧语法，使用反引号 `<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ls -l `which cp`</span><br><span class="line">-rwxr-xr-x 1 root root 141528 1月  18 17:43 /bin/cp</span><br></pre></td></tr></table></figure></p>
+<p>使用双引号<code>&quot; &quot;</code>，除Shell的特殊字符<code>$</code> <code>\</code> 和 ` 之外均会失去其特殊含义。双引号中，参数展开，算术表达式，命令替换展开任然有效。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo there is a test</span><br><span class="line">there is a test</span><br><span class="line">tiko@killing-boat:~$ echo "there is a    test"</span><br><span class="line">there is a    test</span><br></pre></td></tr></table></figure></p>
+<p>使用双引号可以很微妙，其中的空格不被当做分界符，而是一个字符。看一看下面：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo $(cal)</span><br><span class="line">五月 2018 日 一 二 三 四 五 六 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31</span><br><span class="line">tiko@killing-boat:~$ echo "$(cal)"</span><br><span class="line">      五月 2018         </span><br><span class="line">日 一 二 三 四 五 六  </span><br><span class="line">       1  2  3  4  5  </span><br><span class="line"> 6  7  8  9 10 11 12  </span><br><span class="line">13 14 15 16 17 18 19  </span><br><span class="line">20 21 22 23 24 25 26  </span><br><span class="line">27 28 29 30 31</span><br></pre></td></tr></table></figure></p>
+<p>如果想使用<script type="math/tex">` `\` \` 这些字符则需要转义 `\</script> <code>\\</code> \`</p>
+<p>如果要禁止所有展开，则使用单引号<code>&#39; &#39;</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo '$(cal)'</span><br><span class="line"><span class="meta">$</span><span class="bash">(cal)</span></span><br></pre></td></tr></table></figure></p>
+<p>展开和引用是非常有用的东西，甚至可以说是学习Shell <strong>最重要的部分</strong>。</p>
+<p><code>echo</code>的<code>-e</code>选项可以使其可以解释转义字符，转义字符参见ASCII码表的前32个字符。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ echo -e "\t$SHELL\a"</span><br><span class="line">	/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>这里<code>\t</code>是制表符，<code>\a</code>是响铃。</p>
+<h2 id="Advanced-Keyboard-Tricks"><a href="#Advanced-Keyboard-Tricks" class="headerlink" title="Advanced Keyboard Tricks"></a>Advanced Keyboard Tricks</h2><p>首先：<br><code>clear</code> － 清空屏幕<br><code>history</code> － 显示历史命令</p>
+<p>至于光标移动，不熟悉不写，可以看<a href="https://www.kancloud.cn/thinkphp/linux-command-line/39439" target="_blank" rel="noopener">这里</a>。</p>
+<p>自动补全使用Tab。如果有多个匹配项，则两次Tab显示所有匹配项。</p>
+<p><code>!!</code>执行上一条命令，直接上下箭头更方便。<br><code>!number</code>执行历史命令列表中number行的命令。只想问真的有人会这样用吗？？</p>
+<p>需要用到的话在回来看。</p>
+<h2 id="Permissions-权限"><a href="#Permissions-权限" class="headerlink" title="Permissions 权限"></a>Permissions 权限</h2><p>Linux同Windows一样是多用户系统，所以需要管理用户、用户组与权限。<br>某些时候我们读写文件时会遇到权限不够的情况。以长格式列出一个文件的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ls -l log.txt </span><br><span class="line">-rw-rw-r-- 1 tiko tiko 41 5月  26 11:11 log.txt</span><br></pre></td></tr></table></figure></p>
+<p>其中第一个字符表示文件类型。分类：<code>-</code>普通文件、<code>d</code>目录、<code>l</code>符号链接、<code>c</code>字符设备文件（如键盘）、<code>b</code>块设备文件（如硬盘）。【<strong>Linux中一切皆是文件</strong>】<br>其后<code>rw-rw-r--</code>三个一组分别表示文件所有者、文件所有组、其他用户的<strong>读、写、执行</strong>权限。<br>其后一个数字表示该文件硬链接数目，然后是文件所有者以及文件所属用户组、字节为单位的文件大小、上次修改文件日期，最后为文件名。</p>
+<p>当没有这个权限的用户对该文件执行该操作就会提示权限不够：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ll /etc/shadow</span><br><span class="line">-rw-r----- 1 root shadow 1357 4月  30 16:13 /etc/shadow</span><br><span class="line">tiko@killing-boat:~$ cat /etc/shadow</span><br><span class="line">cat: /etc/shadow: 权限不够</span><br></pre></td></tr></table></figure></p>
+<p><code>id</code> – 显示用户身份号<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ id</span><br><span class="line">uid=1000(tiko) gid=1000(tiko) 组=1000(tiko),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),126(sambashare)</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>uid</code>是用户ID，<code>gid</code>是组ID。<br>用户帐户定义在<code>/etc/passwd</code>文件里面，用户组定义在<code>/etc/group</code>中，文件<code>/etc/shadow</code>包含了关于用户密码的信息。</p>
+<p><code>chmod</code> – 更改文件模式，仅文件/目录所有者和root用户可以更改</p>
+<p>该命令两种使用方法：八进制数字表示、符号表示法。<br>八进制法的意思是将<code>rwx</code>三种权限作为三位二进制数，有权限为1，无权限为0，表示为八进制数。更改是使用三个八进制数更改所有者、所有组、其他人的权限。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ko@killing-boat:~$ ll log.txt </span><br><span class="line">-rwxrwxrwx 1 tiko tiko 41 5月  26 11:11 log.txt</span><br><span class="line">tiko@killing-boat:~$  chmod 764 log.txt ; ll log.txt </span><br><span class="line">-rwxrw-r-- 1 tiko tiko 41 5月  26 11:11 log.txt*</span><br></pre></td></tr></table></figure></p>
+<p>上面的<code>764</code>表示为文件<code>log.txt</code>赋予<code>rwxrw-r--</code>权限。末尾的<code>*</code>表示该文件可执行（其实只有执行权限，执行会出现错误），不是文件名的一部分。<br>符号表示法比较麻烦，不写。用八进制表示法就很方便。</p>
+<p><code>umask</code> – 设置默认的文件权限</p>
+<p>使用八进制掩码作为参数，默认权限<code>rw-rw-rw-</code>，掩码位为1，则创建新文件时该位权限被关闭。常用系统掩码位0002，默认屏蔽其他用户的写权限。一般情况下不需要更改。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ umask</span><br><span class="line">0002</span><br><span class="line">tiko@killing-boat:~$ umask 0000</span><br><span class="line">tiko@killing-boat:~$ umask </span><br><span class="line">0000</span><br><span class="line">tiko@killing-boat:~$ touch new.txt</span><br><span class="line">tiko@killing-boat:~$ ll new.txt </span><br><span class="line">-rw-rw-rw- 1 tiko tiko 0 5月  26 15:29 new.txt</span><br></pre></td></tr></table></figure></p>
+<p>其实除了读写执行外还有其他权限，这里略过。</p>
+<p><code>su</code> – 以另一个用户的身份来运行 shell<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ su</span><br><span class="line">密码： </span><br><span class="line">root@killing-boat:/home/tiko# su tiko</span><br><span class="line">tiko@killing-boat:~$ exit</span><br><span class="line">exit</span><br><span class="line">root@killing-boat:/home/tiko# exit</span><br><span class="line">exit</span><br><span class="line">tiko@killing-boat:~$</span><br></pre></td></tr></table></figure></p>
+<p>可以看到<code>su</code>会重新启用一个Shell，<code>exit</code>退出该Shell返回原先Shell，不加参数默认切换到root用户。</p>
+<p><code>sudo</code> – 以另一个用户的身份来执行命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ sudo apt-get update</span><br><span class="line">[sudo] tiko 的密码：</span><br></pre></td></tr></table></figure></p>
+<p>其配置文件为<code>/etc/sudoers</code>，修改可配置<code>sudo</code>权限。</p>
+<p><code>chown</code> – 更改文件或者目录所有者<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ll -d .</span><br><span class="line">drwx--x--x 20 tiko tiko 4096 5月  26 15:37 ./</span><br><span class="line"></span><br><span class="line">root@killing-boat:/home/tiko# chown root:root .</span><br><span class="line">root@killing-boat:/home/tiko# ll -d .</span><br><span class="line">drwx--x--x 20 root root 4096 5月  26 15:37 ./</span><br></pre></td></tr></table></figure></p>
+<p><code>chgrp</code> – 更改文件组所有权<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@killing-boat:/home/tiko# chgrp root .</span><br><span class="line">root@killing-boat:/home/tiko# ll -d .</span><br><span class="line">drwx--x--x 20 tiko root 4096 5月  26 15:37 ./</span><br></pre></td></tr></table></figure></p>
+<p><code>passwd</code> – 更改用户密码<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd user</span><br></pre></td></tr></table></figure></p>
+<p>其他用来创建和维护用户与用户组的命令，见名知意：<br><code>adduser</code> <code>useradd</code> <code>groupadd</code></p>
+<h2 id="Processes-进程"><a href="#Processes-进程" class="headerlink" title="Processes 进程"></a>Processes 进程</h2><p>进程详细定义见操作系统类教材，Linux Kernel核维护每一个进程的信息，并为每一个进程分配一个数字称PID。进程按PID升序排列。进程也有所有者和用户ID。</p>
+<p><code>ps</code> – 报告当前进程快照<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ ps</span><br><span class="line">   PID TTY          TIME CMD</span><br><span class="line"> 10383 pts/2    00:00:00 bash</span><br><span class="line"> 10553 pts/2    00:00:00 ps</span><br></pre></td></tr></table></figure></p>
+<p><code>top</code> – 显示任务<br><code>jobs</code> – 列出活跃的任务<br>在一个任务后加<code>&amp;</code>将其作为后台任务，与执行一个前台任务时按<code>Ctrl-Z</code>功能相同，均为将任务中止转入后台等待，使用<code>fg %number</code>将其移入前台运行，<code>bg %number</code>将其移入后台运行。而执行一个任务时<code>Ctrl-C</code>为终止该任务。<br><code>bg</code> – 把一个任务放到后台执行<br><code>fg</code> – 把一个任务放到前台执行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ jobs</span><br><span class="line">[1]   已停止               vim new.txt</span><br><span class="line">[2]-  已停止               vim if.txt</span><br><span class="line">[3]+  已停止               sudo visudo</span><br><span class="line">tiko@killing-boat:~$ fg %3     # 则唤醒任务sudo visudo</span><br></pre></td></tr></table></figure></p>
+<p><code>kill</code> – 给一个进程发送信号<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kill [-signal] PID...</span><br><span class="line">kill PID       # 杀死PID对应进程</span><br><span class="line">kill -l        # 获得完整信号列表</span><br></pre></td></tr></table></figure></p>
+<p><code>killall</code> – 杀死指定名字的进程<br><code>shutdown</code> – 关机或重启系统</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ xlogo &amp;</span><br><span class="line">[1] 10987</span><br><span class="line">tiko@killing-boat:~$ xlogo &amp;</span><br><span class="line">[2] 10994</span><br><span class="line">tiko@killing-boat:~$ ps</span><br><span class="line">   PID TTY          TIME CMD</span><br><span class="line"> 10836 pts/0    00:00:00 bash</span><br><span class="line"> 10987 pts/0    00:00:00 xlogo</span><br><span class="line"> 10994 pts/0    00:00:00 xlogo</span><br><span class="line"> 10995 pts/0    00:00:00 ps</span><br><span class="line">tiko@killing-boat:~$ fg %1</span><br><span class="line">xlogo</span><br><span class="line">^C</span><br><span class="line">tiko@killing-boat:~$ killall xlogo</span><br><span class="line">tiko@killing-boat:~$ ps</span><br><span class="line">   PID TTY          TIME CMD</span><br><span class="line"> 10836 pts/0    00:00:00 bash</span><br><span class="line"> 11003 pts/0    00:00:00 ps</span><br><span class="line">[2]+  已终止               xlogo</span><br></pre></td></tr></table></figure>
+<p>其他命令：<br><code>pstree</code> – 输出一个树型结构的进程列表，这个列表展示了进程间父/子关系。<br><code>vmstat</code> –  输出一个系统资源使用快照，包括内存，交换分区和磁盘 I/O。<br><code>xload</code> –  一个图形界面程序，可以画出系统负载的图形。<br><code>tload</code> –  与 xload 程序相似，但是在终端中画出图形。使用 Ctrl-c，来终止输出。</p>
+<p>关机与重启（root用户不需要sudo）：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo shutdown -h now    # 立即关机</span><br><span class="line">sudo poweroff           # 立即关机</span><br><span class="line">sudo init 0             # 立即关机</span><br><span class="line">sudo shutdown -h -t 60  # 60s后关机</span><br><span class="line">sudo shutdown -c        # 取消关机</span><br><span class="line">sudo shutdown -r now    # 立即重启</span><br><span class="line">sudo reboot             # 立即重启</span><br><span class="line">sudo init 6             # 立即重启</span><br></pre></td></tr></table></figure></p>
+<p>OK, Part 1 is over. Let’s get to Part 2.</p>
+<h1 id="Part-2-–-Configuration-And-The-Environment"><a href="#Part-2-–-Configuration-And-The-Environment" class="headerlink" title="Part 2 – Configuration And The Environment"></a>Part 2 – Configuration And The Environment</h1><h2 id="The-Environment"><a href="#The-Environment" class="headerlink" title="The Environment"></a>The Environment</h2><p><code>printenv</code> - 打印部分或所有的环境变量<br>不加选项执行之后你会看到所有环境变量。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ printenv SHELL</span><br><span class="line">/bin/bash</span><br><span class="line">tiko@killing-boat:~$ echo $SHELL</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>一些有趣的环境变量：</p>
+<ul>
+<li><code>SHELL</code> 使用的Shell程序，如<code>/bin/bash</code></li>
+<li><code>HOME</code> 用户家目录</li>
+<li><code>PATH</code> 可执行程序的搜索目录，用冒号分开的目录列表</li>
+<li><code>PWD</code> 当前工作目录</li>
+<li><code>OLD_PWD</code> 先前工作目录</li>
+<li><code>USER</code> 当前用户</li>
+<li><code>PS1</code> 用于订制Shell提示符</li>
+<li><code>LANG</code> 定义字符集与语言编码格式，我的为<code>zh_CN.UTF-8</code></li>
+</ul>
+<p><code>set</code> - 显示环境变量与Shell变量<br><code>export</code> — 导出环境变量，让随后执行的程序知道<br><code>alias</code> - 创建命令别名</p>
+<p>建立Shell环境的称为启动文件的配置脚本：<br>登录Shell会话：</p>
+<ul>
+<li><code>/etc/profile</code>，所有用户的全局配置脚本。</li>
+<li><code>~/.bash_profile</code>，用户私有启动文件，用于扩展或重写全局配置脚本中的设置。</li>
+<li><code>~/.bash_login</code>，如果上面这个文件没有找到，则读取这个。</li>
+<li><code>~/.profile</code>，如果上面两个都没有找到，则读取这个，这是Debain发行版中的默认设置，比如Ubuntu中。</li>
+</ul>
+<p>非登录Shell会话：</p>
+<ul>
+<li><code>/etc/bash.bashrc</code>，全局配置脚本。</li>
+<li><code>~/.bashrc</code>，用户私有启动文件。</li>
+</ul>
+<h2 id="vi-amp-vim"><a href="#vi-amp-vim" class="headerlink" title="vi &amp; vim"></a>vi &amp; vim</h2><p>不用多说，经典的编辑器。<code>vim</code>是<code>vi</code>的增强版，但我真的不会用，用不习惯，什么时候想好好折腾了再去理解vim的哲学吧。<br>终端键入<code>vimtutor</code>即可开始<code>vim</code>练习，半小时即可入门（才怪）。<a href="https://github.com/wsdjeg/vim-galore-zh_cn" target="_blank" rel="noopener">vim的哲学</a>。</p>
+<h2 id="Customizing-The-Prompt"><a href="#Customizing-The-Prompt" class="headerlink" title="Customizing The Prompt"></a>Customizing The Prompt</h2><p>自己订制Shell提示符。详见<a href="https://www.kancloud.cn/thinkphp/linux-command-line/39445" target="_blank" rel="noopener">这里</a>。可以更改格式与颜色，比如这样：<br><img src="http://oxx8it1qo.bkt.clouddn.com/my-shell.png" alt="shell"></p>
+<p>更改环境变量<code>$PS1</code>，我的：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;33m\]\w\[\033[00m\]$ "</span><br></pre></td></tr></table></figure></p>
+<p>终端重启后更改会丢失，若要为当前用户永久更改，在<code>~/.bashrc</code>文件末尾添加：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;33m\]\w\[\033[00m\]$ "</span><br></pre></td></tr></table></figure></p>
+<p>其中一些主要转义字符：<br><code>\u</code> 当前用户<br><code>\h</code> 本地主机名<br><code>\w</code> 当前工作目录<br><code>\$</code> 普通用户提示字符$</p>
+<p>另外还可以及进行颜色控制。</p>
+<h1 id="Part-3-–-Common-Tasks-And-Essential-Tools"><a href="#Part-3-–-Common-Tasks-And-Essential-Tools" class="headerlink" title="Part 3 – Common Tasks And Essential Tools"></a>Part 3 – Common Tasks And Essential Tools</h1><h2 id="Package-Management"><a href="#Package-Management" class="headerlink" title="Package Management"></a>Package Management</h2><p>Linux发行版两大阵营：Debian, RedHat</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阵营</th>
+<th>发行版</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Debian</td>
+<td>Debian, Ubuntu, Xandros, Linspire</td>
+</tr>
+<tr>
+<td style="text-align:left">RedHat</td>
+<td>Fedora, CentOS, Red Hat Enterprise Linux, OpenSUSE, Mandriva, PCLinuxOS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>包管理工具：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">风格</th>
+<th style="text-align:left">底层工具</th>
+<th style="text-align:left">顶层工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Debian</td>
+<td style="text-align:left">dpkg</td>
+<td style="text-align:left">apt-get,aptitude</td>
+</tr>
+<tr>
+<td style="text-align:left">RedHat</td>
+<td style="text-align:left">rpm</td>
+<td style="text-align:left">yum</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>不过现在Ubuntu中好像鼓励用<code>apt</code>替代<code>apt-get</code>，原因是<code>apt</code>命令更简单，更友好。详见：<a href="https://www.sysgeek.cn/apt-vs-apt-get/" target="_blank" rel="noopener">Linux中apt与apt-get命令的区别与解释</a>。</p>
+<p>当然还有其他不属于这两个阵营的发行版。上一张图体会一下Linux大家族：<br><img src="http://oxx8it1qo.bkt.clouddn.com/linux-family.jpg" alt="linux"></p>
+<h2 id="Storage-Media-存储媒介"><a href="#Storage-Media-存储媒介" class="headerlink" title="Storage Media 存储媒介"></a>Storage Media 存储媒介</h2><p>关于文件系统，这里就不多说了。Linux中大多使用<a href="https://en.wikipedia.org/wiki/Ext3" target="_blank" rel="noopener">ext3</a>文件系统（我的是ext4，使用<code>df -T</code>或者<code>cat /etc/fstab</code>查看）。Linux维护单一的文件系统树，允许挂载不同文件系统的设备。<br>挂载，顾名思义，就是将文件设备连接到系统文件树上（Linux中<strong>一切皆是文件</strong>，设备亦然）。</p>
+<p>文件<code>/etc/fstab</code>列出了系统启动时要挂载的设备。<br><code>/dev</code>目录包含了所有系统中使用的外部设备。要使用就要将设备挂载到一个目录，然后通过访问该目录来访问设备。<br>设备文件分为块设备（Block device）和字节设备（Character device）。其中</p>
+<ul>
+<li>块设备文件，有缓冲可以随机存取（有物理设备与虚拟设备之分），如HDD，CD-ROM。</li>
+<li>字节设备文件，无缓冲只能顺序读取，如键盘，鼠标。</li>
+</ul>
+<p><code>mount</code> – 挂载一个文件系统<br>不带参数显示当前挂载的文件系统。列表格式：设备 on 挂载点 type 文件系统类型（可选的）。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t [文件类型] /dev/设备 /mnt/挂载目录</span><br></pre></td></tr></table></figure></p>
+<p><code>umount</code> – 卸载一个文件系统<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /dev/设备</span><br></pre></td></tr></table></figure></p>
+<p><code>fsck</code> – 检查和修复一个文件系统<br><code>fdisk</code> – 分区表控制器<br><code>mkfs</code> – 创建文件系统<br><code>fdformat</code> – 格式化一张软盘（软盘没有人用了吧！）<br><code>dd</code> — 把面向块的数据直接写入设备<br><code>genisoimage</code> (<code>mkisofs</code>) – 创建一个 ISO 9660的映像文件<br><code>wodim</code> (<code>cdrecord</code>) – 把数据写入光存储媒介<br><code>md5sum</code> – 计算 MD5检验码</p>
+<h2 id="Networking-网络"><a href="#Networking-网络" class="headerlink" title="Networking 网络"></a>Networking 网络</h2><p><code>ping</code> - 发送 ICMP ECHO_REQUEST 软件包到网络主机<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping URL    # 向指定URL的主机发送一种叫做IMCP ECHO_REQUEST的特殊网络数据包</span><br></pre></td></tr></table></figure></p>
+<p><code>traceroute</code> - 打印到一台网络主机的路由数据包<br><code>netstat</code> - 打印网络连接，路由表，接口统计数据，伪装连接，和多路广播成员<br><code>ftp</code> - 因特网文件传输程序（文件传输协议）<br><code>wget</code> - 非交互式网络下载器<br>使用<code>wget</code>可以从网站或者FTP服务器上下载数据，比如下载github的首页：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget github.com</span><br></pre></td></tr></table></figure></p>
+<p><code>ssh</code> - OpenSSH SSH 客户端（远程登录程序）</p>
+<h2 id="Searching-For-Files-查找"><a href="#Searching-For-Files-查找" class="headerlink" title="Searching For Files 查找"></a>Searching For Files 查找</h2><p><code>locate</code> – 通过名字来查找文件<br>快速搜索数据库，输出每个与字符串匹配的文件名。支持路径匹配与通配符。现在一般使用<code>slocate</code>或者<code>mlocate</code>，但命令一般依旧使用<code>locate</code>。<br>我的<code>locate</code>的数据库为<code>/var/lib/mlocate/mlocate.db</code>，可在man手册中找到。这个数据库由<code>updatedb</code>程序周期性运行创建。所以新建的文件搜索不到的话，可手动执行<code>sudo updatedb</code>创建。</p>
+<p><code>find</code> – 在目录层次结构中搜索文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ~ -type d | wc -l</span><br></pre></td></tr></table></figure></p>
+<p>可以使用<code>-type</code>指定搜索类型，更多选项参考man手册。</p>
+<p><code>xargs</code> – 从标准输入生成和执行命令行<br><code>touch</code> – 更改文件时间，如果文件不存在则创建文件<br><code>stat</code> – 显示文件或文件系统状态</p>
+<h2 id="Archiving-And-Backup-归档与备份"><a href="#Archiving-And-Backup-归档与备份" class="headerlink" title="Archiving And Backup 归档与备份"></a>Archiving And Backup 归档与备份</h2><p>文件压缩：<br><code>gzip</code> – 压缩或者展开文件<br><code>bzip2</code> – 块排序文件压缩器<br>归档：<br><code>tar</code> – 磁带打包工具<br><code>zip</code> – 打包和压缩文件<br>文件同步程序：<br><code>rsync</code> – 同步远端文件和目录</p>
+<h2 id="Regular-Expressions-正则"><a href="#Regular-Expressions-正则" class="headerlink" title="Regular Expressions 正则"></a>Regular Expressions 正则</h2><p>正则内容不少，很早之前了解过，不过现在全忘了，什么时候需要用到了复习一下了，单独写。可参考这篇文章：<a href="http://www.runoob.com/w3cnote/regular-expression-30-minutes-tutorial.html" target="_blank" rel="noopener">正则表达式30分钟入门</a>（才怪）。</p>
+<h2 id="Text-Processing-文本处理"><a href="#Text-Processing-文本处理" class="headerlink" title="Text Processing 文本处理"></a>Text Processing 文本处理</h2><p><code>cat</code> – 连接文件并且打印到标准输出<br><code>sort</code> – 给文本行排序<br><code>uniq</code> – 报告或者省略重复行<br><code>cut</code> – 从每行中删除文本区域<br><code>paste</code> – 合并文件文本行<br><code>join</code> – 基于某个共享字段来联合两个文件的文本行<br><code>comm</code> – 逐行比较两个有序的文件<br><code>diff</code> – 逐行比较文件<br><code>patch</code> – 给原始文件打补丁<br><code>tr</code> – 翻译或删除字符<br><code>sed</code> – 用于筛选和转换文本的流编辑器<br><code>aspell</code> – 交互式拼写检查器</p>
+<h2 id="Formatting-Output-格式化输出"><a href="#Formatting-Output-格式化输出" class="headerlink" title="Formatting Output 格式化输出"></a>Formatting Output 格式化输出</h2><p><code>nl</code> – 添加行号<br><code>fold</code> – 限制文件列宽<br><code>fmt</code> – 一个简单的文本格式转换器<br><code>pr</code> – 让文本为打印做好准备<br><code>printf</code> – 格式化数据并打印出来<br><code>groff</code> – 一个文件格式系统</p>
+<h2 id="Compiling-Programs-编译程序"><a href="#Compiling-Programs-编译程序" class="headerlink" title="Compiling Programs 编译程序"></a>Compiling Programs 编译程序</h2><p>学习Linux，必然少不了在Linux上进行代码编译。Linux上最常用的编译工具自然是<a href="http://www.gnu.org/" target="_blank" rel="noopener">GNU</a>的<a href="https://gcc.gnu.org/wiki" target="_blank" rel="noopener">GCC</a>（GNU Compiler Collection，GNU编译器套件）了。</p>
+<p><a href="http://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">GNU make</a>是Linux常用的维护程序的软件，我们用它来管理自己的项目。Make有自己的语法，可以在Makefile中编写项目中源文件的编译规则，指定源文件间的依赖关系。然后执行<code>make</code>命令即可编译整个项目。当项目中的源文件更改之后，make会检查源文件的时间戳，并重新编译所有依赖于被修改的文件的源文件。这在需要大量编译时间的大型项目中，是非常必要的。关于make的语法细节可参考<a href="https://blog.csdn.net/ruglcc/article/details/7814546/" target="_blank" rel="noopener">Makefile经典教程</a>，或者<a href="http://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">官方文档</a>。</p>
+<h1 id="Part-4-–-Writing-Shell-Scripts"><a href="#Part-4-–-Writing-Shell-Scripts" class="headerlink" title="Part 4 – Writing Shell Scripts"></a>Part 4 – Writing Shell Scripts</h1><p>Shell脚本编写内容较多，放在下一次单独写。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/02/2018.6.2--get-started-with-python/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Python入门
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/16/2018.5.16--write-a-toy-cpu--implementation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【write a toy cpu】实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-1-–-Learning-The-Shell"><span class="nav-number">1.</span> <span class="nav-text">Part 1 – Learning The Shell</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#shell"><span class="nav-number">1.1.</span> <span class="nav-text">shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Command"><span class="nav-number">1.2.</span> <span class="nav-text">Command</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Navigation"><span class="nav-number">1.3.</span> <span class="nav-text">Navigation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Manipulating-Files-And-Directories"><span class="nav-number">1.4.</span> <span class="nav-text">Manipulating Files And Directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-With-Commands"><span class="nav-number">1.5.</span> <span class="nav-text">Working With Commands</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redirection-重定向"><span class="nav-number">1.6.</span> <span class="nav-text">Redirection 重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Seeing-The-World-As-The-Shell-Sees-It"><span class="nav-number">1.7.</span> <span class="nav-text">Seeing The World As The Shell Sees It</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advanced-Keyboard-Tricks"><span class="nav-number">1.8.</span> <span class="nav-text">Advanced Keyboard Tricks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Permissions-权限"><span class="nav-number">1.9.</span> <span class="nav-text">Permissions 权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Processes-进程"><span class="nav-number">1.10.</span> <span class="nav-text">Processes 进程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-2-–-Configuration-And-The-Environment"><span class="nav-number">2.</span> <span class="nav-text">Part 2 – Configuration And The Environment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Environment"><span class="nav-number">2.1.</span> <span class="nav-text">The Environment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-amp-vim"><span class="nav-number">2.2.</span> <span class="nav-text">vi &amp; vim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Customizing-The-Prompt"><span class="nav-number">2.3.</span> <span class="nav-text">Customizing The Prompt</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-3-–-Common-Tasks-And-Essential-Tools"><span class="nav-number">3.</span> <span class="nav-text">Part 3 – Common Tasks And Essential Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Package-Management"><span class="nav-number">3.1.</span> <span class="nav-text">Package Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Storage-Media-存储媒介"><span class="nav-number">3.2.</span> <span class="nav-text">Storage Media 存储媒介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Networking-网络"><span class="nav-number">3.3.</span> <span class="nav-text">Networking 网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Searching-For-Files-查找"><span class="nav-number">3.4.</span> <span class="nav-text">Searching For Files 查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Archiving-And-Backup-归档与备份"><span class="nav-number">3.5.</span> <span class="nav-text">Archiving And Backup 归档与备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regular-Expressions-正则"><span class="nav-number">3.6.</span> <span class="nav-text">Regular Expressions 正则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Text-Processing-文本处理"><span class="nav-number">3.7.</span> <span class="nav-text">Text Processing 文本处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Formatting-Output-格式化输出"><span class="nav-number">3.8.</span> <span class="nav-text">Formatting Output 格式化输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compiling-Programs-编译程序"><span class="nav-number">3.9.</span> <span class="nav-text">Compiling Programs 编译程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-4-–-Writing-Shell-Scripts"><span class="nav-number">4.</span> <span class="nav-text">Part 4 – Writing Shell Scripts</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

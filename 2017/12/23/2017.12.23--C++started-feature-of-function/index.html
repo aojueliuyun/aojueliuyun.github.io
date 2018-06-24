@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>c++语法入门【3】c++函数特性 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="C++函数具有一些C语言不具有的特性，内联函数、引用参数、const参数、const与引用返回值、默认参数、函数重载、函数模板等特性。承接上一篇C++语法入门【2】函数，这里介绍C++的函数特性。">
+<meta name="keywords" content="C++,编程语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++语法入门【3】C++函数特性">
+<meta property="og:url" content="http://aojueliuyun.github.io/2017/12/23/2017.12.23--C++started-feature-of-function/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="C++函数具有一些C语言不具有的特性，内联函数、引用参数、const参数、const与引用返回值、默认参数、函数重载、函数模板等特性。承接上一篇C++语法入门【2】函数，这里介绍C++的函数特性。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-01-30T12:51:34.484Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++语法入门【3】C++函数特性">
+<meta name="twitter:description" content="C++函数具有一些C语言不具有的特性，内联函数、引用参数、const参数、const与引用返回值、默认参数、函数重载、函数模板等特性。承接上一篇C++语法入门【2】函数，这里介绍C++的函数特性。">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017.12.23--C++started-feature-of-function" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      C++语法入门【3】C++函数特性
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/23/2017.12.23--C++started-feature-of-function/" class="article-date">
+	  <time datetime="2017-12-22T16:00:00.000Z" itemprop="datePublished">2017-12-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/C/">C++</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>C++函数具有一些C语言不具有的特性，内联函数、引用参数、const参数、const与引用返回值、默认参数、函数重载、函数模板等特性。承接上一篇<a href="https://aojueliuyun.github.io/2017/12/08/2017.12.8--C++started-function/">C++语法入门【2】函数</a>，这里介绍C++的函数特性。</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="C-内联函数"><a href="#C-内联函数" class="headerlink" title="C++内联函数"></a>C++内联函数</h1><p>使用关键字<code>inline</code>定义，添加在函数声明或者定义前即可将函数声明为内联函数。</p>
+<p>内联函数与常规函数的区别在于，常规函数在调用时程序会跳转到另一个地址（即函数的地址）执行指令，此过程中涉及到参数的传递、堆栈的使用、指令指针的跳转、寄存器状态的保存与恢复等。</p>
+<p>而内联函数调用时编译器会用函数的代码替换函数调用。中间不会执行堆栈的压入与弹出等操作。提高了效率。</p>
+<p>使用<code>inline</code>关键字使函数称为内联函数，但编译器不一定会满足这种要求。如果编译器认为函数过大或者函数调用了自身（内联函数不能递归调用），则不会将其作为内联函数。这因编译器而异。</p>
+<p>内联定义：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> x)</span></span>&#123; <span class="keyword">return</span> x *x;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在类中定义的成员函数将会自动成为内联函数。</p>
+<hr>
+<h1 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h1><p>C++增加了一种复合类型——引用变量。引用（reference）是已定义的变量的一个<strong>别名</strong>。顾名思义，别名只是换了一个名称而已，但数据是同一份数据。例如Hebe是田馥甄的别名一样，如果定义了Hebe是田馥甄的别名，那么这两个变量仍然表示同一个人。</p>
+<p>引用变量的主要用途是用作函数的形参。通过将引用变量用作参数，函数将使用实参的原始数据，而不是其副本（拷贝）。</p>
+<h2 id="创建引用变量"><a href="#创建引用变量" class="headerlink" title="创建引用变量"></a>创建引用变量</h2><p>引用变量采用运算符 <code>&amp;</code> 来定义。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> &amp; a = b;</span><br></pre></td></tr></table></figure></p>
+<p>则称a是b的引用（或者 a 是指向 b 的引用），a和b具有相同的值，相同的地址。改变a，b也将发生改变。称 a 的类型为<code>int &amp;</code>，即指向<code>int</code>变量的引用。</p>
+<p>这里的<code>&amp;</code>不是以往的取地址运算符，这是一种运算符重载（以后介绍）。</p>
+<p>C++语法规定<strong>引用变量在定义时必须被初始化</strong>。只定义不赋值的行为将会被编译器严厉驳回。</p>
+<p>可以理解为给一个人取一个小名必须要有这个人，且在取这个小名的时候必须要声明是给谁取的，不能先取好了名字再叫一个人来说我给你取了一个小名，现在我要用你的小名叫你，这显然也是不会被同意的，That’s not how it works！这显然是很容易理解的。<br>所以下列代码是错误的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int b;</span><br><span class="line">int &amp; a;        //invalid</span><br><span class="line">a = b;          //invalid</span><br><span class="line">int &amp; c = 2;    //also invalid</span><br></pre></td></tr></table></figure></p>
+<h2 id="引用的内部实现"><a href="#引用的内部实现" class="headerlink" title="引用的内部实现"></a>引用的内部实现</h2><p>引用的实现是采用指针实现的，例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> *a = b;</span><br></pre></td></tr></table></figure></p>
+<p>则可以知道变量 b 和变量 *a 具有相同的值，相同的地址（&amp;b 和 a 相同），改变无论哪一个另一个都会随之改变。这里就可以说 *a 是 b 的别名。</p>
+<p>C++中引用是编译器通过指针实现的，但这个实现在语言层面对程序员做了透明化处理。</p>
+<p>C++11中将引用分为左值引用和右值引用，貌似还分顶层引用和底层引用，暂时不是很理解，以后探讨。</p>
+<hr>
+<h1 id="再谈const"><a href="#再谈const" class="headerlink" title="再谈const"></a>再谈const</h1><p>前面有谈到过<code>const</code>变量，只能在定义时初始化，后面便不可再更改。这经常用在函数参数传递上，在按值传递中，形参并不影响实参。但在指针传递和引用传递中，如果我们不希望函数修改参数的值，则可以使用const参数，保证参数不被更改。而const与指针和引用会有一些微妙的关系。</p>
+<h2 id="const与指针"><a href="#const与指针" class="headerlink" title="const与指针"></a>const与指针</h2><p><code>const</code> 与指针（pointer）可以有两种关系。<strong>一种</strong>是使指针指向常量数据，这样便不能通过指针来修改指向数据的值。<br>如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> age = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p = &amp;age;    <span class="comment">//const修饰*p，p指向常量，不能通过*p来改变age的值</span></span><br><span class="line">*p = <span class="number">19</span>;                <span class="comment">//invalid，将会报错</span></span><br><span class="line">age = <span class="number">21</span>;               <span class="comment">//但可以通过age来改变age的值</span></span><br></pre></td></tr></table></figure></p>
+<p>C++中，<code>const</code>变量的地址只能赋给指向const的指针。因为如果非const指针可以指向const变量，而又无意中通过该指针修改了const变量的值，无疑会将<code>const</code>置于无比尴尬的地位。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> age = <span class="number">19</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;age;      <span class="comment">//invalid,不能将const变量的地址赋给指向非const的指针</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>另一种</strong>是将指针本身声明为常量，即指针变量的值不可改变，即不能改变指针的指向。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> age = <span class="number">22</span>;</span><br><span class="line"><span class="keyword">int</span> * <span class="keyword">const</span> p = &amp; age;  <span class="comment">//const修饰p，p的指向不可变</span></span><br><span class="line"><span class="keyword">int</span> age2 = <span class="number">30</span>;</span><br><span class="line">p = &amp;age2;              <span class="comment">//invalid</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="const与引用"><a href="#const与引用" class="headerlink" title="const与引用"></a>const与引用</h2><p>引用变量必须在定义时被初始化，且不可更改指向。所以如果将引用声明为<code>const</code>，则将不能通过该引用改变引用指向的变量的值。与指针类似，同样不能将<code>const</code>赋给非<code>const</code>引用。</p>
+<p>引用最主要的作用是用作函数的形参。</p>
+<hr>
+<h1 id="函数的const与引用参数"><a href="#函数的const与引用参数" class="headerlink" title="函数的const与引用参数"></a>函数的const与引用参数</h1><h2 id="const参数"><a href="#const参数" class="headerlink" title="const参数"></a>const参数</h2><p>在不需要修改形参的函数中，使用<code>const</code>形参将使函数不能在内部修改该形参的值。这可以防止无意间修改了参数值的编程错误。</p>
+<p>在需要修改形参值的函数中，不能使用<code>const</code>。</p>
+<h2 id="引用参数"><a href="#引用参数" class="headerlink" title="引用参数"></a>引用参数</h2><p>前面提到，按值传递参数将会把实参复制给形参。形参的改变并不会影响到实参。</p>
+<p>而<strong>按引用传递</strong>则不同，在引用传递中，形参将成为实参的引用，通过更改形参便可以更改实参的值。<br>例如最经典的引用参数示例（交换两个变量的值）：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> &amp;a,<span class="keyword">int</span> &amp;b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用引用传参的好处：</p>
+<ol>
+<li>通过形参可以修改实参的值</li>
+<li>形参和实参使用同一份数据，而不是实参的拷贝，提高了效率，节省了时间（这尽管在内置类型上体现不明显，但对于比较大的对象则可以显著提高效率）</li>
+</ol>
+<h2 id="const引用参数"><a href="#const引用参数" class="headerlink" title="const引用参数"></a>const引用参数</h2><p>使用引用传递时更改形参的值会改变实参。如果我们不希望这样做，则可以采用 <code>const &amp;</code> 参数，既可以提高效率，又不会使我们忽视无意间更改了参数的错误。</p>
+<p>在对象参数的传递中，经常使用<code>const &amp;</code>参数。</p>
+<p>例如（这里是结构）：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">name</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">string</span> first_name;</span><br><span class="line">	<span class="built_in">string</span> last_name;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_name</span><span class="params">(<span class="keyword">const</span> name &amp; n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; n.first_name &lt;&lt; <span class="string">" "</span> &lt;&lt; n.last_name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在<code>show_name()</code>函数中使用 <code>const &amp;</code> 参数使得函数使用的是形参的数据，而又不能更改它。且提高了效率。</p>
+<h2 id="传参的一些指导性规则"><a href="#传参的一些指导性规则" class="headerlink" title="传参的一些指导性规则"></a>传参的一些指导性规则</h2><p>如果传递不做修改的参数：</p>
+<ol>
+<li>如果参数很小，为内置类型或者小型结构，使用按值传递</li>
+<li>传递数组，通过数组名，即是指针传递，并将指针声明为指向const的指针</li>
+<li>传递大型结构，使用const指针或者const引用，以提高效率</li>
+<li>传递类对象，通常要求使用<code>const &amp;</code></li>
+</ol>
+<p>对于传递需要更改带参数：</p>
+<ol>
+<li>内置类型，使用指针或者引用</li>
+<li>传递数组，只能使用指针</li>
+<li>传递结构，使用指针或者引用</li>
+<li>传递类对象，使用引用</li>
+</ol>
+<p>这只是一般原则，亦可做出其他选择，根据需要传递合适的参数即可。</p>
+<hr>
+<h1 id="const与引用返回值"><a href="#const与引用返回值" class="headerlink" title="const与引用返回值"></a>const与引用返回值</h1><p>与参数类似，返回值也可以由const修饰，也可以返回引用。</p>
+<h2 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h2><p>在C++中可以返回引用，但只能返回传递给函数的引用参数的引用。<strong>不能返回函数中的临时变量与局部变量的引用</strong>。因为局部变量在函数执行完后将会被释放，而指向已经释放的内存的引用将会产生错误。而传递给函数的引用参数不会被释放，所以只能返回传递给函数的引用参数。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> &amp; <span class="title">add</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> &amp; sum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	sum = a+b;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用引用返回值有两个好处：</p>
+<p>其一，与使用引用参数的目的相同，返回引用效率高于按值返回，这常用于类对象。但并不是返回对向就必须返回引用，在某些情况下也只能按值返回。这将在后面介绍。</p>
+<p>其二，返回非<code>const</code>引用，将可以让我们对函数表达式执行操作。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">add(a,b,sum) = <span class="number">5</span>;  <span class="comment">//等同于下面的两条语句，因为返回传入的引用参数sum的非`const`引用</span></span><br><span class="line"><span class="comment">//add(a,b,sum)；</span></span><br><span class="line"><span class="comment">//sum = 5;</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; sum &lt;&lt; <span class="built_in">endl</span>;    <span class="comment">//结果为5</span></span><br></pre></td></tr></table></figure></p>
+<p>返回引用在类的<strong>运算符重载</strong>中很常用。<br>例如下面类中重载&lt;&lt;运算符的函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">name</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">friend</span> ostream &amp; <span class="keyword">operator</span>&lt;&lt;(ostream &amp; out,<span class="keyword">const</span> name &amp; _name)</span><br><span class="line">	&#123;</span><br><span class="line">		out &lt;&lt; _name.first_name &lt;&lt; <span class="string">" "</span> &lt;&lt; _name.last_name ;</span><br><span class="line">		<span class="keyword">return</span> out;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	name(<span class="keyword">const</span> <span class="built_in">string</span> &amp; fn,<span class="keyword">const</span> <span class="built_in">string</span> &amp; ln): first_name(fn) ,last_name(ln)&#123;	&#125;   <span class="comment">//类内实现，内联定义</span></span><br><span class="line">	~name()&#123;	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">string</span> first_name;</span><br><span class="line">	<span class="built_in">string</span> last_name;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上面友元函数返回 <code>ostream &amp;</code>使得可以进行下面的操作。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">name <span class="title">Kim</span><span class="params">(<span class="string">"Kim"</span>,<span class="string">"Possible"</span>)</span></span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; Kim &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure></p>
+<p>代码中<code>cout &lt;&lt; Kim</code>调用了<code>ostream &amp; operator&lt;&lt;(ostream &amp; out,const name &amp; _name)</code>函数，返回了<code>cout</code>对象，所以可以在后面接上<code>&lt;&lt; endl</code>继续调用 <code>ostream</code> 类中的重载运算符<code>&lt;&lt;</code>的函数。</p>
+<h2 id="返回const引用"><a href="#返回const引用" class="headerlink" title="返回const引用"></a>返回const引用</h2><p>当希望返回引用而传入的参数为<code>const &amp;</code>时，则必须返回<code>const &amp;</code>，因为不能将常量（const修饰的变量）赋给非<code>const</code>引用。这时调用时将不能对函数表达式进行改变其值的操作。</p>
+<p>某些情况下只希望提高效率，而禁止对传入的对象进行操作时（例如只打印出传入对象的成员而又希望返回对象使其能够一条语句调用多个打印函数），应该使用<code>const &amp;</code>参数与<code>const &amp;</code>返回值。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">name</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	name(<span class="keyword">const</span> <span class="built_in">string</span> &amp; fn,<span class="keyword">const</span> <span class="built_in">string</span> &amp; ln): first_name(fn) ,last_name(ln)&#123;	&#125;   <span class="comment">//类内实现，内联定义</span></span><br><span class="line">	~name()&#123;	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> name &amp; <span class="title">show_first_name</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; first_name &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> name &amp; <span class="title">show_last_name</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; last_name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">string</span> first_name;</span><br><span class="line">	<span class="built_in">string</span> last_name;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上面的成员函数<code>const name &amp; show_first_name() const</code>中返回了<code>const name &amp;</code>，末尾的const表示这是一个常成员函数，修饰<code>*this</code>。所以函数返回了传入了<code>const &amp;</code>。<br>这里仅仅是一个示例，现实中我们可能并不会像上面这样使用。<br>则我们可以向下面这样调用：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">name <span class="title">Kim</span><span class="params">(<span class="string">"Kim"</span>,<span class="string">"Possible"</span>)</span></span>;</span><br><span class="line">Kim.show_first_name().show_last_name();</span><br></pre></td></tr></table></figure></p>
+<p>将会打印出结果<code>Kim Possible</code>。</p>
+<p>按值返回<code>const</code>并没有意义。与返回非const并没有区别。</p>
+<h1 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h1><p>C++函数允许函数有默认参数（default parameters）。即参数具有默认值。调用时就可以省略传入改参数，而使用默认参数。在函数原型中给参数赋值即可实现。</p>
+<p>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> a=<span class="number">0</span>)</span>       <span class="comment">//此处函数定义在main()函数前，不需要原型，则直接将默认参数写在定义中</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>则可以不传入参数直接调用<code>fun()</code>，结果将打印出 0 。<br>也可以传入参数如调用<code>fun(2)</code>，则将打印出结果 2 。<strong>传入的参数将覆盖默认参数</strong>。</p>
+<p><strong>默认参数必须从右向左添加</strong>。即是，如果某个参数有默认值，那么它右边的所有参数都必须有默认值。因为实参是按照从左往右的顺序依次赋给形参的。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">double</span> a,<span class="keyword">int</span> b = <span class="number">2</span>,<span class="keyword">bool</span> c = <span class="literal">true</span>)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>则下列调用都是合法的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fun(<span class="number">2.1</span>);</span><br><span class="line">fun(<span class="number">2.0</span>,<span class="number">1</span>);</span><br><span class="line">fun(<span class="number">1.0</span>,<span class="number">2</span>,<span class="literal">false</span>);</span><br></pre></td></tr></table></figure></p>
+<p>默认参数在类中定义构造函数与析构函数时经常使用。某些时候，通过使用默认参数，可以减少定义构造函数、析构函数与重载方法的数量。</p>
+<h1 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h1><p>上面的默认参数使得我们可以使用不同数目的参数调用同一个函数。而函数重载也可以做到这一点，只不过函数重载后调用的不是同一个函数，而是不同的同名函数。</p>
+<h2 id="什么是函数重载"><a href="#什么是函数重载" class="headerlink" title="什么是函数重载"></a>什么是函数重载</h2><p>C++还允许我们对函数进行<strong>重载</strong>（function overloading）。函数重载指的是我们能够定义多个同名的函数，对函数名称进行了重载。但是他们的参数列表不同。</p>
+<p>这样我们可以设计一系列函数，他们的函数名相同，但是可以传入不同的参数。这样可以简化程序的设计，不同的参数、不同的函数，只要重载好了相应的函数，便可以使用同一个函数名调用。</p>
+<p>函数重载的关键时函数的<strong>参数列表</strong>——也称<strong>函数特征标</strong>。C++通过函数参数列表来区分调用哪一个函数。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> c)</span></span>;              <span class="comment">//#1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">char</span> ch)</span></span>;            <span class="comment">//#2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">double</span> d)</span></span>;           <span class="comment">//#3</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>;        <span class="comment">//#4</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * str)</span></span>;   <span class="comment">//#5</span></span><br></pre></td></tr></table></figure></p>
+<p>上述五个函数原型的特征表各不相同（必须参数类型、顺序和个数完全相同，特征标才相同）。使用函数<code>print()</code>时，函数将通过实参类型判断将要执行哪一个函数。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">1</span>,<span class="number">2</span>);             <span class="comment">//use #4</span></span><br><span class="line">print(<span class="string">'q'</span>);             <span class="comment">//use #2</span></span><br><span class="line">print(<span class="number">2.4</span>);             <span class="comment">//use #3</span></span><br><span class="line">print(<span class="number">5</span>);               <span class="comment">//use #1</span></span><br><span class="line">print(<span class="string">"hello,world!"</span>);  <span class="comment">//use #5</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="函数匹配"><a href="#函数匹配" class="headerlink" title="函数匹配"></a>函数匹配</h2><p>上面的调用都找到了参数与之匹配的函数原型，所以可以顺利执行。但如果所有函数原型都不与调用参数匹配，则编译器会尝试对参数进行标准强制类型转换。如果有多个函数都可以在转换后与之匹配，则将会调用最匹配的版本，如果编译器不能判断哪一个最匹配，则将会报错。<br>例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">1.2</span>,<span class="number">3.0</span>);     <span class="comment">//use #4</span></span><br></pre></td></tr></table></figure></p>
+<p>上面的调用并没有一个<code>void print(double,double)</code>原型与之匹配，但C++会将其进行强制类型转换，比如将<code>double</code>转换为<code>int</code>，<code>char</code>转换为<code>int</code>，<code>int</code>转换为<code>double</code>等。</p>
+<p>一些看起来不同的参数类型会被认为是一样的。比如，编译器在检查函数特征表时，会将<strong>类型引用和类型本身视为同一特征标</strong>。<br>例如有如下两个函数原型：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> x)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> &amp; x)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>则调用时会发生错误，将不能通过编译：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">square(<span class="number">2.1</span>);        <span class="comment">//编译器将不能分辨调用哪个函数</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="何时使用函数重载"><a href="#何时使用函数重载" class="headerlink" title="何时使用函数重载"></a>何时使用函数重载</h2><p>函数重载看起来非常好用，但也不应滥用，应当仅仅在函数执行相同任务，但使用不同类型的数据时才使用函数重载。</p>
+<p>在类的设计中将经常使用运算符重载（一种特殊的函数重载）。</p>
+<h2 id="名称修饰"><a href="#名称修饰" class="headerlink" title="名称修饰"></a>名称修饰</h2><p>我们不禁要问，C++如何区分这都些同名的函数呢？</p>
+<p>答案是，在编译时，C++编译器将会对这些同名但是特征标不同的函数进行一些操作——名称修饰或名称矫正，它会根据函数原型中的形参列表对每个函数名进行加密/编码。这样在编译得到的程序内部将会得到不一样的函数名，这样便可以区分这些函数。编码方法因编译器而异。</p>
+<hr>
+<h1 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h1><p>空时再补。</p>
+<hr>
+<p><strong>参考资料：C++ Primer Plus</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/31/2017.12.31--the-end-summary-of-2017/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2017，恍恍惚惚
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/08/2017.12.8--C++started-function/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C++语法入门【2】函数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-内联函数"><span class="nav-number">1.</span> <span class="nav-text">C++内联函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用类型"><span class="nav-number">2.</span> <span class="nav-text">引用类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建引用变量"><span class="nav-number">2.1.</span> <span class="nav-text">创建引用变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用的内部实现"><span class="nav-number">2.2.</span> <span class="nav-text">引用的内部实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#再谈const"><span class="nav-number">3.</span> <span class="nav-text">再谈const</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#const与指针"><span class="nav-number">3.1.</span> <span class="nav-text">const与指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const与引用"><span class="nav-number">3.2.</span> <span class="nav-text">const与引用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的const与引用参数"><span class="nav-number">4.</span> <span class="nav-text">函数的const与引用参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#const参数"><span class="nav-number">4.1.</span> <span class="nav-text">const参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用参数"><span class="nav-number">4.2.</span> <span class="nav-text">引用参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const引用参数"><span class="nav-number">4.3.</span> <span class="nav-text">const引用参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传参的一些指导性规则"><span class="nav-number">4.4.</span> <span class="nav-text">传参的一些指导性规则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#const与引用返回值"><span class="nav-number">5.</span> <span class="nav-text">const与引用返回值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#返回引用"><span class="nav-number">5.1.</span> <span class="nav-text">返回引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回const引用"><span class="nav-number">5.2.</span> <span class="nav-text">返回const引用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#默认参数"><span class="nav-number">6.</span> <span class="nav-text">默认参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数重载"><span class="nav-number">7.</span> <span class="nav-text">函数重载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是函数重载"><span class="nav-number">7.1.</span> <span class="nav-text">什么是函数重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数匹配"><span class="nav-number">7.2.</span> <span class="nav-text">函数匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何时使用函数重载"><span class="nav-number">7.3.</span> <span class="nav-text">何时使用函数重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#名称修饰"><span class="nav-number">7.4.</span> <span class="nav-text">名称修饰</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数模板"><span class="nav-number">8.</span> <span class="nav-text">函数模板</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

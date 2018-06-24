@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>二叉查找树 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="简单介绍树，基础说多了也没什么意思，这里主要实现二叉查找树。">
+<meta name="keywords" content="数据结构,树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉查找树">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/03/15/2018.3.15--binary-search-tree/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="简单介绍树，基础说多了也没什么意思，这里主要实现二叉查找树。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-03-18T02:18:04.551Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二叉查找树">
+<meta name="twitter:description" content="简单介绍树，基础说多了也没什么意思，这里主要实现二叉查找树。">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.3.15--binary-search-tree" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      二叉查找树
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/15/2018.3.15--binary-search-tree/" class="article-date">
+	  <time datetime="2018-03-14T16:00:00.000Z" itemprop="datePublished">2018-03-15</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/数学与算法/">数学与算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>简单介绍树，基础说多了也没什么意思，这里主要实现<a href="https://en.wikipedia.org/wiki/Binary_search_tree" target="_blank" rel="noopener">二叉查找树</a>。</p>
+<a id="more"></a>
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>树，是一种非线性的数据结构，是一种特殊的（没有回路的）图，主要用在涉及到一个问题具有分支情况下的建模。树的若干定义都很简单，像父亲，儿子，根，兄弟，祖先，树叶，树枝，深度，高度等。<br>一般操作系统的文件结构就是采用的树形结构。也就是B树/B+树等。Linux系统的文件结构一角：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">├── udisks2</span><br><span class="line">│   └── mounted-fs</span><br><span class="line">├── user</span><br><span class="line">│   ├── 0</span><br><span class="line">│   └── 1000</span><br><span class="line">│       ├── dconf</span><br><span class="line">│       │   └── user</span><br><span class="line">│       ├── gnome-shell</span><br><span class="line">│       │   └── runtime-state-LE.:0</span><br><span class="line">│       │       └── screenShield.locked</span><br><span class="line">│       ├── keyring</span><br><span class="line">│       │   ├── control</span><br><span class="line">│       │   ├── pkcs11</span><br><span class="line">│       │   └── ssh</span><br><span class="line">│       └── pulse</span><br><span class="line">│           ├── native</span><br><span class="line">│           └── pid</span><br><span class="line">├── utmp</span><br><span class="line">├── vmware</span><br><span class="line">│   └── guestServicePipe</span><br><span class="line">└── xtables.lock</span><br><span class="line">//使用tree命令打印</span><br></pre></td></tr></table></figure></p>
+<p>在很多情况下，我们主要讨论二叉树（Binary Tree），也就是每一个节点最多只有两个子节点的情况。有一些比较特殊的二叉树值得讨论，比如：满二叉树：除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。完全二叉树：叶节点只能出现在最下层和次下层，并且最下面一层的结点都集中在该层最左边的若干位置的二叉树。完全二叉树有时采用线性存储（即堆），但其余的二叉树一般采用二叉链存储结构。</p>
+<p>另外，对于一般的树，我们也通常采用孩子兄弟链存储结构，节点一般如下定义：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">treeNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ElemType element;</span><br><span class="line">    treeNode * FirstChild;  <span class="comment">//第一个孩子</span></span><br><span class="line">    treeNode * NextSibling; <span class="comment">//下一个兄弟节点</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>而对于二叉树，因为最多只有两个孩子，所以一般采用如下节点定义：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">treeNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ElemType element;</span><br><span class="line">    treeNode * left;  <span class="comment">//左孩子</span></span><br><span class="line">    treeNode * right; <span class="comment">//右孩子</span></span><br><span class="line">&#125; * BiTree, * pNode;</span><br></pre></td></tr></table></figure></p>
+<h2 id="树的遍历"><a href="#树的遍历" class="headerlink" title="树的遍历"></a>树的遍历</h2><p>在二叉树的一系列操作之中，我们比较关心插入、删除、求高度、遍历等操作。这里对于所有的二叉树，给出求高度与遍历的方法。遍历一般采用递归，当然也可以不用递归，直接创建栈来模拟递归调用用户栈的过程。所以有递归遍历与非递归遍历的实现，在实际编写程序我们更倾向于使用递归遍历。这里给出实现。</p>
+<p>求任意节点的高度：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Height</span><span class="params">(pNode p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(p == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> max(Height(p-&gt;left), Height(p-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">&#125;<span class="comment">//这里max为求两者之中最大值得函数，使用宏定义#define max(a,b) (a&gt;b?a:b)即可</span></span><br></pre></td></tr></table></figure></p>
+<p>二叉树的先序、中序、后序递归遍历：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pre_traverse</span><span class="params">(BiTree T)</span> <span class="comment">//先序，根左右</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> ;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; T-&gt;element &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	pre_traverse(T-&gt;left);</span><br><span class="line">	pre_traverse(T-&gt;right);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">in_traverse</span><span class="params">(BiTree T)</span>  <span class="comment">//中序，左根右</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	in_traverse(T-&gt;left);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; T-&gt;element &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	in_traverse(T-&gt;right); </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">post_traverse</span><span class="params">(BiTree T)</span> <span class="comment">//后序，左右根</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	post_traverse(T-&gt;left);</span><br><span class="line">	post_traverse(T-&gt;right);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; T-&gt;element &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>非递归先序遍历：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pre_traverse_nonrecursive</span><span class="params">(BiTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="built_in">stack</span>&lt;pNode&gt; S;</span><br><span class="line">	S.push(T);</span><br><span class="line">	<span class="keyword">while</span>(! S.empty())</span><br><span class="line">	&#123;</span><br><span class="line">		pNode tmp = S.top();</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; tmp-&gt;element &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		S.pop();</span><br><span class="line">		<span class="keyword">if</span>(tmp-&gt;right)</span><br><span class="line">			S.push(tmp-&gt;right);</span><br><span class="line">		<span class="keyword">if</span>(tmp-&gt;left)</span><br><span class="line">			S.push(tmp-&gt;left);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>中序及后序改造一下即可，不做实现，这里非递归遍历并没有节省多少空间，只是自定义的栈代替了用户栈。空间复杂度依然为O(n)，时间复杂度同为O(n)。其实还存在空间复杂度为O(1)的遍历方法，实现过程稍微复杂一点点，远不如递归遍历来得那么简洁，等到有必要这样实现的时候再实现一下。很多情况下我们也可以构造线索二叉树，使得遍历不用栈和队列的辅助，优化时间。有的时候需要层序遍历，层序遍历即是二叉树层数从上到下从左到右，依次输出节点，使用队列辅助进行。</p>
+<h2 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h2><p>二叉查找树（Binary serach tree）亦称二叉搜索树，二叉排序树，特点是其中序遍历序列是单调的（一般实现时选择递增）。也就是说，它是用来存储、查找与排序用的。当我们使用线性结构数组时，查找很方便，但插入和删除却要O(n)的平均复杂度。使用链表时，插入删除很方便，查找的平均复杂度却是O(n)。所以引入了非线性结构二叉查找树，弥补数组和链表的缺点，使得查找、插入、删除操作的平均时间复杂度均是O(logn)。</p>
+<p>二叉查找树的递归定义：</p>
+<ul>
+<li>对于任意一个节点，如果左子树不空，则左子树的所有节点值均小于根节点值</li>
+<li>对于任意一个节点，如果右子树不空，则右子树的所有节点值均大于根节点值</li>
+<li>左子树、右子树也是二叉查找树</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>首先，采用二叉链存储结构，节点定义，同一般二叉树。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> ElemType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">treeNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	ElemType element;</span><br><span class="line">	treeNode * left;</span><br><span class="line">	treeNode * right;</span><br><span class="line">&#125;* pNode, * BSTree;</span><br></pre></td></tr></table></figure></p>
+<p>函数声明：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Clear</span><span class="params">(BSTree &amp;T)</span></span>;            <span class="comment">//清空一颗树</span></span><br><span class="line"><span class="function">pNode <span class="title">Find</span><span class="params">(BSTree T,ElemType x)</span></span>;  <span class="comment">//查找元素x</span></span><br><span class="line"><span class="function">pNode <span class="title">FindMax</span><span class="params">(BSTree T)</span></span>;          <span class="comment">//查找最大值</span></span><br><span class="line"><span class="function">pNode <span class="title">FindMin</span><span class="params">(BSTree T)</span></span>;          <span class="comment">//查找最小值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(BSTree &amp;T,ElemType x)</span></span>;<span class="comment">//Insert理论情况不会出错，返回值void </span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Delete</span><span class="params">(BSTree &amp;T,ElemType x)</span></span>;<span class="comment">//删除失败时返回 false </span></span><br><span class="line"><span class="function">ElemType <span class="title">Retrieve</span><span class="params">(pNode p)</span></span>;       <span class="comment">//取节点值</span></span><br><span class="line"><span class="comment">//先序、中序、后序遍历，见上面</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pre_traverse</span><span class="params">(BSTree T)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">in_traverse</span><span class="params">(BSTree T)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">post_traverse</span><span class="params">(BSTree T)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>清空二叉树：<br>这里一定要确保传入的是一棵树，就算是空树，而不是一个未初始化为NULL的指针，否则的话程序很有可能会崩溃，发生SIGSEGV错误，也就是递归得不到终止，则栈空间将被用尽，俗称爆栈。<br>注：windows下用户栈大概是1MB，Linux下一般是8MB，可通过编译指令更改，所以一定要注意不能爆栈，递归一定要能终止且层数不能过多，这里二叉查找树的递归层数最大为树深度即O(logn)，复杂度低，一般情况不会爆栈。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Please ensure the parameter is a tree </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Clear</span><span class="params">(BSTree &amp;T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Clear(T-&gt;left);</span><br><span class="line">		Clear(T-&gt;right);</span><br><span class="line">		<span class="keyword">delete</span> T;</span><br><span class="line">		T = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>查找元素x：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pNode <span class="title">Find</span><span class="params">(BSTree T,ElemType x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span>(x &lt; T-&gt;element)</span><br><span class="line">		<span class="keyword">return</span> Find(T-&gt;left,x);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &gt; T-&gt;element)</span><br><span class="line">		<span class="keyword">return</span> Find(T-&gt;right,x);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>查找最大值与最小值：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pNode <span class="title">FindMax</span><span class="params">(BSTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(T-&gt;right != <span class="literal">NULL</span>)</span><br><span class="line">		T = T-&gt;right;</span><br><span class="line">	<span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">pNode <span class="title">FindMin</span><span class="params">(BSTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(T-&gt;left != <span class="literal">NULL</span>)</span><br><span class="line">		T = T-&gt;left;</span><br><span class="line">	<span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>取节点值：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ElemType <span class="title">Retrieve</span><span class="params">(pNode p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(p == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"This node doesn't exist !"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p-&gt;element;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>插入一个值为x的节点：<br>这里插入时，如果存在元素x，则什么也不做，否则总是插入在路径的最后一个节点上。插入时，如果关键字x存在，则根据需要做该做的事，有的时候关键字仅仅是结构的一个域，则需要将该节点插入。某些情况下，关键字存在则不需要做任何事。我们甚至可以采用懒惰删除，即之只标记被删除的节点，表明它不属于这棵树，而不实际地将其从树中移走。在需要的时候，比如关键字相同的节点很多的时候，我们可以在树节点定义中加上一各域，表示该节点出现的频率，删除时将该域减1，插入时加1。上面的方法可以省去很多内存操作，提高效率，根据需求实现。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(BSTree &amp;T,ElemType x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		T = <span class="keyword">new</span> treeNode;</span><br><span class="line">		T-&gt;element = x;</span><br><span class="line">		T-&gt;left = T-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &gt; T-&gt;element)</span><br><span class="line">		Insert(T-&gt;right,x);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &lt; T-&gt;element)</span><br><span class="line">		Insert(T-&gt;left,x);</span><br><span class="line">	<span class="comment">//else x is aleardy exist , we'll do nothing</span></span><br><span class="line">	<span class="comment">//and you can do the things you want</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>删除一个节点值为x的元素：<br>若节点不存在，则不进行任何操作。关键字为x的节点存在的三种情况：</p>
+<ul>
+<li>该节点为树叶，即没有左右孩子，则直接删除，并将其父节点对应域更改为NULL即可。</li>
+<li>该节点有一个孩子，则直接使其父节点的对应域指向其孩子节点，并释放其空间即可。</li>
+<li>该节点有来左右两个孩子，则用其右子树的最小值的来替换该节点（替换相应域即可），并删除这个用来替换的节点，显然这个节点一定只有0个或者一个孩子节点，则直接递归调用上述过程即可。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Delete</span><span class="params">(BSTree &amp;T,ElemType x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"The element you want to delete is not in this tree !"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &gt; T-&gt;element)</span><br><span class="line">		<span class="keyword">return</span> Delete(T-&gt;right,x);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x &lt; T-&gt;element)</span><br><span class="line">		<span class="keyword">return</span> Delete(T-&gt;left,x);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(T-&gt;left &amp;&amp; T-&gt;right)<span class="comment">//the node has two children</span></span><br><span class="line">	&#123;</span><br><span class="line">		pNode tmp = FindMin(T-&gt;right);</span><br><span class="line">		T-&gt;element = tmp-&gt;element;</span><br><span class="line">		Delete(T-&gt;right,T-&gt;element);      <span class="comment">//删除已经替换上来的节点</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="comment">//the node has one or zero children</span></span><br><span class="line">	&#123;</span><br><span class="line">		pNode tmp = T;</span><br><span class="line">		T = T-&gt;left == <span class="literal">NULL</span> ? T-&gt;right : T-&gt;left;   <span class="comment">//改变T指针的指向为T的唯一的孩子节点或者NULL </span></span><br><span class="line">		<span class="keyword">delete</span> tmp;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>二叉查找树的查找、删除、插入的最坏时间复杂度均为O(logn)，因为二叉查找树的平均深度为O(logn)。</p>
+<p>但二叉查找树依然存在一些缺陷，如：</p>
+<ul>
+<li>如果原来就是排好序的，那么按照顺序插入，则二叉树就变成了链表一样的形状，效率急剧降低。</li>
+<li>在进行了很多次的插入和删除之后，删除中的一个步骤（总是用待删除节点右子树的最小值的来替换该节点）就会导致树枝呈现出向左边倾斜的趋势，在多次Insert和Delete后，平均操作复杂度会逐渐上升。</li>
+</ul>
+<p>要解决以上问题，可以通过平衡二叉树，或者以后将介绍的近乎平衡的AVL树等数据结构来解决。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/17/2018.3.17--avl-tree/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          AVL树
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/14/2018.3.14--algorithms-started/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Algorithms started</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#树"><span class="nav-number">1.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树的遍历"><span class="nav-number">2.</span> <span class="nav-text">树的遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉查找树"><span class="nav-number">3.</span> <span class="nav-text">二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
