@@ -12,7 +12,7 @@
   
   
   <meta name="description" content="离散数学第三篇，讨论基本的计数技术——排列组合及其推广。组合数学是离散数学的重要组成部分，这里比较简略，待到有时间详细学习组合数学后再讨论一些复杂一点的问题。那何为组合数学呢？组合数学（Combinatorics）是研究一定条件的组态的存在、计数以及构造的科学。直白说就是研究物体如何安排的科学。这里的组合数学是狭义的组合数学，广义的组合数学就是离散数学。因计算机科学的核心就是使用算法研究离散数据">
-<meta name="keywords" content="离散数学,组合数学,集合论,计数,排列组合">
+<meta name="keywords" content="离散数学,集合论,组合数学,计数,排列组合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【离散数学】计数&#x2F;排列组合">
 <meta property="og:url" content="http://aojueliuyun.github.io/2018/02/10/2018.2.10--counting-arrangement-&-combination/index.html">
@@ -218,7 +218,7 @@
 <h2 id="排列"><a href="#排列" class="headerlink" title="排列"></a>排列</h2><p>从$n$个不同元素组成的集合中选出$r$个元素排成一列，即需要考虑排列的次序。这种有序安排称为$n$元素集合的r排列。排列的方法数记作$P(n,r)$（也记作 $A_n^r$ 或者 $P_n^r$），读作$n$元素集合的$r$排列数。</p>
 <p>显然，$P(n,r)$ $\;=n(n-1)(n-2)\cdots(n-r+1)$ $=\dfrac {n!}{(n-r)!}$<br>则$n$元素集合的全排列为$P(n,n)=n!$</p>
 <h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p>从$n$个不同元素组成的集合中无序选出$r$个元素，即不需要考虑排列的次序。这些无序选取的元素构成该集合的子集，称为$n$元素的一个$r$组合。组合的方法数记作$C(n,r)$（或者$C_n^r$），读作$n$元素集合的$r$组合数。也记作$\big(_r^n\big )$，并且称为二项式系数。</p>
-<p>显然，$C(n,r)$ $\;=\dfrac{n!}{r!\ (n-r)!}$ $\;=\dfrac{P(n,r)}{P(r,r)}$ $\;=\dfrac{n(n-1)(n-2)\cdots(n-r+1)}{r!}$</p>
+<p>显然，$C(n,r)$ $\;=\dfrac{n!}{r! (n-r)!}$ $\;=\dfrac{P(n,r)}{P(r,r)}$ $\;=\dfrac{n(n-1)(n-2)\cdots(n-r+1)}{r!}$</p>
 <p>显然有 <script type="math/tex">C(n,r)=C(n,n-r)</script> 和 <script type="math/tex">P(n,r)=C(n,r)\cdot P(r,r)</script>基础不过多解释。</p>
 <hr>
 <h1 id="二项式定理与恒等式"><a href="#二项式定理与恒等式" class="headerlink" title="二项式定理与恒等式"></a>二项式定理与恒等式</h1><p>$n$ 元素集合的 $r$ 排列数常记作$\big( ^n_r\big)$，由于这些数出现在二项式幂$(a+b)^n$的展开式中作为系数，所以也称<strong>二项式系数</strong>。</p>

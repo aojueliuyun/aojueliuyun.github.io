@@ -193,7 +193,7 @@
 <a id="more"></a>
 <hr>
 <h1 id="堆（Heap）"><a href="#堆（Heap）" class="headerlink" title="堆（Heap）"></a>堆（Heap）</h1><p>堆（二叉堆）是一个数组，也可以被看做一个近似的<strong>完全二叉树</strong>。将二叉树从顶层向底层，从左向右，从1开始编号，直到二叉树节点个数n。得到完全二叉树的层序遍历序列，即是二叉堆。同理可拓展到n叉堆。</p>
-<p>二叉堆中编号是从1到n的，所以节点 i 的父节点编号为$\lfloor\ i/2\rfloor$（i/2向下取整，在高级语言中，整型运算i/2即可做到），左孩子为2i，右孩子为2i+1。<br>即有：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Parent(i)</span><br><span class="line">return i/2</span><br></pre></td></tr></table></figure></p>
+<p>二叉堆中编号是从1到n的，所以节点 i 的父节点编号为$\lfloor i/2\rfloor$（i/2向下取整，在高级语言中，整型运算i/2即可做到），左孩子为2i，右孩子为2i+1。<br>即有：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Parent(i)</span><br><span class="line">return i/2</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Left(i)</span><br><span class="line">return 2*i</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Right(i)</span><br><span class="line">return 2*i+1</span><br></pre></td></tr></table></figure>
 <p>在实际应用中，我们主要考虑<strong>最大堆</strong>（也称大顶堆）和<strong>最小堆</strong>（小顶堆）。其中最大堆（Max Heap）的根节点<strong>关键字（key）</strong>为所有节点关键字中最大值，且要求所有节点关键字的值大于等于其左孩子和右孩子的关键字。最小堆同理。以下主要以最大堆为例。</p>
