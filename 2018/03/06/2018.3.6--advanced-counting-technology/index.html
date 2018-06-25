@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/hanoi-towel.gif">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/42/Inclusion-exclusion.svg">
 <meta property="og:image" content="https://wikimedia.org/api/rest_v1/media/math/render/svg/0b8e7c1631ec013eed94feb5aa406a573caa3559">
-<meta property="og:updated_time" content="2018-06-24T10:01:06.902Z">
+<meta property="og:updated_time" content="2018-06-25T03:34:04.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【离散数学】高级计数技术">
 <meta name="twitter:description" content="这是离散数学的第四篇，讨论高级计数技术。上一篇（【离散数学】计数/排列组合）讨论了计数以及排列组合，二项式定理等。但是仅凭排列组合等手段依然无法解决许多计数问题。这里首先讨论通过递推关系来求解计数问题，并介绍有递推关系引出的两个算法范式：动态规划和分治。这两种算法均是通过将问题分割为一系列的子问题来求解的，区别就是前者分割出来的子问题互相重叠，后者的子问题不重叠。这是两种很重要的算法，加上贪心、">
@@ -200,8 +200,17 @@
 <h1 id="递推关系的应用"><a href="#递推关系的应用" class="headerlink" title="递推关系的应用"></a>递推关系的应用</h1><h2 id="经典问题——汉诺塔"><a href="#经典问题——汉诺塔" class="headerlink" title="经典问题——汉诺塔"></a>经典问题——汉诺塔</h2><p>这是一个及其经典的问题，见<a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi" target="_blank" rel="noopener">汉诺塔（Tower of Hanoi）</a>，三根柱子，n个盘子，从上到下盘子从小到大。将所有n个盘子从一根柱子移动到另一根柱子，移动过程中小的盘子不能放在大的盘子下面。可以求解出所需要的最小步数，还可以编写算法打印出所有步数。<br><img src="http://oxx8it1qo.bkt.clouddn.com/towel-of-hanoi.jpg" alt="此处输入图片的描述"><br>n=3的汉诺塔移动方法：<br><img src="http://oxx8it1qo.bkt.clouddn.com/hanoi-towel.gif" alt="此处输入图片的描述"></p>
 <p>令移动n个盘子到另一个柱子所需最少次数为 $ H_n $ ，考虑最下面一个最大的盘子，由于小的盘子不能放在大的盘子下面，所以必须首先将上面n-1个移动到另一个柱子，再将最下面的最大的一个移动到另一根柱子，再将n-1个移到其上，则完成了n个盘子的移动。则得到递推关系 $H_n = 2H_{n-1}+1$。初始条件很容易知道：$H_0 = 0$ ，$H_1=1$。</p>
 <p>求解递推关系：容易看出 $H_n+1 = 2(H_{n-1}+1)$，可以得到 $H_n= 2^n-1$。可以证明这便是移动n个盘子所需的最少次数。</p>
-<h2 id="卡特兰数"><a href="#卡特兰数" class="headerlink" title="卡特兰数"></a>卡特兰数</h2><p>考虑一个在n+1个数 $x_0\cdot x_1 \cdot x_2 \cdots x_n $ 的乘积中插入括号来规定乘法次序的方式数，令其为 $C_n$。<br>这里注意到一定会有一个乘法是在括号外面的（不需要加括号），假设其在$x_k$和$x_{k+1}$之间，则存在$C_kC_{n-k-1}$种方式，考虑最后一个乘号可能取n个位置，则有<script type="math/tex">C_n = \sum_{k=0}^{n-1}C_kC_{n-k-1}</script></p>
-<p>初始条件则为$C_0 = 1$，$C_1 = 1$。<br>利用生成函数的方法可以证明：$C_n = \dfrac{C(2n,n)}{n+1}$，被称作第n个<strong>卡特兰（Catalan）数</strong>，序列$\{C_n\}$ 被称为卡特兰数的序列。参见 <a href="http://oeis.org/A000108" target="_blank" rel="noopener">OEIS A000108</a>，<a href="https://en.wikipedia.org/wiki/Catalan_number" target="_blank" rel="noopener">Catalan number - Wikipedia</a>。</p>
+<p>而汉诺塔的解法步骤使用递归很容易求解。考虑将A上的n个盘子借由C移动到B，递归过程上面已经给出。用python描述如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># move n disks from a to b through c</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(a, b, c, n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        print(a, <span class="string">'---&gt;'</span>, b)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    move(a, c, b, n<span class="number">-1</span>)</span><br><span class="line">    move(a, b, c, <span class="number">1</span>)</span><br><span class="line">    move(c, b, a, n<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">move(<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure></p>
+<p>三个盘子的运行结果为：</p>
+<pre><code>A ---&gt; B
+A ---&gt; C
+B ---&gt; C
+A ---&gt; B
+C ---&gt; A
+C ---&gt; B
+A ---&gt; B
+</code></pre><h2 id="卡特兰数"><a href="#卡特兰数" class="headerlink" title="卡特兰数"></a>卡特兰数</h2><p>考虑一个在$n+1$个数 $x_0\cdot x_1 \cdot x_2 \cdots x_n $ 的乘积中插入括号来规定乘法次序的方式数，令其为 $C_n$。<br>这里注意到一定会有一个乘法是在括号外面的（不需要加括号），假设其在$x_k$和$x_{k+1}$之间，则存在$C_kC_{n-k-1}$种方式，考虑最后一个乘号可能取n个位置，则有</p>
+<script type="math/tex; mode=display">C_n = \sum_{k=0}^{n-1}C_kC_{n-k-1}</script><p>初始条件则为$C_0 = 1$，$C_1 = 1$。<br>利用生成函数的方法可以证明：$C_n = \dfrac{C(2n,n)}{n+1}$，被称作第n个<strong>卡特兰（Catalan）数</strong>，序列$\{C_n\}$ 被称为卡特兰数的序列。参见 <a href="http://oeis.org/A000108" target="_blank" rel="noopener">OEIS A000108</a>，<a href="https://en.wikipedia.org/wiki/Catalan_number" target="_blank" rel="noopener">Catalan number - Wikipedia</a>。</p>
 <h2 id="动态规划与递推关系"><a href="#动态规划与递推关系" class="headerlink" title="动态规划与递推关系"></a>动态规划与递推关系</h2><p>动态规划（<a href="https://en.wikipedia.org/wiki/Dynamic_programming" target="_blank" rel="noopener">Dynamic programming</a>，DP）是一种算法范式，遵循动态规划范式的算法是将原问题分解为更简单的重叠的子问题，通过子问题的求解来求解原问题。常用于求解最短路线、库存管理、资源分配、设备更新、排序、装载等问题。此类问题若用分治法来解，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。所以DP通过保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，从而降低复杂度。以后单独讨论，这里推荐阅读：<a href="https://www.cnblogs.com/Christal-R/p/Dynamic_programming.html" target="_blank" rel="noopener">动态规划解决01背包问题</a>，<a href="https://www.zhihu.com/question/23995189" target="_blank" rel="noopener">什么是动态规划？动态规划的意义是什么？</a>。</p>
 <hr>
 <h1 id="求解线性递推关系"><a href="#求解线性递推关系" class="headerlink" title="求解线性递推关系"></a>求解线性递推关系</h1><p>这部分给人的感觉相当熟悉，在高等数学中有线性微分方程的求解，线性代数中有线性方程组的求解，与这里的线性递推关系的求解十分类似，可以说是如出一辙。</p>
@@ -209,10 +218,11 @@
 <p>为了求解$k$阶常系数线性齐次递推关系，这里的基本方法是寻找形如$a_n = r^n$的解，其中r是常数。递推关系要有形如$a_n = r^n$的解，则当且仅当$r$是方程<script type="math/tex">r^k-c_1r^{k-1}-c_2r^{k-2}-\cdots -c_{k-1}r-c_k=0</script>的解。<br>将上述方程称为该递推关系的<strong>特征方程</strong>。方程的解称为<strong>特征根</strong>。（与求解常系数线性微分方程如出一辙）。特征根有可能是复数，但这里仅考虑特征根为实数的情况。</p>
 <p><strong>定理</strong>：假设特征方程<script type="math/tex">r^k-c_1r^{k-1}-\cdots -c_k=0</script>有k个不相等的根$r_1,r_2,…,r_k$。那么递推关系$a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k}$的解为<script type="math/tex">a_n = \alpha_1r_1^n+\alpha_2r_2^n+\cdots+\alpha_kr_k^n</script></p>
 <p>$n\in N,\alpha_1,\alpha_2,…,\alpha_k$是常数。<br><strong>另外</strong>，对其中的每一个特征根$r_i$，如果并非一重而是$m_i$重时，则用 $(\alpha_{i,0}+\alpha_{i,1}n+\cdots+\alpha_{i,m_i-1}n^{m_i-1})r_i^n$ 替代 上述解中的$\alpha_ir_i^n$即可。</p>
-<p>例：斐波那契数列（<a href="http://oeis.org/A000045" target="_blank" rel="noopener">OEIS A000045</a>）<br>递推关系$f_n = f_{n-1}+f_{n-2}$，初始条件$f_0 = 0,f_1=1$。<br>特征方程$r^2-r-1=0$ 根为 $r_1 = (1+\sqrt{5})/2$，$r_2 = (1-\sqrt{5})/2$。<br>则<script type="math/tex">f_n = \alpha_1\left(\dfrac{1+\sqrt5}{2}\right)^n + \alpha_2\left(\dfrac{1-\sqrt5}{2}\right)^n</script>代入$f_0,f_1$解出$\alpha _1 = \dfrac1{\sqrt5}$，$\alpha _2 = -\dfrac1{\sqrt5}$<br>则得到斐波那契数列的显式公式为<script type="math/tex">f_n = \dfrac1{\sqrt5}\left(\dfrac{1+\sqrt5}{2}\right)^n-\dfrac1{\sqrt5}\left(\dfrac{1-\sqrt5}{2}\right)^n</script></p>
-<h2 id="求解常系数线性非齐次递推关系"><a href="#求解常系数线性非齐次递推关系" class="headerlink" title="求解常系数线性非齐次递推关系"></a>求解常系数线性非齐次递推关系</h2><p>常系数线性非齐次递推关系：形如 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k} +F(n)$，与其相伴的齐次递推关系为 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k}$，很显然 <strong>通解 = 特解+齐次解</strong>。</p>
+<p>例：斐波那契数列（<a href="http://oeis.org/A000045" target="_blank" rel="noopener">OEIS A000045</a>）<br>递推关系$f_n = f_{n-1}+f_{n-2}$，初始条件$f_0 = 0,f_1=1$。<br>特征方程$r^2-r-1=0$ 根为 $r_1 = (1+\sqrt{5})/2$，$r_2 = (1-\sqrt{5})/2$。<br>则</p>
+<script type="math/tex; mode=display">f_n = \alpha_1\left(\dfrac{1+\sqrt5}{2}\right)^n + \alpha_2\left(\dfrac{1-\sqrt5}{2}\right)^n</script><p>代入$f_0,f_1$解出$\alpha _1 = \dfrac1{\sqrt5}$，$\alpha _2 = -\dfrac1{\sqrt5}$<br>则得到斐波那契数列的显式公式为</p>
+<script type="math/tex; mode=display">f_n = \dfrac1{\sqrt5}\left(\dfrac{1+\sqrt5}{2}\right)^n-\dfrac1{\sqrt5}\left(\dfrac{1-\sqrt5}{2}\right)^n</script><h2 id="求解常系数线性非齐次递推关系"><a href="#求解常系数线性非齐次递推关系" class="headerlink" title="求解常系数线性非齐次递推关系"></a>求解常系数线性非齐次递推关系</h2><p>常系数线性非齐次递推关系：形如 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k} +F(n)$，与其相伴的齐次递推关系为 $a_n = c_1a_{n-1}+c_2a_{n-2}+\cdots + c_ka_{n-k}$，很显然 <strong>通解 = 特解+齐次解</strong>。</p>
 <p>齐次解即对应的常系数线性齐次递推关系的解，记作$a_n^{(h)}$，特解记作$a_n^{(p)}$。</p>
-<p>不同形式的F(n)具有不同形式的特解</p>
+<p>不同形式的 $F(n)$ 具有不同形式的特解</p>
 <div class="table-container">
 <table>
 <thead>
@@ -240,13 +250,12 @@
 <p>令$n = b^k$，多次迭代后可以得到：</p>
 <script type="math/tex; mode=display">f(n)= a^kf(1)+\sum_{j=0}^{k-1}a^jg(n/b^j)</script><p>很容易知道，<br>二分查找的分治递推关系：$f(n)=f(n/2)+2$<br>归并排序的分治递推关系：$M(n)=2M(n/2)+n$</p>
 <h2 id="分治算法的复杂度分析"><a href="#分治算法的复杂度分析" class="headerlink" title="分治算法的复杂度分析"></a>分治算法的复杂度分析</h2><p>定理1：设$f(n)$是满足$f(n)=af(n/b)+c$ 的增函数，$n$被$b$整除，$a\geqslant 1$，<br>$b$是大于1的整数，$c$是正实数。那么</p>
-<script type="math/tex; mode=display">f(n) = \begin{cases} O(n^{log_ba})&a>1\\O(\log n)&a=1\end{cases}$$证明：令$n=b^k$即可证得，当$n\neq b^k$时，依然成立。
-
-很容易得出二分查找复杂度为$O(\log n)$。
-
-**主定理**：若$f(n)=af(n/b)+cn^d$，则$$f(n) = \begin{cases} O(n^d)&a<b^d
+<script type="math/tex; mode=display">f(n) = \begin{cases} O(n^{log_ba})&a>1\\O(\log n)&a=1\end{cases}</script><p>证明：令$n=b^k$即可证得，当$n\neq b^k$时，依然成立。</p>
+<p>很容易得出二分查找复杂度为$O(\log n)$。</p>
+<p><strong>主定理</strong>：若$f(n)=af(n/b)+cn^d$，则</p>
+<script type="math/tex; mode=display">f(n) = \begin{cases} O(n^d)&a<b^d
 \\O(n^d\log n)& a=b^d
-\\O(n^{log_ba})&a \succ b^d \end{cases}</script><p>同理，令$n=b^k$即可证得。（ps：上面的$\succ$表示大于号，但其实这个符号并不是这个意思。这里有一个bug，hexo自带一个功能的会把一段内连续的&lt;&gt;之间的内容注释掉，于是就只好将就一下。）</p>
+\\O(n^{log_ba})&a >b^d \end{cases}</script><p>同理，令$n=b^k$即可证得。</p>
 <p>根据主定理，很容易得出归并排序复杂度为$O(n\log n)$。<br>可以看到，定理1只是主定理的特殊情况。<br>这里仅简单分析分治算法，并解决了其复杂度的问题，并未涉及分治算法的设计及具体实现。</p>
 <hr>
 <h1 id="生成函数"><a href="#生成函数" class="headerlink" title="生成函数"></a>生成函数</h1><p>表示序列的一个有效方法是生成函数，把序列的项作为形式幂级数的变量x的幂的系数。可以用生成函数解决许多类型的计数问题。拓展阅读：<a href="https://en.wikipedia.org/wiki/Generating_function" target="_blank" rel="noopener">Generating function - Wikipedia</a>，<a href="http://www.matrix67.com/blog/archives/120" target="_blank" rel="noopener">什么是生成函数? | Matrix67: The Aha Moments</a>。</p>
@@ -262,10 +271,10 @@
 <p>生成函数可以用来求解计数问题，还可以用来求解递推关系和证明组合恒等式。这里不想写了，略过吧！（笑）</p>
 <hr>
 <h1 id="容斥原理及其应用"><a href="#容斥原理及其应用" class="headerlink" title="容斥原理及其应用"></a>容斥原理及其应用</h1><p>两个集合的容斥原理是很熟悉的，$|A\cup B|=|A|+|B|-|A\cap B|$，那么对于多个几个呢？很容易想到，但可能并不容易写出来。<a href="https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle" target="_blank" rel="noopener">Inclusion–exclusion principle</a>。</p>
-<h2 id="容斥原理"><a href="#容斥原理" class="headerlink" title="容斥原理"></a>容斥原理</h2><p>设$A_1,A_2….,A_n$是有穷集，则<script type="math/tex">|A_1\cup A_2 \cup \cdots \cup A_n|=\sum_{1\leqslant i \leqslant n}|A_i|-\sum_{1\leqslant i< j \leqslant n}|A_i\cap A_j|\\
+<h2 id="容斥原理"><a href="#容斥原理" class="headerlink" title="容斥原理"></a>容斥原理</h2><p>设$A_1,A_2….,A_n$是有穷集，则</p>
+<script type="math/tex; mode=display">|A_1\cup A_2 \cup \cdots \cup A_n|=\sum_{1\leqslant i \leqslant n}|A_i|-\sum_{1\leqslant i< j \leqslant n}|A_i\cap A_j|\\
 +\sum_{1\leqslant i<k< j \leqslant n}|A_i\cap A_j\cap A_k|+\cdots\\
- +(-1)^n|A_1\cap A_2\cap\cdots \cap A_n|</script></p>
-<p>可以看到加号和减号是交替出现的，保证了没有遗漏也没有重复。</p>
+ +(-1)^n|A_1\cap A_2\cap\cdots \cap A_n|</script><p>可以看到加号和减号是交替出现的，保证了没有遗漏也没有重复。</p>
 <p>三个集合的容斥原理：<br><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Inclusion-exclusion.svg" alt="3"><br><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0b8e7c1631ec013eed94feb5aa406a573caa3559" alt="容斥"></p>
 <p>应用很多，此处愉快地略过。</p>
 <hr>
