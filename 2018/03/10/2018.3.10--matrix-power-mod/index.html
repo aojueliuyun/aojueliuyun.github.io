@@ -187,9 +187,11 @@
 
       
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h1><p>快速幂算法很熟悉很容易理解，原理 $n^m = \begin{cases} (n^2)^{m/2} &amp; m为偶数 \\<br>(n^2)^{m/2}\cdot n &amp; m为奇数\end{cases}$<br>二分可以将时间复杂度由$O(n)$降到$O(\log n)$。<br>通常m的范围非常大，常常到$10^9$，所以一般给出的题中会要求取模。视情况使用32位或者64位整型。</p>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <h1 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h1><p>快速幂算法很熟悉很容易理解，原理 $n^m = \begin{cases} (n^2)^{m/2} &amp; m为偶数 \\<br>(n^2)^{m/2}\cdot n &amp; m为奇数\end{cases}$<br>二分可以将时间复杂度由$O(n)$降到$O(\log n)$。<br>通常m的范围非常大，常常到$10^9$，所以一般给出的题中会要求取模。视情况使用32位或者64位整型。</p>
 <a id="more"></a>
 <p>$n^m\%d$ 的实现(见<a href="https://aojueliuyun.github.io/2017/11/07/2017.11.7--some-very-simple-algorithms/">快速幂取模</a>)：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Quick_Power_Mod</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> m,<span class="keyword">int</span> d)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">	n = n%d;</span><br><span class="line">	<span class="keyword">while</span>(m &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(m%<span class="number">2</span> == <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			ans = (ans * n) % d;</span><br><span class="line">		&#125;</span><br><span class="line">		m = m/<span class="number">2</span>;</span><br><span class="line">		n = (n*n)%d;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h1 id="矩阵快速幂"><a href="#矩阵快速幂" class="headerlink" title="矩阵快速幂"></a>矩阵快速幂</h1><p>如果将其中的n换为矩阵的话，则为<strong>矩阵快速幂</strong>。<br>例题：<a href="http://acm.xidian.edu.cn/problem.php?id=1027" target="_blank" rel="noopener">XDOJ-1027: Feibonaqi数列</a><br>1.f(0)=0,f(1)=1<br>2.f(n)=2f(n-1)+f(n-2),n&gt;1<br>如果直接递归的话时间会爆，设数组保存的话空间会爆。只能快速幂。<br>求出递推公式也不可行，因为特征根是无理数。<br>所以需要找出矩阵形式的递推关系，从而求出矩阵形式的显示公式：<br>$ \left[ \begin{matrix} f(n) \\f(n-1) \end{matrix} \right] =$ $\left[\begin{matrix}2 &amp; 1 \\1 &amp; 0\end{matrix}\right ]$ $\times \left[ \begin{matrix} f(n-1) \\f(n-2) \end{matrix} \right]$</p>
@@ -222,11 +224,16 @@
 <p>类似题：<a href="http://acm.hdu.edu.cn/showproblem.php?pid=3658" target="_blank" rel="noopener">HOJ 3658</a>、<a href="http://acm.hdu.edu.cn/showproblem.php?pid=4565" target="_blank" rel="noopener">HOJ 4565</a>。</p>
 <p>参考链接：<br><a href="http://blog.csdn.net/wust_zzwh/article/details/52058209" target="_blank" rel="noopener">http://blog.csdn.net/wust_zzwh/article/details/52058209</a></p>
 
+    
+  
+</div>
+  <footer class="article-footer">
       
-    </div>
-    <footer class="article-footer">
       
       
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础算法/">基础算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/矩阵/">矩阵</a></li></ul>
+
       
 
     </footer>

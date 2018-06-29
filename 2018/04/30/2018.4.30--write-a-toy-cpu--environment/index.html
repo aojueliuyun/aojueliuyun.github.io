@@ -12,7 +12,7 @@
   
   
   <meta name="description" content="这篇搭建开发环境，下一篇稍微详述实现过程。这两篇来源于看《自己动手写CPU》（作者博客）时写代码顺带写的笔记。这是一本非常棒的介绍cpu工作原理并且实践性很强的入门书籍，看完之后对CPU内部构造、MIPS指令集、流水线设计、Verilog编程都有了一定的了解。这本书倾向于实践，涉及到的理论部分的内容基本上仅限于《计算机组成与设计：硬件/软件接口》的第三章。开始看这本书的起因是偶然在github上浏">
-<meta name="keywords" content="CPU,Linux,Ubuntu">
+<meta name="keywords" content="Linux,Ubuntu,CPU">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【write a toy cpu】环境搭建">
 <meta property="og:url" content="http://aojueliuyun.github.io/2018/04/30/2018.4.30--write-a-toy-cpu--environment/index.html">
@@ -187,9 +187,11 @@
 
       
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这篇搭建开发环境，下一篇稍微详述实现过程。这两篇来源于看《<a href="https://book.douban.com/subject/25960657/" target="_blank" rel="noopener">自己动手写CPU</a>》（<a href="https://blog.csdn.net/leishangwen" target="_blank" rel="noopener">作者博客</a>）时写代码顺带写的笔记。这是一本非常棒的介绍cpu工作原理并且实践性很强的入门书籍，看完之后对CPU内部构造、MIPS指令集、流水线设计、Verilog编程都有了一定的了解。这本书倾向于实践，涉及到的理论部分的内容基本上仅限于《<a href="https://book.douban.com/subject/2110638/" target="_blank" rel="noopener">计算机组成与设计：硬件/软件接口</a>》的第三章。开始看这本书的起因是偶然在github上浏览到一个有趣的项目——<a href="https://github.com/abcdabcd987/toy-cpu" target="_blank" rel="noopener">abcdabcd987/toy-cpu</a>，点进去看了之后，发现语言是verilog，仅十余个源文件，然后想自己也学过verilog，但都没写过电路。了解之后发现这个项目参考自《自己动手写CPU》这本书，然后知乎上逛了一圈，有人说《<a href="https://book.douban.com/subject/25780703/" target="_blank" rel="noopener">CPU自制入门</a>》更好一些，然后屁颠屁颠买了之后。发现并不是很能看懂，而且全书有很大一部分是在讲如何制作印制电路板和FPGA什么的。看了100页，看不下去，仿真老是通不过，有输入，但是输出全为x，找不到原因，很受挫，于是去图书馆借了《自己动手写CPU》。看了之后觉得，比前面那一本更容易懂一些。这本书实现了MIPS指令集的MIPS32版本的所有整数指令。可以使用GNU的汇编工具将MIPS汇编翻译成机器码，就不用自己设计指令集、手动汇编或者写汇编程序（应该有一定难度）了。这里搭建开发环境、熟悉GNU工具的使用。</p>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <p>这篇搭建开发环境，下一篇稍微详述实现过程。这两篇来源于看《<a href="https://book.douban.com/subject/25960657/" target="_blank" rel="noopener">自己动手写CPU</a>》（<a href="https://blog.csdn.net/leishangwen" target="_blank" rel="noopener">作者博客</a>）时写代码顺带写的笔记。这是一本非常棒的介绍cpu工作原理并且实践性很强的入门书籍，看完之后对CPU内部构造、MIPS指令集、流水线设计、Verilog编程都有了一定的了解。这本书倾向于实践，涉及到的理论部分的内容基本上仅限于《<a href="https://book.douban.com/subject/2110638/" target="_blank" rel="noopener">计算机组成与设计：硬件/软件接口</a>》的第三章。开始看这本书的起因是偶然在github上浏览到一个有趣的项目——<a href="https://github.com/abcdabcd987/toy-cpu" target="_blank" rel="noopener">abcdabcd987/toy-cpu</a>，点进去看了之后，发现语言是verilog，仅十余个源文件，然后想自己也学过verilog，但都没写过电路。了解之后发现这个项目参考自《自己动手写CPU》这本书，然后知乎上逛了一圈，有人说《<a href="https://book.douban.com/subject/25780703/" target="_blank" rel="noopener">CPU自制入门</a>》更好一些，然后屁颠屁颠买了之后。发现并不是很能看懂，而且全书有很大一部分是在讲如何制作印制电路板和FPGA什么的。看了100页，看不下去，仿真老是通不过，有输入，但是输出全为x，找不到原因，很受挫，于是去图书馆借了《自己动手写CPU》。看了之后觉得，比前面那一本更容易懂一些。这本书实现了MIPS指令集的MIPS32版本的所有整数指令。可以使用GNU的汇编工具将MIPS汇编翻译成机器码，就不用自己设计指令集、手动汇编或者写汇编程序（应该有一定难度）了。这里搭建开发环境、熟悉GNU工具的使用。</p>
 <a id="more"></a>
 <h1 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h1><h2 id="Ubuntu虚拟机"><a href="#Ubuntu虚拟机" class="headerlink" title="Ubuntu虚拟机"></a>Ubuntu虚拟机</h2><p>这里需要用到Linux，我使用的VMware安装的<a href="https://www.ubuntu.com/download/desktop" target="_blank" rel="noopener">Ubuntu18.04 LTS</a>，虚拟机就不多介绍了，ubuntu直接无脑下一步就OK了。然后安装VMtools（<a href="https://www.linuxidc.com/Linux/2016-04/130807.htm" target="_blank" rel="noopener">参考</a>），即可在虚拟机与物理机之间进行文字甚至文件拷贝，虚拟机即可以全屏。安装好之后，装一些必备软件以保证ssh连接能顺利进行。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install net-tools</span><br><span class="line">sudo apt-get install ssh openssh-server</span><br><span class="line">sudo apt-get install vim</span><br><span class="line">sudo apt-get install lrzsz</span><br></pre></td></tr></table></figure></p>
 <p>先使用<code>ifconfig</code>命令获取ubuntu虚拟机的IP，这里虚拟机的网络连接最好用桥接，并且保证ubuntu网卡处于打开状态，如果没有则切换到root用户使用<code>ifup [网卡名称]</code>命令打开。然后使用XShell建立新连接：输入IP，端口号22，协议SSH，以及ubuntu的用户名和密码，进行远程连接，即可通过<code>rz</code>命令向虚拟机上传文件，<code>sz [file]</code>命令下载文件到本机。也可以通过Xftp建立ssh连接之后直接拖动文件即可完成传输。<a href="https://www.netsarang.com/download/free_license.html" target="_blank" rel="noopener">XShell and Xftp is free for home/school.</a> 官网填写信息，即可免费下载。</p>
@@ -254,11 +256,16 @@
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>环境搭建是开发的基础，其中也有很多坑，第一次用ubuntu很多不熟悉，很多很简单的问题都被坑。从来没有正经的折腾过一个linux的发行版，虽然装过很多发行版，都是虚拟机装一下，装个GCC写个helloworld，体验一下GUI，然后就不知道干什么了。什么时候有空好好折腾折腾，把linux kernel好好了解一下。话说命令行真好玩，make真方便。</p>
 <h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p>[1] 雷思磊.自己动手写CPU[M].电子工业出版社,2014.</p>
 
+    
+  
+</div>
+  <footer class="article-footer">
       
-    </div>
-    <footer class="article-footer">
       
       
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU/">CPU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+
       
 
     </footer>

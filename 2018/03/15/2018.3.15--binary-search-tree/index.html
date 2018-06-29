@@ -185,9 +185,11 @@
 
       
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>简单介绍树，基础说多了也没什么意思，这里主要实现<a href="https://en.wikipedia.org/wiki/Binary_search_tree" target="_blank" rel="noopener">二叉查找树</a>。</p>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <p>简单介绍树，基础说多了也没什么意思，这里主要实现<a href="https://en.wikipedia.org/wiki/Binary_search_tree" target="_blank" rel="noopener">二叉查找树</a>。</p>
 <a id="more"></a>
 <h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>树，是一种非线性的数据结构，是一种特殊的（没有回路的）图，主要用在涉及到一个问题具有分支情况下的建模。树的若干定义都很简单，像父亲，儿子，根，兄弟，祖先，树叶，树枝，深度，高度等。<br>一般操作系统的文件结构就是采用的树形结构。也就是B树/B+树等。Linux系统的文件结构一角：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">├── udisks2</span><br><span class="line">│   └── mounted-fs</span><br><span class="line">├── user</span><br><span class="line">│   ├── 0</span><br><span class="line">│   └── 1000</span><br><span class="line">│       ├── dconf</span><br><span class="line">│       │   └── user</span><br><span class="line">│       ├── gnome-shell</span><br><span class="line">│       │   └── runtime-state-LE.:0</span><br><span class="line">│       │       └── screenShield.locked</span><br><span class="line">│       ├── keyring</span><br><span class="line">│       │   ├── control</span><br><span class="line">│       │   ├── pkcs11</span><br><span class="line">│       │   └── ssh</span><br><span class="line">│       └── pulse</span><br><span class="line">│           ├── native</span><br><span class="line">│           └── pid</span><br><span class="line">├── utmp</span><br><span class="line">├── vmware</span><br><span class="line">│   └── guestServicePipe</span><br><span class="line">└── xtables.lock</span><br><span class="line">//使用tree命令打印</span><br></pre></td></tr></table></figure></p>
 <p>在很多情况下，我们主要讨论二叉树（Binary Tree），也就是每一个节点最多只有两个子节点的情况。有一些比较特殊的二叉树值得讨论，比如：满二叉树：除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。完全二叉树：叶节点只能出现在最下层和次下层，并且最下面一层的结点都集中在该层最左边的若干位置的二叉树。完全二叉树有时采用线性存储（即堆），但其余的二叉树一般采用二叉链存储结构。</p>
@@ -227,11 +229,16 @@
 </ul>
 <p>要解决以上问题，可以通过平衡二叉树，或者以后将介绍的近乎平衡的AVL树等数据结构来解决。</p>
 
+    
+  
+</div>
+  <footer class="article-footer">
       
-    </div>
-    <footer class="article-footer">
       
       
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树/">树</a></li></ul>
+
       
 
     </footer>

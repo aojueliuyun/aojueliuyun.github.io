@@ -195,9 +195,11 @@
 
       
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇编，对汇编有了一点基础的了解。大概知道CPU是读取一条条的机器指令来执行的，特定的指令会对寄存器、内存、特定的标志位进行操作。处理器内部电路依旧不知，汇编如何翻译成机器码依旧不知。但也只剩下这两个问题了。所以现在只需要解决两个问题：汇编如何翻译成机器码，机器码是如何在CPU里面运行起来的。</p>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <p>自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇编，对汇编有了一点基础的了解。大概知道CPU是读取一条条的机器指令来执行的，特定的指令会对寄存器、内存、特定的标志位进行操作。处理器内部电路依旧不知，汇编如何翻译成机器码依旧不知。但也只剩下这两个问题了。所以现在只需要解决两个问题：汇编如何翻译成机器码，机器码是如何在CPU里面运行起来的。</p>
 <p>而汇编，很明显，是与具体的处理器相关的。也即是不同处理器的指令集体系结构（<a href="https://en.wikipedia.org/wiki/Instruction_set_architecture" target="_blank" rel="noopener">ISA</a>,Instruction Set Architecture）是不同的。对应的处理器设计也必然是不同的。主要可分为RISC和CISC，这里实现MIPS32指令集的部分指令。正文会简单介绍。</p>
 <p>自4月份大概快结束时环境搭好后，实现大概花了半个月的课余时间，到现在都五月中旬了。很多时候在划水，其实应该要不了这么久的。而且我的目标只实现一部分指令就行了，能玩就可以了。按照实现顺序依次实现了：ori，逻辑运算、移位指令和空指令，移动操作指令，部分算术操作指令，条件分支、无条件转移指令，加载存储指令。没有实现协处理器相关指令和中断异常相关指令。至于什么指令级并行、数据级并行、乱序发射啥的统统都是没有的。不过有了前面的那些已经可以进行很多操作了。下面简单说一下实现思路。细节可参考《<a href="https://book.douban.com/subject/25960657/" target="_blank" rel="noopener">自己动手写CPU</a>》，或者<a href="https://blog.csdn.net/leishangwen/article/list/5" target="_blank" rel="noopener">作者博客</a>。我的实现基本上否是参考这本书，以及这个repo:<a href="https://github.com/abcdabcd987/toy-cpu" target="_blank" rel="noopener">abcdabcd987/toy-cpu</a>.</p>
 <a id="more"></a>
@@ -330,11 +332,16 @@
 <p>依赖：Git，Icarus verilog，Gtkwave</p>
 <h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p>[1] 雷思磊.自己动手写CPU[M].电子工业出版社,2014.<br>[2] 戴维 A.帕特森 (David A.Patterson),约翰 L.亨尼斯 (John L.Hennessy).计算机组成与设计(原书第5版)[M].机械工业出版社,2017.</p>
 
+    
+  
+</div>
+  <footer class="article-footer">
       
-    </div>
-    <footer class="article-footer">
       
       
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU/">CPU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/verilog/">verilog</a></li></ul>
+
       
 
     </footer>

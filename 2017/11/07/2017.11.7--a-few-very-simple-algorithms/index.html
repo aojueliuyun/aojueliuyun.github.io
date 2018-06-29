@@ -185,9 +185,11 @@
 
       
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <blockquote>
 <p>刚开始学习算法，做一些题的时候，总会发现一些特别基础的可以说是常识性的东西自己没有掌握，写代码完全是靠模拟（意淫）。这些算法一般不涉及到数据结构，只是一些很基础的简单问题，是解决某些问题的一个步骤。所以是时候总结（积累）一波了，遇到一个加一个进来。适时再把这篇笔记发到博客。</p>
 </blockquote>
 <a id="more"></a>
@@ -227,11 +229,16 @@
 <h2 id="例题实现"><a href="#例题实现" class="headerlink" title="例题实现"></a>例题实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//XDOJ 1029	--2017.11.7</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> T;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; T;</span><br><span class="line">	<span class="keyword">int</span> b[<span class="number">4</span>] = &#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">6</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span>  n,t1,max,min;	<span class="comment">//max最高位，min最低位 </span></span><br><span class="line">	<span class="keyword">double</span> x,k;</span><br><span class="line">	<span class="keyword">while</span>(T--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">		t1 = (n<span class="number">-1</span>)%<span class="number">4</span>;</span><br><span class="line">		x = n*<span class="built_in">log10</span>(<span class="number">2.0</span>);</span><br><span class="line">		k = x-(<span class="keyword">int</span>)x;</span><br><span class="line">		max = (<span class="keyword">int</span>)(<span class="built_in">pow</span>(<span class="number">10</span>,k)+<span class="number">0.000001</span>);</span><br><span class="line">		min = b[t1];</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; max &lt;&lt; <span class="string">" "</span> &lt;&lt; min &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 
+    
+  
+</div>
+  <footer class="article-footer">
       
-    </div>
-    <footer class="article-footer">
       
       
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础算法/">基础算法</a></li></ul>
+
       
 
     </footer>
