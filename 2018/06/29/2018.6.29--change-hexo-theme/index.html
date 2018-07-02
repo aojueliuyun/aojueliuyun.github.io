@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530273823435&di=7617cd84275ae63a1535777fcff690da&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F93340256b87a4d25c2c262a8d380ac1c82206e24.jpg">
 <meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/linus-talks-about-UI.png">
-<meta property="og:updated_time" content="2018-06-30T04:03:49.358Z">
+<meta property="og:updated_time" content="2018-07-02T15:39:49.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="换了新主题hiker">
 <meta name="twitter:description" content="新主题 hexo-theme-hiker给我的感觉相当不错。开发者的Github是iTimeTraveler。以前用的主题是Next，Next给我的感觉是很简洁，但可能是太过简洁了一点，阅读起来体验不算非常好。这款主题也是试用了几十款之后决定下来的。 选择这个主题的原因：  主页可以设置背景，看起来非常大气 主题颜色可以随机变换 几乎完美支持mathjax">
@@ -205,7 +205,7 @@
 <p>另外如果要使用内建搜索需要安装依赖：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -S hexo-generator-json-content</span><br></pre></td></tr></table></figure></p>
 <p>主题配置很简单，可参考其<a href="https://github.com/iTimeTraveler/hexo-theme-hiker/blob/master/README.cn.md" target="_blank" rel="noopener">中文教程</a>。</p>
 <h1 id="使用mathjax渲染公式并解决渲染冲突"><a href="#使用mathjax渲染公式并解决渲染冲突" class="headerlink" title="使用mathjax渲染公式并解决渲染冲突"></a>使用mathjax渲染公式并解决渲染冲突</h1><p><a href="https://www.cnblogs.com/Ai-heng/p/7282110.html" target="_blank" rel="noopener">参考文章</a>，hiker是默认支持mathjax公式渲染的，但依然需要解决渲染冲突。</p>
-<p>写在默认渲染引擎并安装另一个：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure></p>
+<p>卸载默认渲染引擎并安装另一个：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure></p>
 <p>这里的安装可能出问题，最好先更新一下<code>npm</code>再安装<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure></p>
 <p>然后更改<code>/node_modules/hexo-renderer-kramed/lib/renderer.js</code>中的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Change inline math rule</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Fit kramed's rule: $$ + \1 + $$</span></span><br><span class="line">    <span class="keyword">return</span> text.replace(<span class="regexp">/`\$(.*?)\$`/g</span>, <span class="string">'$$$$$1$$$$'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>为：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Change inline math rule</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> text;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -294,6 +294,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/07/02/2018.7.2--divide-&-conquer-algorithm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          分治策略
+        
+      </div>
+    </a>
   
   
     <a href="/2018/06/10/2018.6.10--regular-expression/" id="article-nav-older" class="article-nav-link-wrap">
