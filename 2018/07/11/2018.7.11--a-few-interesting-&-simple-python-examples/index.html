@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>好玩有趣的python入门实例 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="几个简单的Python实例，好玩有趣，基础语法。  turtle库开始自己的绘画绘画 写一个属于自己的文本进度条 蒙特卡洛方法计算π 分形几何，Koch雪花曲线 小说词频统计，统计三国演义中谁出场率最高 轻松抓住文本主旨：文本词云生成">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="好玩有趣的Python入门实例">
+<meta property="og:url" content="http://aojueliuyun.github.io/2018/07/11/2018.7.11--a-few-interesting-&-simple-python-examples/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="几个简单的Python实例，好玩有趣，基础语法。  turtle库开始自己的绘画绘画 写一个属于自己的文本进度条 蒙特卡洛方法计算π 分形几何，Koch雪花曲线 小说词频统计，统计三国演义中谁出场率最高 轻松抓住文本主旨：文本词云生成">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/koch-snowflake4.png">
+<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/koch-square4.png">
+<meta property="og:updated_time" content="2018-07-10T16:17:26.711Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="好玩有趣的Python入门实例">
+<meta name="twitter:description" content="几个简单的Python实例，好玩有趣，基础语法。  turtle库开始自己的绘画绘画 写一个属于自己的文本进度条 蒙特卡洛方法计算π 分形几何，Koch雪花曲线 小说词频统计，统计三国演义中谁出场率最高 轻松抓住文本主旨：文本词云生成">
+<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/koch-snowflake4.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.7.11--a-few-interesting-&amp;-simple-python-examples" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      好玩有趣的Python入门实例
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/11/2018.7.11--a-few-interesting-&-simple-python-examples/" class="article-date">
+	  <time datetime="2018-07-10T16:00:00.000Z" itemprop="datePublished">2018-07-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/编程语言/">编程语言</a>
+
+      
+    </div>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <p>几个简单的<code>Python</code>实例，好玩有趣，基础语法。</p>
+<ul>
+<li><code>turtle</code>库开始自己的绘画绘画</li>
+<li>写一个属于自己的文本进度条</li>
+<li>蒙特卡洛方法计算π</li>
+<li>分形几何，Koch雪花曲线</li>
+<li>小说词频统计，统计三国演义中谁出场率最高</li>
+<li>轻松抓住文本主旨：文本词云生成</li>
+</ul>
+<a id="more"></a>
+<h1 id="drawing-with-turtle"><a href="#drawing-with-turtle" class="headerlink" title="drawing with turtle"></a>drawing with turtle</h1><p>好玩有趣，入门级图形库<code>turtle</code>，<a href="https://docs.python.org/3.6/library/turtle.html" target="_blank" rel="noopener">文档在此</a>。</p>
+<p>文档中的实例：太阳花。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> turtle <span class="keyword">import</span> *</span><br><span class="line">color(<span class="string">'red'</span>, <span class="string">'yellow'</span>)</span><br><span class="line">begin_fill()</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    forward(<span class="number">200</span>)</span><br><span class="line">    left(<span class="number">170</span>)</span><br><span class="line">    <span class="keyword">if</span> abs(pos()) &lt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">end_fill()</span><br><span class="line">done()</span><br></pre></td></tr></table></figure></p>
+<h1 id="文本进度条"><a href="#文本进度条" class="headerlink" title="文本进度条"></a>文本进度条</h1><p>不停向下打印的版本：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">(scale)</span>:</span></span><br><span class="line">    print(<span class="string">'===========执行开始============'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(scale + <span class="number">1</span>):</span><br><span class="line">        a = <span class="string">'*'</span> * i</span><br><span class="line">        b = <span class="string">'.'</span> * (scale - i)</span><br><span class="line">        c = (i / scale) * <span class="number">100</span></span><br><span class="line">        print(<span class="string">'\r&#123;:^3.0f&#125;%[&#123;&#125;-&gt;&#123;&#125;]'</span>.format(c, a, b), end = <span class="string">''</span>)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    print(<span class="string">'\n===========执行结束============'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>单行刷新版本：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pro_bar</span><span class="params">(scale)</span>:</span></span><br><span class="line">    print(<span class="string">'执行开始'</span>.center(scale // <span class="number">2</span>, <span class="string">'='</span>))</span><br><span class="line">    start = time.perf_counter()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(scale + <span class="number">1</span>):</span><br><span class="line">        a = <span class="string">'*'</span> * i</span><br><span class="line">        b = <span class="string">'.'</span> * (scale - i)</span><br><span class="line">        c = (i / scale) * <span class="number">100</span></span><br><span class="line">        dur = time.perf_counter() - start</span><br><span class="line">        print(<span class="string">'\r&#123;:^3.0f&#125;%[&#123;&#125;-&gt;&#123;&#125;] &#123;:.2f&#125;s'</span>.format(c, a, b, dur), end = <span class="string">''</span>)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    print(<span class="string">'\n'</span> + <span class="string">'执行结束'</span>.center(scale // <span class="number">2</span>, <span class="string">'='</span>))</span><br><span class="line"></span><br><span class="line">pro_bar(<span class="number">50</span>)</span><br></pre></td></tr></table></figure></p>
+<p>单行刷新效果在<code>cmd</code>窗口中运行才有效，<code>IDLE</code>禁<code>\r</code>转义字符。</p>
+<h1 id="蒙特卡洛方法计算π"><a href="#蒙特卡洛方法计算π" class="headerlink" title="蒙特卡洛方法计算π"></a>蒙特卡洛方法计算π</h1><p>随机数生成使用<code>random</code>库，<a href="https://docs.python.org/3.6/library/random.html" target="_blank" rel="noopener">文档在此</a>。思路即是随机生成点，落在正方形内。计算正方形内的圆内落点与正方形内落点之比，近似为面积之比，随机数越随机，数量越大越准确。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> perf_counter</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calPI</span><span class="params">(N = <span class="number">100</span>)</span>:</span></span><br><span class="line">    hits = <span class="number">0</span></span><br><span class="line">    start = perf_counter()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, N*N+<span class="number">1</span>):</span><br><span class="line">        x, y = random(), random()</span><br><span class="line">        dist = pow(x ** <span class="number">2</span> + y ** <span class="number">2</span>, <span class="number">0.5</span>)</span><br><span class="line">        <span class="keyword">if</span> dist &lt;= <span class="number">1.0</span>:</span><br><span class="line">            hits += <span class="number">1</span></span><br><span class="line">    pi = (hits * <span class="number">4</span>) / (N * N)</span><br><span class="line">    use_time = perf_counter() - start</span><br><span class="line">    <span class="keyword">return</span> pi, use_time</span><br><span class="line"></span><br><span class="line">PI, use_time = calPI(<span class="number">1000</span>)</span><br><span class="line">print(<span class="string">'\nuse Monte Carlo method to calculate PI: &#123;&#125;'</span>.format(PI))</span><br><span class="line">print(<span class="string">'use time: &#123;&#125; s'</span>.format(use_time))</span><br></pre></td></tr></table></figure>
+<h1 id="递归绘制Koch雪花曲线"><a href="#递归绘制Koch雪花曲线" class="headerlink" title="递归绘制Koch雪花曲线"></a>递归绘制Koch雪花曲线</h1><p><a href="https://en.wikipedia.org/wiki/Koch_snowflake" target="_blank" rel="noopener">koch雪花曲线</a>是分形几何中的一个经典曲线。</p>
+<p>使用<code>turtle</code>库，简单的递归即可绘制。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> turtle</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">koch</span><span class="params">(size, n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        turtle.fd(size)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> angle <span class="keyword">in</span> [<span class="number">0</span>, <span class="number">60</span>, <span class="number">-120</span>, <span class="number">60</span>]:</span><br><span class="line">            turtle.left(angle)</span><br><span class="line">            koch(size/<span class="number">3</span>, n<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    turtle.setup(<span class="number">1200</span>, <span class="number">1000</span>)</span><br><span class="line">    turtle.speed(<span class="number">11</span>)</span><br><span class="line">    turtle.penup()</span><br><span class="line">    turtle.goto(<span class="number">-300</span>, <span class="number">200</span>)</span><br><span class="line">    turtle.pendown()</span><br><span class="line">    turtle.pensize(<span class="number">2</span>)</span><br><span class="line">    level = <span class="number">4</span></span><br><span class="line">    koch(<span class="number">600</span>, level)  <span class="comment"># 3阶科赫曲线</span></span><br><span class="line">    turtle.right(<span class="number">120</span>)</span><br><span class="line">    koch(<span class="number">600</span>, level)</span><br><span class="line">    turtle.right(<span class="number">120</span>)</span><br><span class="line">    koch(<span class="number">600</span>, level)</span><br><span class="line">    turtle.hideturtle()</span><br><span class="line">    turtle.done()</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p><code>level</code>为4的Koch雪花如下：<br><img src="http://oxx8it1qo.bkt.clouddn.com/koch-snowflake4.png" alt="koch snowflake"></p>
+<p>分形几何真有趣！</p>
+<p>将上述的三角形换为正方形，稍微变换一下。<br><img src="http://oxx8it1qo.bkt.clouddn.com/koch-square4.png" alt=""></p>
+<h1 id="小说词频统计"><a href="#小说词频统计" class="headerlink" title="小说词频统计"></a>小说词频统计</h1><p>策略：</p>
+<ul>
+<li>中文小说：使用第三方库<code>jieba</code>切分，统计</li>
+<li>英文小说：去掉特殊干扰字符，直接切分为单词，遍历统计</li>
+</ul>
+<p>统计莎士比亚经典名著：<strong>Hamlet</strong>。统计最高出现单词。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getText</span><span class="params">()</span>:</span></span><br><span class="line">    txt = open(<span class="string">'novels/hamlet.txt'</span>, <span class="string">'r'</span>).read()</span><br><span class="line">    txt = txt.lower()   <span class="comment"># 去掉大小写干扰</span></span><br><span class="line">    <span class="comment"># 去掉特殊符号干扰</span></span><br><span class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> <span class="string">'!"#$%&amp;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~\''</span>:</span><br><span class="line">        txt = txt.replace(ch, <span class="string">' '</span>)</span><br><span class="line">    <span class="keyword">return</span> txt</span><br><span class="line"></span><br><span class="line">hamletTxt = getText()</span><br><span class="line">words = hamletTxt.split()</span><br><span class="line">counts = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">    counts[word] = counts.get(word, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">items = list(counts.items())</span><br><span class="line"><span class="comment"># 将其按照词出现数量按照降序排列</span></span><br><span class="line">items.sort(key = <span class="keyword">lambda</span> x : x[<span class="number">1</span>], reverse = <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>):</span><br><span class="line">    word, count = items[i]</span><br><span class="line">    print(<span class="string">'&#123;:^10&#125;&#123;:^10&#125;'</span>.format(word, count))</span><br></pre></td></tr></table></figure></p>
+<p>统计名著<strong>三国演义</strong>中人物名字出现次数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getWords</span><span class="params">()</span>:</span></span><br><span class="line">    txt = open(<span class="string">'novels/threekingdoms.txt'</span>, <span class="string">'r'</span>, encoding = <span class="string">'utf-8'</span>).read()</span><br><span class="line">    words = jieba.lcut(txt)</span><br><span class="line">    counts = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">        <span class="keyword">if</span> len(word) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            counts[word] = counts.get(word, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    word_list = list(counts.items())</span><br><span class="line">    word_list.sort(key = <span class="keyword">lambda</span> x : x[<span class="number">1</span>], reverse = <span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> word_list</span><br></pre></td></tr></table></figure></p>
+<p>进行人肉优化，去掉不是人名的名字，并将一些指同一个人物的词合并到一个人物下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">countWords</span><span class="params">(excludes, merges)</span>:</span></span><br><span class="line">    txt = open(<span class="string">'novels/threekingdoms.txt'</span>, <span class="string">'r'</span>, encoding = <span class="string">'utf-8'</span>).read()</span><br><span class="line">    words = jieba.lcut(txt)</span><br><span class="line">    counts = &#123;&#125;</span><br><span class="line">    <span class="comment"># 取出长度为一的词和符号以及excludes中的词</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">        <span class="keyword">if</span> len(word) == <span class="number">1</span> <span class="keyword">or</span> word <span class="keyword">in</span> excludes:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            counts[word] = counts.get(word, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="comment"># 合并名称相同的人名</span></span><br><span class="line">    <span class="keyword">for</span> merge <span class="keyword">in</span> merges:</span><br><span class="line">        <span class="keyword">for</span> name <span class="keyword">in</span> merge[<span class="number">1</span>]:</span><br><span class="line">            counts[merge[<span class="number">0</span>]] += counts.get(name, <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">del</span> counts[name]</span><br><span class="line">    word_list = list(counts.items())</span><br><span class="line">    word_list.sort(key = <span class="keyword">lambda</span> x : x[<span class="number">1</span>], reverse = <span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> word_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">excludes = &#123;<span class="string">'却说'</span>,<span class="string">'二人'</span>,<span class="string">'不可'</span>,<span class="string">'主公'</span>,<span class="string">'陛下'</span>,<span class="string">'汉中'</span>,<span class="string">'只见'</span>,<span class="string">'众将'</span>,<span class="string">'后主'</span>,<span class="string">'蜀兵'</span>,<span class="string">'上马'</span>,<span class="string">'大叫'</span>,<span class="string">'太守'</span>,<span class="string">'此人'</span>,<span class="string">'夫人'</span>,</span><br><span class="line">            <span class="string">'先主'</span>,<span class="string">'后人'</span>,<span class="string">'背后'</span>,<span class="string">'城中'</span>,<span class="string">'天子'</span>,<span class="string">'一面'</span>,<span class="string">'何不'</span>,<span class="string">'大军'</span>,<span class="string">'忽报'</span>,<span class="string">'先生'</span>,<span class="string">'百姓'</span>,<span class="string">'何故'</span>,<span class="string">'不能'</span>,<span class="string">'如此'</span>,<span class="string">'如何'</span>,</span><br><span class="line">            <span class="string">'然后'</span>,<span class="string">'先锋'</span>,<span class="string">'不如'</span>,<span class="string">'赶来'</span>,<span class="string">'原来'</span>,<span class="string">'令人'</span>,<span class="string">'江东'</span>,<span class="string">'下马'</span>,<span class="string">'喊声'</span>,<span class="string">'正是'</span>,<span class="string">'徐州'</span>,<span class="string">'忽然'</span>,<span class="string">'荆州'</span>,<span class="string">'左右'</span>,<span class="string">'军马'</span>,</span><br><span class="line">            <span class="string">'因此'</span>,<span class="string">'成都'</span>,<span class="string">'不见'</span>,<span class="string">'未知'</span>,<span class="string">'大败'</span>,<span class="string">'大事'</span>,<span class="string">'之后'</span>,<span class="string">'一军'</span>,<span class="string">'引军'</span>,<span class="string">'起兵'</span>,<span class="string">'军中'</span>,<span class="string">'接应'</span>,<span class="string">'引兵'</span>,<span class="string">'次日'</span>,<span class="string">'大喜'</span>,</span><br><span class="line">            <span class="string">'进兵'</span>,<span class="string">'大惊'</span>,<span class="string">'可以'</span>,<span class="string">'以为'</span>,<span class="string">'大怒'</span>,<span class="string">'不得'</span>,<span class="string">'心中'</span>,<span class="string">'下文'</span>,<span class="string">'一声'</span>,<span class="string">'追赶'</span>,<span class="string">'粮草'</span>,<span class="string">'天下'</span>,<span class="string">'东吴'</span>,<span class="string">'于是'</span>,<span class="string">'都督'</span>,</span><br><span class="line">            <span class="string">'曹兵'</span>,<span class="string">'一齐'</span>,<span class="string">'分解'</span>,<span class="string">'回报'</span>,<span class="string">'分付'</span>,<span class="string">'只得'</span>,<span class="string">'出马'</span>,<span class="string">'三千'</span>,<span class="string">'大将'</span>,<span class="string">'许都'</span>,<span class="string">'随后'</span>,<span class="string">'报知'</span>,<span class="string">'今日'</span>,<span class="string">'不敢'</span>,<span class="string">'魏兵'</span>,</span><br><span class="line">            <span class="string">'前面'</span>,<span class="string">'之兵'</span>,<span class="string">'且说'</span>,<span class="string">'众官'</span>,<span class="string">'洛阳'</span>,<span class="string">'领兵'</span>,<span class="string">'商议'</span>,<span class="string">'军士'</span>,<span class="string">'星夜'</span>,<span class="string">'精兵'</span>,<span class="string">'城上'</span>,<span class="string">'之计'</span>,<span class="string">'不肯'</span>,<span class="string">'相见'</span>,<span class="string">'其言'</span>,</span><br><span class="line">            <span class="string">'一日'</span>,<span class="string">'而行'</span>,<span class="string">'文武'</span>,<span class="string">'襄阳'</span>,<span class="string">'准备'</span>,<span class="string">'若何'</span>,<span class="string">'出战'</span>,<span class="string">'亲自'</span>,<span class="string">'必有'</span>,<span class="string">'一人'</span>,<span class="string">'人马'</span>,<span class="string">'不知'</span>,<span class="string">'何人'</span>,<span class="string">'此事'</span>,<span class="string">'之中'</span>,</span><br><span class="line">            <span class="string">'伏兵'</span>,<span class="string">'祁山'</span>,<span class="string">'乘势'</span>,<span class="string">'忽见'</span>,<span class="string">'大笑'</span>,<span class="string">'樊城'</span>,<span class="string">'兄弟'</span>,<span class="string">'首级'</span>,<span class="string">'立于'</span>,<span class="string">'西川'</span>,<span class="string">'传令'</span>,<span class="string">'当先'</span>,<span class="string">'五百'</span>,<span class="string">'一彪'</span>,<span class="string">'坚守'</span>,</span><br><span class="line">            <span class="string">'此时'</span>,<span class="string">'之间'</span>,<span class="string">'投降'</span>,<span class="string">'五千'</span>,<span class="string">'埋伏'</span>,<span class="string">'长安'</span>,<span class="string">'三路'</span>,<span class="string">'遣使'</span>,<span class="string">'将军'</span>,<span class="string">'关兴'</span>,<span class="string">'军师'</span>,<span class="string">'朝廷'</span>,<span class="string">'三军'</span>,<span class="string">'大王'</span>,<span class="string">'回见'</span>,</span><br><span class="line">            <span class="string">'大将军'</span>,<span class="string">'必然'</span>,<span class="string">'将士'</span>,<span class="string">'是夜'</span>,<span class="string">'小路'</span> &#125;</span><br><span class="line"></span><br><span class="line">merges = [  (<span class="string">'刘备'</span>,(<span class="string">'玄德'</span>,<span class="string">'玄德曰'</span>,<span class="string">'玄德问'</span>,<span class="string">'刘玄德'</span>,<span class="string">'玄德大'</span>,<span class="string">'玄德自'</span>,<span class="string">'玄德闻'</span>,<span class="string">'皇叔'</span>,<span class="string">'刘皇叔'</span>)),</span><br><span class="line">            (<span class="string">'关羽'</span>,(<span class="string">'关公'</span>,<span class="string">'云长'</span>,<span class="string">'关云长'</span>)),</span><br><span class="line">            (<span class="string">'孔明'</span>,(<span class="string">'诸葛亮'</span>,<span class="string">'孔明曰'</span>,<span class="string">'孔明笑'</span>,<span class="string">'孔明之'</span>,<span class="string">'孔明自'</span>)),</span><br><span class="line">            (<span class="string">'曹操'</span>,(<span class="string">'丞相'</span>,<span class="string">'孟德'</span>,<span class="string">'曹公'</span>,<span class="string">'曹孟德'</span>)),</span><br><span class="line">            (<span class="string">'张飞'</span>,(<span class="string">'翼德'</span>,<span class="string">'张翼德'</span>))</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">word_list = countWords(excludes, merges)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    word, count = word_list[i]</span><br><span class="line">    print(<span class="string">'&#123;0:^10&#125;&#123;1:&#123;3&#125;^10&#125;&#123;2:^15&#125;'</span>.format(i+<span class="number">1</span>, word, count, chr(<span class="number">12288</span>))) <span class="comment"># chr(12288)为中文空格</span></span><br></pre></td></tr></table></figure></p>
+<p>结果如下，当然其中类似将军、英雄、大哥、君这种词语无法判断指的是谁，所以仅统计能够判断的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">1     　　　　刘备　　　　     1578      </span><br><span class="line">2     　　　　曹操　　　　     1485      </span><br><span class="line">3     　　　　孔明　　　　     1485      </span><br><span class="line">4     　　　　关羽　　　　      820      </span><br><span class="line">5     　　　　张飞　　　　      393      </span><br><span class="line">6     　　　　吕布　　　　      300      </span><br><span class="line">7     　　　　赵云　　　　      278      </span><br><span class="line">8     　　　　孙权　　　　      264      </span><br><span class="line">9     　　　 司马懿　　　　     221      </span><br><span class="line">10    　　　　周瑜　　　　      217      </span><br><span class="line">11    　　　　袁绍　　　　      191      </span><br><span class="line">12    　　　　马超　　　　      185      </span><br><span class="line">13    　　　　魏延　　　　      180      </span><br><span class="line">14    　　　　黄忠　　　　      168      </span><br><span class="line">15    　　　　姜维　　　　      151      </span><br><span class="line">16    　　　　马岱　　　　      127      </span><br><span class="line">17    　　　　庞德　　　　      122      </span><br><span class="line">18    　　　　孟获　　　　      122      </span><br><span class="line">19    　　　　刘表　　　　      120      </span><br><span class="line">20    　　　 夏侯惇　　　　     116      </span><br><span class="line">21    　　　　董卓　　　　      114      </span><br><span class="line">22    　　　　孙策　　　　      108      </span><br><span class="line">23    　　　　鲁肃　　　　      107      </span><br><span class="line">24    　　　　徐晃　　　　      97       </span><br><span class="line">25    　　 　司马昭　　　　     89       </span><br><span class="line">26    　　 　夏侯渊　　　　     88       </span><br><span class="line">27    　　　　王平　　　　      88       </span><br><span class="line">28    　　　　刘璋　　　　      85       </span><br><span class="line">29    　　　　袁术　　　　      84       </span><br><span class="line">30    　　　　吕蒙　　　　      83</span><br></pre></td></tr></table></figure></p>
+<p><strong>To be continued …</strong></p>
+
+    
+  
+</div>
+  <footer class="article-footer">
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/02/2018.7.2--divide-&-conquer-algorithm/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">分治策略</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#drawing-with-turtle"><span class="nav-number">1.</span> <span class="nav-text">drawing with turtle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文本进度条"><span class="nav-number">2.</span> <span class="nav-text">文本进度条</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#蒙特卡洛方法计算π"><span class="nav-number">3.</span> <span class="nav-text">蒙特卡洛方法计算π</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归绘制Koch雪花曲线"><span class="nav-number">4.</span> <span class="nav-text">递归绘制Koch雪花曲线</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小说词频统计"><span class="nav-number">5.</span> <span class="nav-text">小说词频统计</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
