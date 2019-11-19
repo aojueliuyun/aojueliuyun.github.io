@@ -304,57 +304,6 @@
         
           <section id="main" style="float:none;">
   
-    <article id="post-2018.9.14--write-c&amp;cpp-with-sublime"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/19/2018.9.14--write-c&cpp-with-sublime/">Sublime Text 3 配置C/C++编译环境</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/19/2018.9.14--write-c&cpp-with-sublime/" class="article-date">
-	  <time datetime="2019-11-19T15:15:35.880Z" itemprop="datePublished">2019-11-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/工具相关/">工具相关</a>
-
-      
-    </div>
-<div class="article-entry" itemprop="articleBody">
-  
-    
-    
-      <p>在Windows下写C/C++，使用什么工具呢？有人说，当然是宇宙第一IDE——VS了，但如果我只是刷刷题写算法、写一个单文件验证一下想法、写小项目，VS就显得太臃肿了一点点。现在的选择有教育部钦定的C++教学工具<strong>VC6.0</strong>（手动滑稽），不再维护的<strong>Dev-C++</strong>（也是我以前一直在用准备弃用的），轻量级的<strong>Code::blocks</strong>。Linux下可没有这档子事，<strong>Makefile</strong> + <strong>Vim/Emacs/Sublime</strong> + <strong>GCC/G++</strong>可以搞定一切。这里简单地在Windows下配置一下C/C++开发环境。</p>
-      
-    
-  
-</div>
-  <footer class="article-footer">
-      
-      
-      
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
-
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
     <article id="post-2018.8.18-my-first-CF-contest"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -842,6 +791,58 @@
       
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU/">CPU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018.4.24--brainfuck"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/04/24/2018.4.24--brainfuck/">Brainfuck</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/24/2018.4.24--brainfuck/" class="article-date">
+	  <time datetime="2018-04-23T16:00:00.000Z" itemprop="datePublished">2018-04-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/计算机科学/">计算机科学</a>
+
+      
+    </div>
+<div class="article-entry" itemprop="articleBody">
+  
+    <h2 id="brainfuck"><a href="#brainfuck" class="headerlink" title="brainfuck"></a>brainfuck</h2><p>Brainfuck 是一门非常简单甚至可以说是最简单的编程语言，<a href="https://en.wikipedia.org/wiki/Brainfuck" target="_blank" rel="noopener">wikipedia</a>。</p>
+<p>它的语法由一个8个字符的字符集组成，即<code>&gt;&lt;+=.,[]</code>八个字符。brainfuck的模型还包括一个以字节为单位、被初始化为零的数组、一个指向该数组的指针（初始时指向数组的第一个字节）、以及用于输入输出的两个字节流。<br>这八个字符每一个都是一条指令：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;    指针加一</span><br><span class="line">&lt;    指针减一</span><br><span class="line">+    指针指向的字节的值加一</span><br><span class="line">-    指针指向的字节的值减一</span><br><span class="line">.    按ASCII码输出指针指向字节内容</span><br><span class="line">,    按ASCII码输入内容到指针指向字节</span><br><span class="line">[    如果指针指向的单元值为零，向后跳转到对应的]指令的次一指令处</span><br><span class="line">]    如果指针指向的单元值不为零，向前跳转到对应的[指令的次一指令处</span><br></pre></td></tr></table></figure></p>
+    <p class="article-more-link">
+      <a href="/2018/04/24/2018.4.24--brainfuck/#more">Read More</a>
+    </p>
+    
+  
+</div>
+  <footer class="article-footer">
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Interesting-stuff/">Interesting stuff</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Programming-language/">Programming language</a></li></ul>
 
       
 
