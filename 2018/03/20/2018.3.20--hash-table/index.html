@@ -19,12 +19,12 @@
 <meta property="og:site_name" content="Tiko.T&#39;s Blog">
 <meta property="og:description" content="哈希表是一种 以常数平均时间执行插入、删除和查找操作的数据结构，但是哈希表一般不提供任何与排序相关的操作，如FindMax，FindMin，sort。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/hash-table-list.png">
-<meta property="og:updated_time" content="2018-06-23T15:28:44.366Z">
+<meta property="og:image" content="http://cdn.tikot.xyz/hash-table-list.png">
+<meta property="og:updated_time" content="2019-11-19T15:10:12.944Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="哈希表">
 <meta name="twitter:description" content="哈希表是一种 以常数平均时间执行插入、删除和查找操作的数据结构，但是哈希表一般不提供任何与排序相关的操作，如FindMax，FindMin，sort。">
-<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/hash-table-list.png">
+<meta name="twitter:image" content="http://cdn.tikot.xyz/hash-table-list.png">
   
     <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
   
@@ -198,7 +198,7 @@
 <h2 id="哈希冲突"><a href="#哈希冲突" class="headerlink" title="哈希冲突"></a>哈希冲突</h2><p>我们通过哈希函数来求得地址，但是由于内存等限制，我们不可能将地址范围取得非常非常大，这样如果只存储少量元素则是非常低效的。而关键字值key通常会具有某些相似性。这样就有可能使得两个不同关键字通过哈希函数计算出的哈希值产生相同的情况。这被称为<strong>哈希冲突</strong>。比如，我们常用的一个最简单的哈希函数——除留取余法，即 Hash(key) = key % p，p一般取一个素数。这样很容易就会得到一样的地址。所以我们需要处理哈希冲突。</p>
 <p>虽然哈希冲突基本上是不可避免的，但是首先必须得选择一个好的哈希函数。</p>
 <p>为了保证查找效率，存储一般都选择数组。这里介绍两种处理哈希冲突的方法：<br><strong>分离链接法</strong>（拉链法）：<br>将地址相同的元素链在前一个元素后面，使用链表，一个地址存放多个元素。如下图：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/hash-table-list.png" alt="此处输入图片的描述"></p>
+<p><img src="http://cdn.tikot.xyz/hash-table-list.png" alt="此处输入图片的描述"></p>
 <p><strong>开放定址法</strong>：<br>依然采用数组存储，但是在遇到冲突时，哈希函数调整为 H<sub>i</sub>(key) = (Hash(key) + F(i)) % TableSize，其中函数F是冲突解决方法，F(0)=0，这样我们就可以依次尝试选择H<sub>0</sub>(key),H<sub>1</sub>(key),H<sub>2</sub>(key)等作为哈希函数。并将该元素放入第一个被选中的没有被占据的位置。<br>对于不同的F可以将其称作不同的方法，比如F(i)=i，线性探测法；F(i)=i<sup>2</sup>，平方探测法；F(i)=i·Hash<sub>2</sub>(key)，双散列法。</p>
 <p>这样做有一个问题，当删除其中的一些元素后，那些原来因为这个位置被填充而存储到其他位置的元素，就会面临查找时找不到的情况。所以我们一般使用<strong>懒惰删除</strong>，只是将其状态置为删除。并不真正从数组中删除（尽管在数组中并没有真正意义的删除）。所以我们需要将数组的类型定义为结构，并将元素状态封装在其中（可使用枚举变量）。</p>
 <h2 id="填充因子"><a href="#填充因子" class="headerlink" title="填充因子"></a>填充因子</h2><p> λ = 已填充元素个数/表长，对于分离链接法，达到1左右最佳。对于开放定址法，不应使其超过0.5，否则性能可能会急剧下降。对于开放定址法，当 λ 达到0.5后，可以将其复制到一个更大的表中，这将花费O(n)的操作时间。称其为<strong>再哈希（rehash</strong>）。下面的第二个实现中实现了rehash。</p>
@@ -266,7 +266,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -411,7 +411,7 @@
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>

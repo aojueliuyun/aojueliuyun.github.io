@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Tiko.T&#39;s Blog">
 <meta property="og:description" content="This passage is about getting started with GNU/Linux by reading The Linux Command Line. Chinese version is available here. It’s an excellent introductory book of Linux. No more talk, let’s just get it">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/my-shell.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/linux-family.jpg">
-<meta property="og:updated_time" content="2018-06-25T09:58:50.978Z">
+<meta property="og:image" content="http://cdn.tikot.xyz/my-shell.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/linux-family.jpg">
+<meta property="og:updated_time" content="2019-11-19T15:10:14.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="The Linux Command Line">
 <meta name="twitter:description" content="This passage is about getting started with GNU/Linux by reading The Linux Command Line. Chinese version is available here. It’s an excellent introductory book of Linux. No more talk, let’s just get it">
-<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/my-shell.png">
+<meta name="twitter:image" content="http://cdn.tikot.xyz/my-shell.png">
   
     <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
   
@@ -305,7 +305,7 @@
 <li><code>~/.bashrc</code>，用户私有启动文件。</li>
 </ul>
 <h2 id="vi-amp-vim"><a href="#vi-amp-vim" class="headerlink" title="vi &amp; vim"></a>vi &amp; vim</h2><p>不用多说，经典的编辑器。<code>vim</code>是<code>vi</code>的增强版，但我真的不会用，用不习惯，什么时候想好好折腾了再去理解vim的哲学吧。<br>终端键入<code>vimtutor</code>即可开始<code>vim</code>练习，半小时即可入门（才怪）。<a href="https://github.com/wsdjeg/vim-galore-zh_cn" target="_blank" rel="noopener">vim的哲学</a>。</p>
-<h2 id="Customizing-The-Prompt"><a href="#Customizing-The-Prompt" class="headerlink" title="Customizing The Prompt"></a>Customizing The Prompt</h2><p>自己订制Shell提示符。详见<a href="https://www.kancloud.cn/thinkphp/linux-command-line/39445" target="_blank" rel="noopener">这里</a>。可以更改格式与颜色，比如这样：<br><img src="http://oxx8it1qo.bkt.clouddn.com/my-shell.png" alt="shell"></p>
+<h2 id="Customizing-The-Prompt"><a href="#Customizing-The-Prompt" class="headerlink" title="Customizing The Prompt"></a>Customizing The Prompt</h2><p>自己订制Shell提示符。详见<a href="https://www.kancloud.cn/thinkphp/linux-command-line/39445" target="_blank" rel="noopener">这里</a>。可以更改格式与颜色，比如这样：<br><img src="http://cdn.tikot.xyz/my-shell.png" alt="shell"></p>
 <p>更改环境变量<code>$PS1</code>，我的：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiko@killing-boat:~$ PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;33m\]\w\[\033[00m\]$ "</span><br></pre></td></tr></table></figure></p>
 <p>终端重启后更改会丢失，若要为当前用户永久更改，在<code>~/.bashrc</code>文件末尾添加：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;33m\]\w\[\033[00m\]$ "</span><br></pre></td></tr></table></figure></p>
 <p>其中一些主要转义字符：<br><code>\u</code> 当前用户<br><code>\h</code> 本地主机名<br><code>\w</code> 当前工作目录<br><code>\$</code> 普通用户提示字符$</p>
@@ -356,7 +356,7 @@
 </table>
 </div>
 <p>不过现在Ubuntu中好像鼓励用<code>apt</code>替代<code>apt-get</code>，原因是<code>apt</code>命令更简单，更友好。详见：<a href="https://www.sysgeek.cn/apt-vs-apt-get/" target="_blank" rel="noopener">Linux中apt与apt-get命令的区别与解释</a>。</p>
-<p>当然还有其他不属于这两个阵营的发行版。上一张图体会一下Linux大家族：<br><img src="http://oxx8it1qo.bkt.clouddn.com/linux-family.jpg" alt="linux"></p>
+<p>当然还有其他不属于这两个阵营的发行版。上一张图体会一下Linux大家族：<br><img src="http://cdn.tikot.xyz/linux-family.jpg" alt="linux"></p>
 <h2 id="Storage-Media-存储媒介"><a href="#Storage-Media-存储媒介" class="headerlink" title="Storage Media 存储媒介"></a>Storage Media 存储媒介</h2><p>关于文件系统，这里就不多说了。Linux中大多使用<a href="https://en.wikipedia.org/wiki/Ext3" target="_blank" rel="noopener">ext3</a>文件系统（我的是ext4，使用<code>df -T</code>或者<code>cat /etc/fstab</code>查看）。Linux维护单一的文件系统树，允许挂载不同文件系统的设备。<br>挂载，顾名思义，就是将文件设备连接到系统文件树上（Linux中<strong>一切皆是文件</strong>，设备亦然）。</p>
 <p>文件<code>/etc/fstab</code>列出了系统启动时要挂载的设备。<br><code>/dev</code>目录包含了所有系统中使用的外部设备。要使用就要将设备挂载到一个目录，然后通过访问该目录来访问设备。<br>设备文件分为块设备（Block device）和字节设备（Character device）。其中</p>
 <ul>
@@ -439,7 +439,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -584,7 +584,7 @@
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>

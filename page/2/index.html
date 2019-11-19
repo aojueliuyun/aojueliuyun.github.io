@@ -384,7 +384,7 @@
 <div class="article-entry" itemprop="articleBody">
   
     <h2 id="扫雷-MineSweeper"><a href="#扫雷-MineSweeper" class="headerlink" title="扫雷 MineSweeper"></a>扫雷 MineSweeper</h2><p>用过Windows XP的用户一定不会忘记那一款有趣、烧脑(maybe)的扫雷游戏。（反正我是没有怎么玩过）这里将用C++控制台程序简单实现这个挖雷游戏。<br>下面应该是Win7的挖雷，就是这个画风：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/win-XP-MineSweeper.jpg" alt="win7 minesweeper"></p>
+<p><img src="http://cdn.tikot.xyz/win-XP-MineSweeper.jpg" alt="win7 minesweeper"></p>
     <p class="article-more-link">
       <a href="/2018/04/05/2018.4.5--C++-console-game-MineSweeper/#more">Read More</a>
     </p>
@@ -486,7 +486,7 @@
     </div>
 <div class="article-entry" itemprop="articleBody">
   
-    <p>这里讨论堆。通常当我们谈论堆时，我们经常谈论的是二叉堆。但这并不是堆的全部。堆（heap），可以说是树（tree）的一种。参见下图：<br><img src="http://oxx8it1qo.bkt.clouddn.com/tree%27s-family.jpg" alt="此处输入图片的描述"></p>
+    <p>这里讨论堆。通常当我们谈论堆时，我们经常谈论的是二叉堆。但这并不是堆的全部。堆（heap），可以说是树（tree）的一种。参见下图：<br><img src="http://cdn.tikot.xyz/tree%27s-family.jpg" alt="此处输入图片的描述"></p>
 <p>图中并不算十分完整，但也基本显示出的树的家族的轮廓。二叉树就不多说了。这次主要讨论二叉堆（<a href="https://en.wikipedia.org/wiki/Binary_heap" target="_blank" rel="noopener">binary heap</a>）以及左偏树（<a href="https://en.wikipedia.org/wiki/Leftist_tree" target="_blank" rel="noopener">leftist tree</a>）。二叉堆是讨论过的（见<a href="https://aojueliuyun.github.io/2017/11/01/2017.11.1--heap/">基本数据结构—堆</a>）。是看算法导论的时候写的（现在依然没有看完~）。那时没有实现优先队列，这里会实现一下。我们知道二叉堆的应用主要就是优先队列和堆排序。之所以称这种树为堆，是因为其满足堆的基本性质——<strong>堆序性质</strong>，即每个父节点都比它的子节点大/小。</p>
 <p>二叉堆一般采用数组实现。而这次另外要讨论的左偏树（也称左式堆）也满足堆序性质，但其实现方式与二叉树是一样的，即采用二叉链存储结构。左式堆除了堆序性质外，注重于堆的<strong>合并</strong>操作，左偏树/左式堆可以以O(logN)的时间复杂度将两个堆合并。这是普通二叉树与二叉堆所做不到的。因为所有的合并操作均需要用到指针，而二叉树的合并需要O(N)的时间，所以这也是左式堆这种数据结构存在的意义（I guess）。后续的数据结构如斐波那契堆、二项堆等实现之后，可以就相关操作做一个对比。另外左式堆之后有一种堆——斜堆，与左式堆有着密切的关系。斜堆并不携带任何平衡信息，与左式堆的关系就像伸展树之于AVL树。但其实好像并不是特别好用。所以这里就不介绍了。</p>
     <p class="article-more-link">
@@ -839,7 +839,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -984,7 +984,7 @@
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>

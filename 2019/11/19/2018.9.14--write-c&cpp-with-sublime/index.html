@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>sublime text 3 配置c/c++编译环境 | Tiko.T&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Hexo, hiker" />
+  
+  
+  
+  
+  <meta name="description" content="在Windows下写C/C++，使用什么工具呢？有人说，当然是宇宙第一IDE——VS了，但如果我只是刷刷题写算法、写一个单文件验证一下想法、写小项目，VS就显得太臃肿了一点点。现在的选择有教育部钦定的C++教学工具VC6.0（手动滑稽），不再维护的Dev-C++（也是我以前一直在用准备弃用的），轻量级的Code::blocks。Linux下可没有这档子事，Makefile + Vim/Emacs/">
+<meta name="keywords" content="Sublime,工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sublime Text 3 配置C&#x2F;C++编译环境">
+<meta property="og:url" content="http://aojueliuyun.github.io/2019/11/19/2018.9.14--write-c&cpp-with-sublime/index.html">
+<meta property="og:site_name" content="Tiko.T&#39;s Blog">
+<meta property="og:description" content="在Windows下写C/C++，使用什么工具呢？有人说，当然是宇宙第一IDE——VS了，但如果我只是刷刷题写算法、写一个单文件验证一下想法、写小项目，VS就显得太臃肿了一点点。现在的选择有教育部钦定的C++教学工具VC6.0（手动滑稽），不再维护的Dev-C++（也是我以前一直在用准备弃用的），轻量级的Code::blocks。Linux下可没有这档子事，Makefile + Vim/Emacs/">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-19T15:10:15.028Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sublime Text 3 配置C&#x2F;C++编译环境">
+<meta name="twitter:description" content="在Windows下写C/C++，使用什么工具呢？有人说，当然是宇宙第一IDE——VS了，但如果我只是刷刷题写算法、写一个单文件验证一下想法、写小项目，VS就显得太臃肿了一点点。现在的选择有教育部钦定的C++教学工具VC6.0（手动滑稽），不再维护的Dev-C++（也是我以前一直在用准备弃用的），轻量级的Code::blocks。Linux下可没有这档子事，Makefile + Vim/Emacs/">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>Tiko.T&#39;s Blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notes">Notes</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018.9.14--write-c&amp;cpp-with-sublime" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Sublime Text 3 配置C/C++编译环境
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/19/2018.9.14--write-c&cpp-with-sublime/" class="article-date">
+	  <time datetime="2019-11-19T15:15:35.880Z" itemprop="datePublished">2019-11-19</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/工具相关/">工具相关</a>
+
+      
+    </div>
+<div class="article-entry" itemprop="articleBody">
+  
+    
+    
+      <p>在Windows下写C/C++，使用什么工具呢？有人说，当然是宇宙第一IDE——VS了，但如果我只是刷刷题写算法、写一个单文件验证一下想法、写小项目，VS就显得太臃肿了一点点。现在的选择有教育部钦定的C++教学工具<strong>VC6.0</strong>（手动滑稽），不再维护的<strong>Dev-C++</strong>（也是我以前一直在用准备弃用的），轻量级的<strong>Code::blocks</strong>。Linux下可没有这档子事，<strong>Makefile</strong> + <strong>Vim/Emacs/Sublime</strong> + <strong>GCC/G++</strong>可以搞定一切。这里简单地在Windows下配置一下C/C++开发环境。</p>
+<h1 id="编译器-Clang-MinGW-w64"><a href="#编译器-Clang-MinGW-w64" class="headerlink" title="编译器 Clang / MinGW-w64"></a>编译器 Clang / MinGW-w64</h1><p>参考：<a href="https://www.zhihu.com/question/30315894/answer/154979413" target="_blank" rel="noopener">Visual Studio Code如何编写运行C、C++？</a></p>
+<p><a href="http://releases.llvm.org/download.html" target="_blank" rel="noopener">下载Clang</a>和 <a href="https://sourceforge.net/projects/mingw-w64/" target="_blank" rel="noopener">MinGW-w64 - for 32 and 64 bit Windows</a>安装时勾选添加到所有用户环境变量（如果没有则手动添加 安装目录/bin 到系统（或用户）path环境变量）。 </p>
+<p>打开<strong>cmd</strong>输入:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">clang -v</span><br><span class="line">g++ -v</span><br><span class="line">gcc -v</span><br><span class="line">gdb -v</span><br></pre></td></tr></table></figure></p>
+<p>显示出版本则配置成功。则可以使用命令行来编译C/C++源文件了。</p>
+<p>PS：只安装MingW-w64亦可，如果安装了Code::blocks，建议找到Code::blocks的编译器位置添加环境变量即可。</p>
+<h1 id="Sublime配置C-C-编译环境"><a href="#Sublime配置C-C-编译环境" class="headerlink" title="Sublime配置C/C++编译环境"></a>Sublime配置C/C++编译环境</h1><p>添加环境变量之后，用Sublime编辑<code>.c</code>或者<code>.cpp</code>文件，使用快捷键<strong>Ctrl+shift+B</strong>即可看到</p>
+<ul>
+<li>C++ Single file</li>
+<li>C++ Single File - Run</li>
+</ul>
+<p>的选项。前者为编译，后者为在sublime内执行。</p>
+<p>注意在sublime里面执行无法进行输入。比如C++的<code>cin</code>或者C的<code>scanf</code>，这种情况我们需要将编译得到的<code>exe</code>可执行文件使用控制台打开。</p>
+<p>选择Sublime的 <strong>Tools -&gt; Build System -&gt; New Build System</strong>添加配置文件<code>g++.sublime-build</code><br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"encoding"</span>: <span class="string">"utf-8"</span>,</span><br><span class="line">    <span class="attr">"working_dir"</span>: <span class="string">"$file_path"</span>,</span><br><span class="line">    <span class="attr">"shell_cmd"</span>: <span class="string">"g++ -Wall -std=c++11 \"$file_name\" -o \"$file_base_name\""</span>,</span><br><span class="line">    <span class="attr">"file_regex"</span>: <span class="string">"^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$"</span>,</span><br><span class="line">    <span class="attr">"selector"</span>: <span class="string">"source.c++"</span>,</span><br><span class="line"> </span><br><span class="line">    <span class="attr">"variants"</span>: </span><br><span class="line">    [</span><br><span class="line">        &#123;   </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Run in Sublime"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"g++ -Wall -std=c++11 \"$file_name\" -o \"$file_base_name\" &amp;&amp; cmd /c \"$&#123;file_path&#125;/$&#123;file_base_name&#125;\""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;   </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Run in CMD"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"g++ -Wall -std=c++11 \"$file\" -o \"$file_base_name\" &amp;&amp; start cmd /c \"\"$&#123;file_path&#125;/$&#123;file_base_name&#125;\" &amp; pause\""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;   </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"gdb Debug"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"g++ -g -std=c++11 \"$file\" -o \"$file_base_name\" &amp;&amp; start cmd /c gdb $&#123;file_path&#125;/$&#123;file_base_name&#125; &amp; pause"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以用来编译Cpp源文件。</p>
+<p>另外添加<code>gcc.sublime-build</code><br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"encoding"</span>: <span class="string">"utf-8"</span>,</span><br><span class="line">    <span class="attr">"working_dir"</span>: <span class="string">"$file_path"</span>,</span><br><span class="line">    <span class="attr">"cmd"</span>: <span class="string">"gcc -Wall \"$file_name\" -o \"$file_base_name\""</span>,</span><br><span class="line">    <span class="attr">"file_regex"</span>: <span class="string">"^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$"</span>,</span><br><span class="line">    <span class="attr">"selector"</span>: <span class="string">"source.c"</span>,</span><br><span class="line"> </span><br><span class="line">    <span class="attr">"variants"</span>: </span><br><span class="line">    [</span><br><span class="line">        &#123;   </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Run in Sublime"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"gcc -Wall \"$file\" -o \"$file_base_name\" &amp;&amp; cmd /c \"$&#123;file_path&#125;/$&#123;file_base_name&#125;\""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;   </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Run in CMD"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"gcc -Wall \"$file\" -o \"$file_base_name\" &amp;&amp; start cmd /c \"\"$&#123;file_path&#125;/$&#123;file_base_name&#125;\" &amp; pause\""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;   </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"gdb Debug"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"gcc -Wall \"$file\" -o \"$file_base_name\" &amp;&amp; start cmd /c gdb $&#123;file_path&#125;/$&#123;file_base_name&#125; &amp; pause"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以用来编译C源文件。</p>
+<p>上述<code>json</code>文件各项含义可详见：<a href="http://www.yalewoo.com/sublime_text_3_gcc.html" target="_blank" rel="noopener">sublime text 3配置c/c++编译环境</a></p>
+<p>此时编辑Cpp文件使用快捷键<strong>Ctrl+shift+B</strong>除了上面两个之外看到如下选项：</p>
+<ul>
+<li>g++ - Run in Sublime</li>
+<li>g++ - Run in CMD</li>
+<li>g++ - gdb Debug</li>
+</ul>
+<p>C文件也同样。分别是在sublime中运行，在cmd中运行，使用gdb进行Debug。</p>
+<p>上述选择第一次<strong>Ctrl+B</strong>构建时会让你主动选择，然后默认使用该项。<strong>Ctrl+shift+B</strong>重新进行选择。</p>
+<h1 id="编译-Python"><a href="#编译-Python" class="headerlink" title="编译 Python"></a>编译 Python</h1><p>对于Python的输入也有同样问题，一个解决方法是安装SublimeREPL插件，详见：s<a href="https://blog.csdn.net/u014381464/article/details/78854819" target="_blank" rel="noopener">ublime运行python程序的控制台输入</a>。</p>
+<p>另外也可以控制台运行。同上操作添加配置文件 <code>python3.sublime-build</code>:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"env"</span>: &#123;<span class="attr">"PYTHONIOENCODING"</span>: <span class="string">"utf8"</span>&#125;,</span><br><span class="line">    <span class="attr">"cmd"</span>: [<span class="string">"c:/Users/47488/AppData/Local/Programs/Python/Python36/python.exe"</span>, <span class="string">"-u"</span>, <span class="string">"$file"</span>],</span><br><span class="line">    <span class="attr">"file_regex"</span>: <span class="string">"^[ ]*File \"(...*?)\", line ([0-9]*)"</span>,</span><br><span class="line">    <span class="attr">"selector"</span>: <span class="string">"source.python"</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">"variants"</span>: </span><br><span class="line">    [</span><br><span class="line">        &#123;   </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Run in CMD"</span>,</span><br><span class="line">            <span class="attr">"shell_cmd"</span>: <span class="string">"start cmd /c \" python \"$&#123;file_path&#125;/$&#123;file_base_name&#125;.py\" &amp; pause\""</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>即可选择控制台运行。当然这之前应当有Python3的运行环境。</p>
+<h1 id="utf-8-amp-gbk"><a href="#utf-8-amp-gbk" class="headerlink" title="utf-8 &amp; gbk"></a>utf-8 &amp; gbk</h1><p>Sublime使用<strong>utf-8</strong>编码，而控制台默认使用<strong>gbk</strong>，这样如果你在标准输出中输出了中文，那么在控制台中就会乱码。</p>
+<p>一个很简单的解决途径就是：注释和标准输出只使用英文，抛弃汉语注释，还可以锻炼英文水平。</p>
+<p>当然如果非得用中文那就需要认真考虑编码问题了。</p>
+<p>打开cmd键入<code>chcp</code>可以看到:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">活动代码页: 936</span><br></pre></td></tr></table></figure></p>
+<p>然后<code>chcp 65001</code>即可将<strong>当前窗口</strong>修改为uff-8编码。</p>
+<p>所以我们可以更改上述配置文件中的<code>variants</code>中的<code>&quot;name&quot;: &quot;Run in CMD&quot;</code>后面的一行为:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"shell_cmd": "g++ -Wall -std=c++11 \"$file\" -o \"$file_base_name\" &amp;&amp; start cmd /c \"chcp 65001 &amp; cls &amp; \"$&#123;file_path&#125;/$&#123;file_base_name&#125;\" &amp; pause\""</span><br></pre></td></tr></table></figure></p>
+<p>或者直接更改注册表使控制台编码变为utf-8。具体方法请百度。</p>
+<p>编码这个问题是一个比较坑的地方，个人比较倾向于使用比较国际化的<strong>utf-8</strong>编码，</p>
+<h1 id="另外"><a href="#另外" class="headerlink" title="另外"></a>另外</h1><p>MingW-w64编译器还可以使用Makefile，命令是<strong>mingw32-make</strong>，不过Linux下的很多命令（比如<code>rm</code>）都用不了所以用处感觉不大。有需要再配置。</p>
+<p>另外配置gdb图形化调试可参考：<a href="http://www.yalewoo.com/sublimegdb.html" target="_blank" rel="noopener">Sublime Text 3 使用 SublimeGDB 图形化调试c/c++程序</a>。</p>
+
+    
+  
+</div>
+  <footer class="article-footer">
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/08/18/2018.8.18-my-first-CF-contest/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">记第一次打CF</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编译器-Clang-MinGW-w64"><span class="nav-number">1.</span> <span class="nav-text">编译器 Clang / MinGW-w64</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sublime配置C-C-编译环境"><span class="nav-number">2.</span> <span class="nav-text">Sublime配置C/C++编译环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译-Python"><span class="nav-number">3.</span> <span class="nav-text">编译 Python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#utf-8-amp-gbk"><span class="nav-number">4.</span> <span class="nav-text">utf-8 &amp; gbk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#另外"><span class="nav-number">5.</span> <span class="nav-text">另外</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Tiko.T hold copyright</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/notes" class="mobile-nav-link">Notes</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Tiko.T&#39;s Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Tiko.T All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

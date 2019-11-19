@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Tiko.T&#39;s Blog">
 <meta property="og:description" content="本文简单学习介绍一下分治算法（divide and conquer algorithm）。分治算法，顾名思义，就是分而治之的算法，即  将一个原问题分解为若干规模较小的子问题。 然后通过递归或者迭代的方式来求解每个子问题。 综合子问题的解来得到原问题的解。  其中需要注意的是：  子问题与原问题性质必须完全一致，这样才能递归求解。 子问题彼此之间独立求解，就是说一个子问题不需要另外一个子问题求解出">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/quick_sort_recursive_tree.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/strassen.png">
-<meta property="og:updated_time" content="2018-07-06T13:42:16.214Z">
+<meta property="og:image" content="http://cdn.tikot.xyz/quick_sort_recursive_tree.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/strassen.png">
+<meta property="og:updated_time" content="2019-11-19T15:10:14.931Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分治策略">
 <meta name="twitter:description" content="本文简单学习介绍一下分治算法（divide and conquer algorithm）。分治算法，顾名思义，就是分而治之的算法，即  将一个原问题分解为若干规模较小的子问题。 然后通过递归或者迭代的方式来求解每个子问题。 综合子问题的解来得到原问题的解。  其中需要注意的是：  子问题与原问题性质必须完全一致，这样才能递归求解。 子问题彼此之间独立求解，就是说一个子问题不需要另外一个子问题求解出">
-<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/quick_sort_recursive_tree.png">
+<meta name="twitter:image" content="http://cdn.tikot.xyz/quick_sort_recursive_tree.png">
   
     <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
   
@@ -244,7 +244,7 @@ T(c) &= c
 <p><strong>最坏情况</strong>，每一次划分均出现极端的情况，即两个子数组元素个数分别为<code>1</code>和<code>n-1</code>。时间$T(n) = T(n-1) + n-1$，$T(1) = 0$，很明显 $T(n) = \sum_{i=1}^{n-1}i = \dfrac{n(n-1)}{2}$ $=O(n^2)$。</p>
 <p><strong>最好情况</strong>，每一个次都是平均划分，$T(n) = 2T(n/2) + n-1$，$T(1) = 0$，由主定理得到 $T(n) = O(n\log n)$。</p>
 <p><strong>均衡划分</strong>：如果每一次都是均衡划分，比如问题规模为<code>1:9</code>的划分，则$T(n) = T(n/10) + T(9n/10) + n-1$，$T(1) = 0$。由下列递归树：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/quick_sort_recursive_tree.png" alt="quick sort recursive tree"></p>
+<p><img src="http://cdn.tikot.xyz/quick_sort_recursive_tree.png" alt="quick sort recursive tree"></p>
 <p>可以看到，就算是<code>1:9</code>的划分，递归树上的最长路径长度（即递归树高度）依然是 $\log_{10/9}n = c \log n$，（通常使用$\log$表示<code>2</code>为底的对数）而每一层计算量为$O(n)$，则时间复杂度为$O(n\log n)$。</p>
 <p><strong>平均情况</strong>，对于<code>n</code>种划分，每一种出现概率为$1/n$，则有</p>
 <script type="math/tex; mode=display">
@@ -286,7 +286,7 @@ nT(n) &= 2\sum_{i=1}^nT(i)+cn^2 - n \\
 <p><strong>优化</strong>：<code>AD = (A-B)(D-C) + AC + BD</code>，其中<code>AD</code>和<code>BC</code>都是计算出来的。那么就可将$n/2$位数乘法的子问题减少一个。则$T(n) = 3W(n/2) + cn$，时间复杂度$T(n) = O(n^{\log3}) = O(n^{1.59})$。明显得到了优化。</p>
 <p>可以看到上述问题即是通过减少$a$来优化分治算法的，这里主要关注如何优化以及理论分析，实现意义不大，且略过。</p>
 <p>另外<strong>矩阵乘法的Stassen算法</strong>亦是通过减少子问题数来优化时间复杂度的，具体过程见下图：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/strassen.png" alt="strassen algorithm"></p>
+<p><img src="http://cdn.tikot.xyz/strassen.png" alt="strassen algorithm"></p>
 <h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><p>通过预处理的方式降低划分与合并产生的复杂度$f(n)$。</p>
 <h1 id="选择（Top-K）问题"><a href="#选择（Top-K）问题" class="headerlink" title="选择（Top K）问题"></a>选择（Top K）问题</h1><h1 id="FFT（快速傅里叶变换）"><a href="#FFT（快速傅里叶变换）" class="headerlink" title="FFT（快速傅里叶变换）"></a>FFT（快速傅里叶变换）</h1><h1 id="平面点集的凸包"><a href="#平面点集的凸包" class="headerlink" title="平面点集的凸包"></a>平面点集的凸包</h1><h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ul>
 <li><a href="https://www.icourse163.org/course/PKU-1002525003" target="_blank" rel="noopener">中国大学MOOC - 北京大学 - 算法设计与分析课程</a></li>
@@ -350,7 +350,7 @@ nT(n) &= 2\sum_{i=1}^nT(i)+cn^2 - n \\
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -495,7 +495,7 @@ nT(n) &= 2\sum_{i=1}^nT(i)+cn^2 - n \\
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>

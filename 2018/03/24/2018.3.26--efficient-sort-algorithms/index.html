@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif">
-<meta property="og:updated_time" content="2018-06-27T04:59:13.555Z">
+<meta property="og:updated_time" content="2019-11-19T15:10:13.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高效排序算法——希尔排序、堆排序、归并排序、快速排序">
 <meta name="twitter:description" content="如标题，这里讨论的是基于比较的排序算法中最高效的三种算法和希尔排序。堆排序、归并排序、快速排序的平均时间复杂度均为O(NlogN)。前面有介绍过O(N2)的三种简单排序算法（见三大简单排序算法——插入、选择、冒泡），其中实际表现最好的要属希尔排序。可以证明通过交换相邻元素来进行排序的任何算法都需要O(N2)的平均时间，其中插入排序虽然不是通过交换来排序，但是可以等价为交换的操作，依然是O(N2)。">
@@ -218,7 +218,7 @@
 <h1 id="简单的时间测试"><a href="#简单的时间测试" class="headerlink" title="简单的时间测试"></a>简单的时间测试</h1><p>我对上述实现以及以前O(N<sup>2</sup>)的排序算法进行了一个测试。结果如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">test 1: 1e5 elements，静态分配</span><br><span class="line">simple aort algoritms :</span><br><span class="line">bubble sort time : 15735ms</span><br><span class="line">selection sort time : 10665ms</span><br><span class="line">insertion sort time : 1095ms</span><br><span class="line">binary insertion sort time : 872ms</span><br><span class="line"></span><br><span class="line">efficient sort algorithms :</span><br><span class="line">shell sort time : 13ms</span><br><span class="line">merge sort time : 15ms</span><br><span class="line">heap sort time : 8ms</span><br><span class="line">quick sort time : 9ms</span><br><span class="line">stl sort function time : 8ms</span><br><span class="line"> </span><br><span class="line">test 2: 1e7 elements, 动态分配</span><br><span class="line">efficient sort algorithms :</span><br><span class="line">shell sort time : 1985ms</span><br><span class="line">merge sort time : 1858ms</span><br><span class="line">heap sort time : 1816ms</span><br><span class="line">quick sort time : 2010ms</span><br><span class="line">stl sort function time : 697ms</span><br></pre></td></tr></table></figure>
 <p>ps： 测试时请将编译器设置为release模式。不然不开优化<code>std::sort</code>会非常慢。可以看到开启优化之后<code>std::sort</code>是吊打一切的存在。愉快地使用STL吧！</p>
-<p><strong><a href="http://oxx8it1qo.bkt.clouddn.com/sort-algorithms.rar" target="_blank" rel="noopener">源码下载。</a></strong></p>
+<p><strong><a href="http://cdn.tikot.xyz/sort-algorithms.rar" target="_blank" rel="noopener">源码下载。</a></strong></p>
 <p><strong>参考资料：数据结构与算法分析——C语言描述、算法导论</strong></p>
 
     
@@ -279,7 +279,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -424,7 +424,7 @@
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>

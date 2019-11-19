@@ -19,14 +19,14 @@
 <meta property="og:site_name" content="Tiko.T&#39;s Blog">
 <meta property="og:description" content="初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。  C++进阶之路（图片来自知乎）：">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF.jpg">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AD%89%E7%BA%A7.png">
-<meta property="og:updated_time" content="2018-01-23T06:34:27.230Z">
+<meta property="og:image" content="http://cdn.tikot.xyz/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/C++%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF.jpg">
+<meta property="og:image" content="http://cdn.tikot.xyz/C++%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AD%89%E7%BA%A7.png">
+<meta property="og:updated_time" content="2019-11-19T15:10:11.357Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++语法入门【1】命名空间、数据类型">
 <meta name="twitter:description" content="初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。  C++进阶之路（图片来自知乎）：">
-<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png">
+<meta name="twitter:image" content="http://cdn.tikot.xyz/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png">
   
     <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
   
@@ -196,15 +196,15 @@
       <blockquote>
 <p>初始时学习C++总是觉得C++既然是C的超集，就应该是和C差不多，只是多了一个class而已，接触之后才发现还是too young too naive啊。就目前感受而言，C++和C是完全不同的东西，不仅仅是多了一个OOP而已。这一篇主要关于我最近在看C++时的一些感想和一些入门语法。只是自己学习时的一些理解，并不详细也并不完整。详细语法细节请参考相关书籍。</p>
 </blockquote>
-<p>C++进阶之路（图片来自知乎）：<br><img src="http://oxx8it1qo.bkt.clouddn.com/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png" alt="C++进阶"></p>
+<p>C++进阶之路（图片来自知乎）：<br><img src="http://cdn.tikot.xyz/C++%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF2.png" alt="C++进阶"></p>
 <a id="more"></a>
 <hr>
 <h1 id="C-Started"><a href="#C-Started" class="headerlink" title="C++ Started"></a>C++ Started</h1><p>目前仍然算是开始阶段，C++ Primer Plus 是还没有看完的。<br>在写下了hello,world:<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello,world!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>之后，又粗略了解的C++的class之后，我感觉自己掌握了世界。C++不过如此嘛，自信是有的。然而学习C++的 self-confidence 曲线早已预知了一切。（渺小的凡人！）</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/C++%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF.jpg" alt="学习C++的自信曲线"></p>
+<p><img src="http://cdn.tikot.xyz/C++%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF.jpg" alt="学习C++的自信曲线"></p>
 <p>而我一直以来都是把C++当做 C with classes 来用的，不对，应该是 C with cin and cout，输入输出用<code>cin</code>和<code>cout</code>，简洁明了，再加上一个看起来无比牛B的iostream头文件，瞬间感觉自己也是懂C++的男人了。（滑稽）</p>
 <p>而知乎上一位答主给出的C++学习阶段的等级，虽然我对C++并没有十分清醒的认识，但这个应该还是有一定参考性的。我认为自己是可以在第0级前徘徊的。而且会不会成为死在门前的小白鼠呢。</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/C++%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AD%89%E7%BA%A7.png" alt="精通C++？不存在的。"></p>
+<p><img src="http://cdn.tikot.xyz/C++%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AD%89%E7%BA%A7.png" alt="精通C++？不存在的。"></p>
 <p>以上是对自己的吐槽以及学习方向的参考。<br>以下是学习C++时自己的理解，特别基础的东西是略过的，写下来也没有多大价值，还是要以书籍为本。其中会包含一些C和C++的比较。</p>
 <hr>
 <h1 id="命名空间-namespace"><a href="#命名空间-namespace" class="headerlink" title="命名空间 namespace"></a>命名空间 namespace</h1><p>C++标准库中的函数或者对象都是在命名空间<code>std</code>中定义的，所以我们要使用标准函数库中的函数或对象都要使用std来限定。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using namespace std;</span><br></pre></td></tr></table></figure></p>
@@ -333,7 +333,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -478,7 +478,7 @@
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>

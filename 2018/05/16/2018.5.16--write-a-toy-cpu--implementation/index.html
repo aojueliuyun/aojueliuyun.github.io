@@ -19,20 +19,20 @@
 <meta property="og:site_name" content="Tiko.T&#39;s Blog">
 <meta property="og:description" content="自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/computer-layers.jpg">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/computer-network-layers.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/mips-register.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/mips-cpu-architecture.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/mips-five-stage-pipeline.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/instruction-format-ori.png">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/ori-modules.jpg">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/test1-ori.PNG">
-<meta property="og:image" content="http://oxx8it1qo.bkt.clouddn.com/test2-ori-forwarding.PNG">
-<meta property="og:updated_time" content="2018-05-25T09:50:46.211Z">
+<meta property="og:image" content="http://cdn.tikot.xyz/computer-layers.jpg">
+<meta property="og:image" content="http://cdn.tikot.xyz/computer-network-layers.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/mips-register.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/mips-cpu-architecture.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/mips-five-stage-pipeline.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/instruction-format-ori.png">
+<meta property="og:image" content="http://cdn.tikot.xyz/ori-modules.jpg">
+<meta property="og:image" content="http://cdn.tikot.xyz/test1-ori.PNG">
+<meta property="og:image" content="http://cdn.tikot.xyz/test2-ori-forwarding.PNG">
+<meta property="og:updated_time" content="2019-11-19T15:10:13.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【write a toy cpu】实现">
 <meta name="twitter:description" content="自上大学开始，很早就听说过了CPU这个东西，唯一知道的是：这个东西很复杂，这个东西是计算机的核心，这个东西集成电路做的，而且主要应该是数字集成电路做的，就是说主要进行的是0和1的操作。但对内部工作原理还是一脸懵逼。众所周知，计算机的五个组成部分为运算器（数据通路）、控制器、存储器、输入/输出设备。而CPU的角色应该就是运算器与控制器，两者是结合而并非独立的。但内部呢？依旧不懂。而后有学过8086汇">
-<meta name="twitter:image" content="http://oxx8it1qo.bkt.clouddn.com/computer-layers.jpg">
+<meta name="twitter:image" content="http://cdn.tikot.xyz/computer-layers.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Tiko.T&#39;s Blog" type="application/atom+xml">
   
@@ -210,9 +210,9 @@
 <p>首先ISA是一个抽象模型，一个ISA可以有不同的实现。ISA的角色是<strong>硬件和软件的接口</strong>。CPU通过电路物理上实现ISA，软件通过编译器将高级语言编译为ISA对应的汇编语言进而翻译为机器码，即可在实现了该ISA的处理器上运行。ISA可以说是计算机中最重要的抽象。</p>
 <p>只要ISA相同，实现方式的不同并不会影响软件的运行，这也是<strong>接口</strong>这个伟大的抽象的意义。接口面向调用者，需要进行的所有操作通过接口去调用，内部实现对调用者是完全透明的。这样对于一款处理器，知道其ISA，我们就可以编写程序，而不需要知道内部实现。</p>
 <h2 id="抽象-接口-分层"><a href="#抽象-接口-分层" class="headerlink" title="抽象-接口-分层"></a>抽象-接口-分层</h2><p>有了接口这个抽象，我们便可以将计算机体系进行分层，分层在计算机科学中是广泛存在的，比如计算机层次结构：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/computer-layers.jpg" alt="layers"></p>
+<p><img src="http://cdn.tikot.xyz/computer-layers.jpg" alt="layers"></p>
 <p>和计算机网络中的国际标准OSI七层模型与事实工业标准的TCP/IP四层模型：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/computer-network-layers.png" alt="computer-network-layers"></p>
+<p><img src="http://cdn.tikot.xyz/computer-network-layers.png" alt="computer-network-layers"></p>
 <p>都是很好的体现。在哪一层操作，我们只需要知道其下层的接口，而不必知道具体实现。这可以简化问题的复杂度，使我们只需专心处理其中一层的问题。</p>
 <h2 id="指令集体系结构"><a href="#指令集体系结构" class="headerlink" title="指令集体系结构"></a>指令集体系结构</h2><p>一个指令集体系结构定义了：</p>
 <ul>
@@ -225,13 +225,13 @@
 <h2 id="MIPS指令集"><a href="#MIPS指令集" class="headerlink" title="MIPS指令集"></a>MIPS指令集</h2><p>详细信息参见<a href="https://en.wikipedia.org/wiki/MIPS_architecture" target="_blank" rel="noopener">MIPS architecture - Wikipedia</a>。MIPS指令集是精简指令集（CISC）的典型代表。<a href="https://baike.baidu.com/item/%E9%BE%99%E8%8A%AF/145607?fr=aladdin" target="_blank" rel="noopener">龙芯</a>使用的便是MIPS指令集。MIPS算是一类架构，并不单一，有各种扩展以及子架构等。如MIPS I，MIPS II，MIPS III…MIPS 32，MIPS 64，MIPS 64 R2…等等。这算是一个比较学院派的指令集，在商业上并不算成功（相比Intel x86-64），但这对这里的实现并不会有什么影响。其设计者<a href="https://amturing.acm.org/award_winners/hennessy_1426931.cfm" target="_blank" rel="noopener">John L. Hennessy</a>与 <a href="https://amturing.acm.org/award_winners/patterson_2316693.cfm" target="_blank" rel="noopener">David A. Patterson</a>是去年(2017)<a href="https://amturing.acm.org/" target="_blank" rel="noopener">ACM图灵奖</a>的获得者。下面看一下MIPS32指令集的一些细节。</p>
 <p><strong>数据类型</strong>：一个字4个字节32bit，支持半字与字节。<br><strong>寄存器</strong>：定义了32个通用寄存器（与x86的专用寄存器设计不同）命名为<code>$0...$31</code>，很明显需要5个二进制位来寻址寄存器。并且还定义了两个专用寄存器<code>HI</code>和<code>LO</code>用来存储两个32位操作数的乘积或者商与余数。</p>
 <p><strong>指令类型</strong>：MIPS32的所有指令均为32位，分为三大类<strong>R型</strong>、<strong>I型</strong>、<strong>J型</strong>.</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/mips-register.png" alt="mips-register"></p>
+<p><img src="http://cdn.tikot.xyz/mips-register.png" alt="mips-register"></p>
 <p>其中<code>opcode</code>为指令码，R型指令中<code>rs</code>,<code>rt</code>保存源操作数的寄存器号，I型指令中一般<code>rs</code>位源操作数，<code>rt</code>为目的操作数，具体的指令具体看。<code>rd</code>代表要写入的目的寄存器。<code>shamt</code>代表位移量（仅在移位指令中使用）。<code>funct</code>为功能码，<code>opcode</code>相同的不同R型指令通过<code>funct</code>字段来区分。<code>immediate</code>代表16位立即数。<code>address</code>为26位地址，在分支跳转指令中使用。</p>
 <p><strong>寻址方式</strong>：立即数寻址、寄存器寻址、基址寻址、PC相对寻址。</p>
 <p><strong>所有指令</strong>：详细信息可以在<a href="https://en.wikipedia.org/wiki/MIPS_architecture" target="_blank" rel="noopener">MIPS architecture - Wikipedia</a> 和 <a href="https://github.com/MIPT-ILab/mipt-mips/wiki/MIPS-Instruction-Set" target="_blank" rel="noopener">MIPT-ILab/mipt-mips</a>中找到，太多不抄。</p>
 <h1 id="处理器结构"><a href="#处理器结构" class="headerlink" title="处理器结构"></a>处理器结构</h1><p>现在指令集有了，机器语言也有了（就是每一条汇编语句对应的32位机器码），那就需要来实现了。很明显我们需要对每条32位指令进行解码，然后执行，执行之前需要从寄存器堆中取出操作数。解码之前需要取出指令，所以就要有一个指向当前指令的程序计数器(PC)以及存储指令的指令存储器。执行完了之后需要将结果写入特定寄存器或者数据存储器。</p>
 <p>那么一个处理器的大致结构就有了。具体怎么得到的请参考《<a href="https://book.douban.com/subject/10441748/" target="_blank" rel="noopener">计算机组成与设计：硬件软件接口</a>》第三章（下面框图均来自该书）。这里没有包含控制模块，只给出了一些模块的控制信号。</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/mips-cpu-architecture.png" alt="mips-cpu-architecture"></p>
+<p><img src="http://cdn.tikot.xyz/mips-cpu-architecture.png" alt="mips-cpu-architecture"></p>
 <p>简单解释一下：</p>
 <ol>
 <li>PC为程序计数器，最小编址单位为字节，一条指令32字节。上面的加法器+4使PC移动到下一条指令。</li>
@@ -253,7 +253,7 @@
 </ul>
 <p>如果按照上面的数据流图来设计处理器，同一时刻必然只能执行上面五个操作中的一个，而执行其余操作额模块处于空闲状态，资源浪费明显。所以我们需要引入<strong>流水线机制</strong>。这五个阶段便是典型的五级流水线的流水阶段。我们在每一个阶段之间加入一个触发器，在时钟上升沿触发，将数据传送到下一阶段。如果流水线划分得当，可以使时钟周期下降为原来的五分之一。虽然一条指令需要五个周期才能执行完，但一个时钟周期内同时执行了五条指令。毫无疑问提高了效率。</p>
 <p>MIPS的典型五级流水线框图：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/mips-five-stage-pipeline.png" alt="mips-five-stage-pipeline"></p>
+<p><img src="http://cdn.tikot.xyz/mips-five-stage-pipeline.png" alt="mips-five-stage-pipeline"></p>
 <p>这里加上了控制模块。其中的<code>IF/ID</code>、<code>ID/EX</code>、<code>EX/MEM</code>、<code>MEM/WB</code>均为触发器，时钟上升沿来临时将信息传递到下一阶段。</p>
 <h2 id="流水线冒险"><a href="#流水线冒险" class="headerlink" title="流水线冒险"></a>流水线冒险</h2><blockquote>
 <p>任何事物都是有两面性的，如果一个事物看起来只有好处而没有任何坏处，那么它隐藏在水面下的暗流一定会在什么时候掀翻你的小船。——Tiko.T</p>
@@ -262,7 +262,7 @@
 <p>冒险分为三类：<br><strong>结构冒险</strong>：硬件资源冲突，这在这里实现的流水线中非常容易避免。<br><strong>数据冒险</strong>：后面执行的指令依赖于前面指令执行的结果，然而在后面指令需要数据的时候，前面的指令还未将其写入指定存储位置/寄存器。<br><strong>控制冒险</strong>：流水线分支指令修改PC造成的冒险。</p>
 <p>这里实现只会产生数据相关造成的冒险。解决途径：<br><strong>流水线暂停</strong>：将依赖于前面指令运行结果的指令暂停，等到前面指令将结果写入后，再运行即可。<br><strong>数据前推</strong>：某些指令在<code>EX</code>或者<code>MEM</code>阶段便已经得到结果。只需要将这时候的数据传递回ID阶段，便可以解决。<br>结合上述两种方式，便可以解决这里要实现的所有数据相关问题。</p>
 <h1 id="verilog实现"><a href="#verilog实现" class="headerlink" title="verilog实现"></a>verilog实现</h1><p>使用verilog进行编程，verilog的编写思路与高级编程语言很不一样，就我个人的感觉。用verilog写电路是已经有了这个电路的功能、连接关系、时序后直接将其翻译为相应的verilog描述即可。这里只采用行为级描述与RTL级描述。不需要任何结构描述，我们只需要知道功能以及接口就可以了，不需要从晶体管、逻辑门层级上去建模。所以使用的全都是最简单的语法如<code>if</code>，<code>else</code>，<code>case</code>，<code>assign</code>，<code>&lt;=</code>。verilog语法比较简单，但是就是因为简单，所以很多时候带来的是大量的冗余和重复代码下面介绍带参宏可以很好的解决这个问题。不得不说行为级描述非常棒，像我这种搞不懂晶体管的也可以写一个电路来娱乐一下。下面的代码就不贴了，已上传到<a href="https://github.com/aojueliuyun/toy_cpu" target="_blank" rel="noopener">Github</a>，逻辑都比较简单，这里只简要叙述一下每个流水线阶段进行的操作。</p>
-<h2 id="第一条指令ori的实现"><a href="#第一条指令ori的实现" class="headerlink" title="第一条指令ori的实现"></a>第一条指令ori的实现</h2><p>第一条实现的指令是<code>ori</code>，执行立即数或操作。<br>指令用法：<code>ori rs,rt,immidiate</code><br>操作：<code>$rt = $rs | zero-extended(immidiate)</code>，即将立即数无符号扩展（即零扩展，前面填16个0即可）至32位后，与寄存器<code>rs</code>的值进行按位或操作，结果写入寄存器<code>rt</code>。<br>指令格式：I型，<code>op = 6&#39;b001101</code><br><img src="http://oxx8it1qo.bkt.clouddn.com/instruction-format-ori.png" alt="ori"></p>
+<h2 id="第一条指令ori的实现"><a href="#第一条指令ori的实现" class="headerlink" title="第一条指令ori的实现"></a>第一条指令ori的实现</h2><p>第一条实现的指令是<code>ori</code>，执行立即数或操作。<br>指令用法：<code>ori rs,rt,immidiate</code><br>操作：<code>$rt = $rs | zero-extended(immidiate)</code>，即将立即数无符号扩展（即零扩展，前面填16个0即可）至32位后，与寄存器<code>rs</code>的值进行按位或操作，结果写入寄存器<code>rt</code>。<br>指令格式：I型，<code>op = 6&#39;b001101</code><br><img src="http://cdn.tikot.xyz/instruction-format-ori.png" alt="ori"></p>
 <p>实现：</p>
 <ul>
 <li>IF阶段：将32bit指令从指令存储器中取经过信号线<code>inst</code>传递到到ID（中间会经过触发器IF/ID，后同）。</li>
@@ -289,18 +289,18 @@
 <li><code>open_mips_min_sopc_tb</code>，test bench测试模块，使用<code>$dumpvars</code>和<code>$dumnpfile</code>将波形导出到<code>open_mips_min_sopc_tb.vcd</code>。</li>
 </ul>
 <p>模块间连接关系如图（来自作者博客，侵删）：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/ori-modules.jpg" alt="ori-modules"></p>
+<p><img src="http://cdn.tikot.xyz/ori-modules.jpg" alt="ori-modules"></p>
 <p>测试使用的汇编源文件<code>inst_ori_test.s</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  .org 0x0             # 指示地址从0x0开始</span><br><span class="line">  .global _start       # 定义一个全局符号 _start</span><br><span class="line">  .set noat            # 允许自由使用寄存器$1</span><br><span class="line">_start:</span><br><span class="line">  ori $1,$0,0x1100</span><br><span class="line">  ori $2,$0,0x0020</span><br><span class="line">  ori $3,$0,0xff00</span><br><span class="line">  ori $4,$0,0xffff</span><br></pre></td></tr></table></figure></p>
 <p>编译得到机器码用十六进制字符表示，文件<code>inst_ori_test.txt</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">34011100</span><br><span class="line">34020020</span><br><span class="line">3403ff00</span><br><span class="line">3404ffff</span><br></pre></td></tr></table></figure></p>
 <p>如何编译查看上一篇文章：<a href="http://localhost:4000/2018/04/30/2018.4.30--write-a-toy-cpu--environment/" target="_blank" rel="noopener">【write a toy cpu】环境搭建</a>。</p>
 <p>实现之后，依次执行下列命令编译、仿真、查看波形：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iverilog -s open_mips_min_sopc_tb -o a.out ./*.v</span><br><span class="line">vvp a.out</span><br><span class="line">gtkwave open_mips_min_sopc_tb.vcd</span><br></pre></td></tr></table></figure></p>
 <p>即可看到以下波形：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/test1-ori.PNG" alt="test1-ori"></p>
+<p><img src="http://cdn.tikot.xyz/test1-ori.PNG" alt="test1-ori"></p>
 <p>上述波形给出了很详细的主要阶段的信号变化。可以看到<code>ori</code>指令应该实现正确了。<br>上面四条指令并没有出现数据相关，现在我们考虑数据相关。这里采用<strong>数据前推</strong>的方式解决。细节参见：<a href="https://blog.csdn.net/leishangwen/article/details/38298787" target="_blank" rel="noopener">自己动手写CPU之第五阶段（1）——流水线数据相关问题</a>。</p>
 <p>解决数据相关之后，测试如下汇编源文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  .org 0x0 </span><br><span class="line">  .global _start</span><br><span class="line">  .set noat</span><br><span class="line">_start:</span><br><span class="line">  ori $1,$0,0x1100</span><br><span class="line">  ori $2,$1,0x0020</span><br><span class="line">  ori $3,$2,0xff00</span><br><span class="line">  ori $4,$3,0xffff</span><br></pre></td></tr></table></figure></p>
 <p>得到波形如下：</p>
-<p><img src="http://oxx8it1qo.bkt.clouddn.com/test2-ori-forwarding.PNG" alt="ori-forwarding"></p>
-<p><code>ori</code>实现之后的源码：<a href="http://oxx8it1qo.bkt.clouddn.com/OpenMIPS%20v0.02%20ori%20&amp;%20data%20hazard.rar" target="_blank" rel="noopener">点击下载</a>。</p>
+<p><img src="http://cdn.tikot.xyz/test2-ori-forwarding.PNG" alt="ori-forwarding"></p>
+<p><code>ori</code>实现之后的源码：<a href="http://cdn.tikot.xyz/OpenMIPS%20v0.02%20ori%20&amp;%20data%20hazard.rar" target="_blank" rel="noopener">点击下载</a>。</p>
 <h2 id="后续指令实现"><a href="#后续指令实现" class="headerlink" title="后续指令实现"></a>后续指令实现</h2><p>后续依次实现逻辑、移位、空指令、移动操作指令（增加<code>hilo_reg</code>模块，同样采用数据前推处理数据相关）、算术操作指令（实现流水线暂停机制，增加模块<code>ctrl</code>）、转移指令（实现延迟分支）、加载存储指令（增加<code>data_ram</code>数据存储器模块，处理load相关，采用流水线暂停处理）。后续还有协处理器访问指令和异常相关指令，我并没有做实现。</p>
 <p>细节不过多赘述，最后大概也就1k行代码左右，其中还有一半左右是输入输出信号线声明、模块实例化啥的，代码量不算大，但我感觉自己写了很久，还是太菜的缘故吧！有兴趣的话可参考《自己动手写CPU》，以及我的实现：<a href="https://github.com/aojueliuyun/toy_cpu" target="_blank" rel="noopener">aojueliuyun/toy_cpu</a>。</p>
 <h1 id="tricks"><a href="#tricks" class="headerlink" title="tricks"></a>tricks</h1><p>编写verilog时的一些小trick。</p>
@@ -390,7 +390,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Tiko.T&#39;s Blog All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Tiko.T&#39;s Blog All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Tiko.T hold copyright</p>
@@ -535,7 +535,7 @@
             Tiko.T&#39;s Blog
           </div>
           <div class="panel-body">
-            Copyright © 2018 Tiko.T All Rights Reserved.
+            Copyright © 2019 Tiko.T All Rights Reserved.
           </div>
         </div>
       </div>
